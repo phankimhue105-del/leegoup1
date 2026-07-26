@@ -507,7 +507,7 @@ export default function App() {
                           const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
                           if (nextUnitIdx < CURRICULUM_UNITS.length) {
                             const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
-                            const isLocked = nextUnit.number > 2 && !progress.completedUnitIds.includes(`checkup-${Math.floor((nextUnit.number - 1) / 2)}`);
+                            const isLocked = false;
                             if (isLocked) {
                               setIsDrawerOpen(true);
                             } else {
@@ -549,8 +549,12 @@ export default function App() {
               )}
             </div>
           )}
-        </div>
       </main>
+
+      {/* LeeGo Brand Footer */}
+      <footer className="w-full text-center py-3 text-[10px] sm:text-xs font-black text-red-600 bg-white border-t border-red-100 mt-auto select-none">
+        Fanpage: Anh ngữ LeeGo Hải Phòng | Hotline: 0988.526.585
+      </footer>
 
       {/* Curriculum Map Drawer */}
       <CurriculumDrawer
