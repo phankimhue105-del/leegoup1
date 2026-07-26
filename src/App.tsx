@@ -24,6 +24,7 @@ import { SpeakingPractice } from './components/SpeakingPractice';
 import { CurriculumDrawer } from './components/CurriculumDrawer';
 import { RewardModal } from './components/RewardModal';
 import { VocabularyCardPlayer } from './components/VocabularyCardPlayer';
+import { CheckUpModule } from './components/CheckUpModule';
 import { speakText } from './utils/ttsPlayer';
 import { soundFX } from './utils/soundEffects';
 
@@ -155,6 +156,11 @@ export default function App() {
   const [currentLesson, setCurrentLesson] = useState<Lesson>(CURRICULUM_UNITS[0].lessons[0]);
   const [currentStage, setCurrentStage] = useState<Stage>('vocabulary');
 
+  // Check-Up active state
+  const [currentCheckUpNum, setCurrentCheckUpNum] = useState<number | null>(null);
+  const [checkUpUnitA, setCheckUpUnitA] = useState<Unit | null>(null);
+  const [checkUpUnitB, setCheckUpUnitB] = useState<Unit | null>(null);
+
   // Gamification progress state
   const [progress, setProgress] = useState<StudentProgress>({
     stars: 12,
@@ -227,11 +233,52 @@ export default function App() {
   };
 
   const handleLessonSelect = (unit: Unit, lesson: Lesson) => {
+    setCurrentCheckUpNum(null);
+    setCheckUpUnitA(null);
+    setCheckUpUnitB(null);
     setCurrentUnit(unit);
     setCurrentLesson(lesson);
     setCurrentStage('vocabulary');
     setUnlockedBadge(undefined);
     fetchTeacherResponse(`Switched to Unit ${unit.number} Lesson ${lesson.number}: ${lesson.title}`);
+  };
+
+  const handleSelectCheckUp = (num: number, unitA: Unit, unitB: Unit) => {
+    setCurrentCheckUpNum(num);
+    setCheckUpUnitA(unitA);
+    setCheckUpUnitB(unitB);
+    fetchTeacherResponse(`Starting Check-Up ${num} for Units ${unitA.number} & ${unitB.number}`);
+  };
+
+  const handleCheckUpCompleted = () => {
+    if (currentCheckUpNum === null) return;
+    
+    // Add checkup to completedUnitIds to unlock the next unit!
+    const checkUpId = `checkup-${currentCheckUpNum}`;
+    let newCompletedUnits = [...progress.completedUnitIds];
+    if (!newCompletedUnits.includes(checkUpId)) {
+      newCompletedUnits.push(checkUpId);
+    }
+    
+    setProgress((prev) => ({
+      ...prev,
+      completedUnitIds: newCompletedUnits,
+    }));
+    
+    soundFX.playFanfare();
+    
+    // Reset Check-Up state and load the first lesson of the next unit
+    const nextUnitIdx = currentCheckUpNum * 2; // e.g. Check-Up 1 completed -> Unit 3 index is 2
+    setCurrentCheckUpNum(null);
+    setCheckUpUnitA(null);
+    setCheckUpUnitB(null);
+    
+    if (nextUnitIdx < CURRICULUM_UNITS.length) {
+      const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+      handleLessonSelect(nextUnit, nextUnit.lessons[0]);
+    } else {
+      setIsDrawerOpen(true);
+    }
   };
 
   const handleNextStage = () => {
@@ -274,6 +321,18 @@ export default function App() {
     handleStageChange('completed');
   };
 
+  const speakModelAudio = (examples: string[]) => {
+    if (examples.length === 0) return;
+    speakText(examples[0], () => {
+      // Pause naturally (about one second)
+      setTimeout(() => {
+        if (examples[1]) {
+          speakText(examples[1], undefined, 0.85, 1.15);
+        }
+      }, 1000);
+    }, 0.85, 1.15);
+  };
+
   const modelPatternInfo = getModelPatternInfo(currentUnit.number, currentLesson.number, currentLesson);
 
   return (
@@ -297,163 +356,199 @@ export default function App() {
           mood={teacherResponse.teacherMood}
         />
 
-        {/* Dynamic Classroom Arena for Current Stage */}
+        {/* Dynamic Classroom Arena for Current Stage / Check-Up */}
         <div className="flex-1 bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md min-h-[420px] flex flex-col justify-between">
           
-          {/* STAGE 1: VOCABULARY */}
-          {currentStage === 'vocabulary' && (
-            <VocabularyCardPlayer
-              vocabulary={currentLesson.vocabulary}
-              onCompleted={handleNextStage}
-            />
-          )}
-
-          {/* STAGE 2: MODEL PATTERN */}
-          {currentStage === 'modelPattern' && (
-            <div className="flex flex-col items-center text-center my-auto py-6">
-              <span className="text-xs font-black text-red-600 uppercase tracking-widest bg-red-50 px-4 py-1.5 rounded-full mb-3">
-                💬 Model Pattern
-              </span>
-              
-              {/* General Structure Card */}
-              <div className="bg-gradient-to-r from-red-600 to-rose-600 text-white p-6 rounded-3xl shadow-lg max-w-lg w-full mb-6">
-                <h3 className="text-2xl font-black mb-2">
-                  {modelPatternInfo.structure}
-                </h3>
-                <p className="text-xs text-amber-300 font-bold mt-2">
-                  💡 {modelPatternInfo.translationVi}
-                </p>
-              </div>
-
-              {/* 2 Simple Examples Card */}
-              <div className="bg-slate-50 border-2 border-slate-100 p-5 rounded-2xl w-full max-w-lg mb-6 text-left space-y-3">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">
-                  Example Sentences
-                </span>
-                {modelPatternInfo.examples.map((example, index) => (
-                  <div key={index} className="flex items-center gap-3 border-b border-slate-100 pb-2 last:border-0 last:pb-0">
-                    <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm font-extrabold text-slate-800">{example}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  onClick={() => speakText(modelPatternInfo.examples[0] || 'It is a pencil.')}
-                  className="bg-red-100 hover:bg-red-200 text-red-700 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all active:scale-95"
-                >
-                  <Volume2 className="w-4 h-4" /> Listen Model Audio
-                </button>
-                <button
-                  onClick={handleNextStage}
-                  className="bg-red-600 hover:bg-red-700 text-white font-black px-6 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all"
-                >
-                  <span>Practice Pattern</span> <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* STAGE 3: PRACTICE */}
-          {currentStage === 'practice' && (
-            <InteractiveGame
-              lesson={currentLesson}
+          {currentCheckUpNum !== null ? (
+            <CheckUpModule
+              checkUpNumber={currentCheckUpNum}
+              unitA={checkUpUnitA!}
+              unitB={checkUpUnitB!}
+              onCompleted={handleCheckUpCompleted}
               onCorrectAnswer={() => addStars(1)}
-              onGameCompleted={handleNextStage}
             />
-          )}
+          ) : (
+            <>
+              {/* STAGE 1: VOCABULARY */}
+              {currentStage === 'vocabulary' && (
+                <VocabularyCardPlayer
+                  vocabulary={currentLesson.vocabulary}
+                  onCompleted={handleNextStage}
+                />
+              )}
 
-          {/* STAGE 4: SPEAKING */}
-          {currentStage === 'speaking' && (
-            <SpeakingPractice
-              lesson={currentLesson}
-              studentName="Explorer"
-              onSpeakingCompleted={handleSpeakingCompleted}
-            />
-          )}
-
-          {/* STAGE 5: COMPLETED */}
-          {currentStage === 'completed' && (
-            <div className="flex flex-col items-center text-center my-auto py-8">
-              <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-4 border-4 border-amber-200 animate-bounce">
-                <span className="text-5xl">🎉</span>
-              </div>
-              <span className="text-xs font-black text-red-600 uppercase tracking-widest mb-1">
-                LeeGo English Explorer
-              </span>
-              <h2 className="text-3xl font-black text-slate-900 mb-2 animate-pulse">
-                Lesson Completed!
-              </h2>
-              <p className="text-sm text-slate-600 max-w-md mb-6 font-semibold">
-                Super job! You have finished all activities for <strong>{currentLesson.title}</strong>!
-              </p>
-
-              {/* Reward stats display */}
-              <div className="bg-red-50/50 p-5 rounded-3xl border-2 border-red-100 max-w-sm w-full mb-6 space-y-3">
-                <div className="flex items-center justify-between border-b border-red-50 pb-2">
-                  <span className="text-slate-500 font-extrabold text-xs">Total Stars:</span>
-                  <span className="text-amber-600 font-black text-sm flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
-                    {progress.stars} Stars
+              {/* STAGE 2: MODEL PATTERN */}
+              {currentStage === 'modelPattern' && (
+                <div className="flex flex-col items-center text-center my-auto py-6">
+                  <span className="text-xs font-black text-red-600 uppercase tracking-widest bg-red-50 px-4 py-1.5 rounded-full mb-3">
+                    💬 Model Pattern
                   </span>
-                </div>
-                {unlockedBadge && (
-                  <div className="flex items-center justify-between border-b border-red-50 pb-2">
-                    <span className="text-slate-500 font-extrabold text-xs">Badge Earned:</span>
-                    <span className="text-rose-600 font-black text-xs flex items-center gap-1">
-                      <Award className="w-4 h-4" />
-                      {unlockedBadge}
-                    </span>
+                  
+                  {/* General Structure Card */}
+                  <div className="bg-gradient-to-r from-red-600 to-rose-600 text-white p-6 rounded-3xl shadow-lg max-w-lg w-full mb-6">
+                    <h3 className="text-2xl font-black mb-2">
+                      {modelPatternInfo.structure}
+                    </h3>
+                    <p className="text-xs text-amber-300 font-bold mt-2">
+                      💡 {modelPatternInfo.translationVi}
+                    </p>
                   </div>
-                )}
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 font-extrabold text-xs">Daily Streak:</span>
-                  <span className="text-emerald-600 font-black text-xs">
-                    🔥 {progress.dailyStreak} Days
-                  </span>
-                </div>
-              </div>
 
-              <button
-                onClick={() => {
-                  soundFX.playClick();
-                  const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
-                  if (currentIdx < currentUnit.lessons.length - 1) {
-                    handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
-                  } else {
-                    // Open drawer to select next unit/lesson if unit is completed
-                    setIsDrawerOpen(true);
-                  }
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all text-sm animate-bounce"
-              >
-                <span>Continue to Next Lesson</span> <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+                  {/* 2 Simple Examples Card */}
+                  <div className="bg-slate-50 border-2 border-slate-100 p-5 rounded-2xl w-full max-w-lg mb-6 text-left space-y-3">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">
+                      Example Sentences
+                    </span>
+                    {modelPatternInfo.examples.map((example, index) => (
+                      <div key={index} className="flex items-center gap-3 border-b border-slate-100 pb-2 last:border-0 last:pb-0">
+                        <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">
+                          {index + 1}
+                        </span>
+                        <span className="text-sm font-extrabold text-slate-800">{example}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => speakModelAudio(modelPatternInfo.examples)}
+                      className="bg-red-100 hover:bg-red-200 text-red-700 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all active:scale-95"
+                    >
+                      <Volume2 className="w-4 h-4" /> Listen Model Audio
+                    </button>
+                    <button
+                      onClick={handleNextStage}
+                      className="bg-red-600 hover:bg-red-700 text-white font-black px-6 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all"
+                    >
+                      <span>Practice Pattern</span> <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STAGE 3: PRACTICE */}
+              {currentStage === 'practice' && (
+                <InteractiveGame
+                  lesson={currentLesson}
+                  onCorrectAnswer={() => addStars(1)}
+                  onGameCompleted={handleNextStage}
+                />
+              )}
+
+              {/* STAGE 4: SPEAKING */}
+              {currentStage === 'speaking' && (
+                <SpeakingPractice
+                  lesson={currentLesson}
+                  studentName="Explorer"
+                  onSpeakingCompleted={handleSpeakingCompleted}
+                />
+              )}
+
+              {/* STAGE 5: COMPLETED */}
+              {currentStage === 'completed' && (
+                <div className="flex flex-col items-center text-center my-auto py-8">
+                  <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-4 border-4 border-amber-200 animate-bounce">
+                    <span className="text-5xl">🎉</span>
+                  </div>
+                  <span className="text-xs font-black text-red-600 uppercase tracking-widest mb-1">
+                    LeeGo English Explorer
+                  </span>
+                  <h2 className="text-3xl font-black text-slate-900 mb-2 animate-pulse">
+                    Lesson Completed!
+                  </h2>
+                  <p className="text-sm text-slate-600 max-w-md mb-6 font-semibold">
+                    Super job! You have finished all activities for <strong>{currentLesson.title}</strong>!
+                  </p>
+
+                  {/* Reward stats display */}
+                  <div className="bg-red-50/50 p-5 rounded-3xl border-2 border-red-100 max-w-sm w-full mb-6 space-y-3">
+                    <div className="flex items-center justify-between border-b border-red-50 pb-2">
+                      <span className="text-slate-500 font-extrabold text-xs">Total Stars:</span>
+                      <span className="text-amber-600 font-black text-sm flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+                        {progress.stars} Stars
+                      </span>
+                    </div>
+                    {unlockedBadge && (
+                      <div className="flex items-center justify-between border-b border-red-50 pb-2">
+                        <span className="text-slate-500 font-extrabold text-xs">Badge Earned:</span>
+                        <span className="text-rose-600 font-black text-xs flex items-center gap-1">
+                          <Award className="w-4 h-4" />
+                          {unlockedBadge}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 font-extrabold text-xs">Daily Streak:</span>
+                      <span className="text-emerald-600 font-black text-xs">
+                        🔥 {progress.dailyStreak} Days
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      soundFX.playClick();
+                      const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
+                      if (currentIdx < currentUnit.lessons.length - 1) {
+                        handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
+                      } else {
+                        // Check if this even unit has a checkup and triggers it automatically
+                        const checkUpNumber = currentUnit.number / 2;
+                        const isEvenUnit = currentUnit.number % 2 === 0;
+                        const isCheckUpCompleted = progress.completedUnitIds.includes(`checkup-${checkUpNumber}`);
+                        
+                        if (isEvenUnit && !isCheckUpCompleted) {
+                          const unitA = CURRICULUM_UNITS[currentUnit.number - 2];
+                          const unitB = CURRICULUM_UNITS[currentUnit.number - 1];
+                          handleSelectCheckUp(checkUpNumber, unitA, unitB);
+                        } else {
+                          // Normal flow: load first lesson of next unit if unlocked
+                          const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
+                          if (nextUnitIdx < CURRICULUM_UNITS.length) {
+                            const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+                            const isLocked = nextUnit.number > 2 && !progress.completedUnitIds.includes(`checkup-${Math.floor((nextUnit.number - 1) / 2)}`);
+                            if (isLocked) {
+                              setIsDrawerOpen(true);
+                            } else {
+                              handleLessonSelect(nextUnit, nextUnit.lessons[0]);
+                            }
+                          } else {
+                            setIsDrawerOpen(true);
+                          }
+                        }
+                      }
+                    }}
+                    className="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all text-sm animate-bounce"
+                  >
+                    <span>Continue to Next Lesson</span> <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           {/* Navigation Controls Footer */}
-          <div className="flex items-center justify-between border-t border-red-100 pt-4 mt-6">
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5"
-            >
-              <BookOpen className="w-4 h-4" /> Switch Unit / Lesson
-            </button>
-
-            {currentStage !== 'completed' && (
+          {currentCheckUpNum === null && (
+            <div className="flex items-center justify-between border-t border-red-100 pt-4 mt-6">
               <button
-                onClick={handleNextStage}
-                className="bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold px-5 py-2 rounded-xl shadow-xs flex items-center gap-1.5 transition-colors"
+                onClick={() => setIsDrawerOpen(true)}
+                className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5"
               >
-                <span>Next Stage</span>
-                <ChevronRight className="w-4 h-4" />
+                <BookOpen className="w-4 h-4" /> Switch Unit / Lesson
               </button>
-            )}
-          </div>
+
+              {currentStage !== 'completed' && (
+                <button
+                  onClick={handleNextStage}
+                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold px-5 py-2 rounded-xl shadow-xs flex items-center gap-1.5 transition-colors"
+                >
+                  <span>Next Stage</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </main>
 
@@ -465,6 +560,8 @@ export default function App() {
         currentLessonId={currentLesson.id}
         progress={progress}
         onSelectLesson={handleLessonSelect}
+        onSelectCheckUp={handleSelectCheckUp}
+        currentCheckUpNum={currentCheckUpNum}
       />
 
       {/* Reward & Confetti Celebration Modal */}
