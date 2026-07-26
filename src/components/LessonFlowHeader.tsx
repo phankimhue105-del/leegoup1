@@ -43,10 +43,10 @@ export const LessonFlowHeader: React.FC<Props> = ({
             <Menu className="w-5 h-5" />
             <div className="hidden sm:block text-left">
               <span className="text-[10px] font-bold text-red-500 uppercase tracking-wider block">
-                Unit {currentUnit.number}: {currentUnit.title}
+                {currentUnit.title.includes('CHECK-UP') ? currentUnit.title : `Unit ${currentUnit.number}: ${currentUnit.title}`}
               </span>
               <span className="text-xs font-black text-slate-800 line-clamp-1">
-                Lesson {currentLesson.number}: {currentLesson.title}
+                {currentUnit.title.includes('CHECK-UP') ? currentUnit.theme : `Lesson ${currentLesson.number}: ${currentLesson.title}`}
               </span>
             </div>
           </button>
