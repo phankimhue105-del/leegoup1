@@ -14,12 +14,8 @@ interface Props {
   currentCheckUpNum: number | null;
 }
 
-// Unit locking logic based on completed checkup IDs
+// Unit locking logic based on completed checkup IDs (disabled by default)
 function isUnitLocked(unitNumber: number, completedUnitIds: string[]): boolean {
-  if (unitNumber <= 2) return false;
-  if (unitNumber <= 4) return !completedUnitIds.includes('checkup-1');
-  if (unitNumber <= 6) return !completedUnitIds.includes('checkup-2');
-  if (unitNumber <= 8) return !completedUnitIds.includes('checkup-3');
   return false;
 }
 
@@ -141,9 +137,7 @@ export const CurriculumDrawer: React.FC<Props> = ({
                     const checkUp = getCheckUpForUnit(unit.number);
                     if (!checkUp || !checkUp.data) return null;
 
-                    const isUnitACompleted = checkUp.prevUnit.lessons.every(l => progress.completedLessonIds.includes(l.id));
-                    const isUnitBCompleted = checkUp.currentUnit.lessons.every(l => progress.completedLessonIds.includes(l.id));
-                    const isCheckUpUnlocked = isUnitACompleted && isUnitBCompleted;
+                    const isCheckUpUnlocked = true;
                     const isCheckUpFinished = progress.completedUnitIds.includes(`checkup-${checkUp.number}`);
                     const isCheckUpActive = currentCheckUpNum === checkUp.number;
 
