@@ -549,6 +549,7 @@ export default function App() {
               )}
             </div>
           )}
+        </div>
       </main>
 
       {/* LeeGo Brand Footer */}
