@@ -335,12 +335,31 @@ export default function App() {
 
   const modelPatternInfo = getModelPatternInfo(currentUnit.number, currentLesson.number, currentLesson);
 
+  const checkUpUnitVirtual: Unit = currentCheckUpNum !== null ? {
+    id: `checkup-u-${currentCheckUpNum}`,
+    number: currentCheckUpNum,
+    title: `CHECK-UP ${currentCheckUpNum}`,
+    theme: `Reviewing Units ${checkUpUnitA?.number} & ${checkUpUnitB?.number}`,
+    learningGoal: `Practice speaking, vocabulary matching, and listening test from Units ${checkUpUnitA?.number} and ${checkUpUnitB?.number}.`,
+    lessons: []
+  } : currentUnit;
+
+  const checkUpLessonVirtual: Lesson = currentCheckUpNum !== null ? {
+    id: `checkup-l-${currentCheckUpNum}`,
+    number: currentCheckUpNum,
+    title: `Units ${checkUpUnitA?.number} & ${checkUpUnitB?.number} Review`,
+    learningObjective: `Review vocabulary, key patterns, listening, and speaking from Units ${checkUpUnitA?.number} and ${checkUpUnitB?.number}.`,
+    vocabulary: [],
+    sentencePatterns: [],
+    suggestedGames: []
+  } : currentLesson;
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col font-sans">
       {/* Lesson Routine Header */}
       <LessonFlowHeader
-        currentUnit={currentUnit}
-        currentLesson={currentLesson}
+        currentUnit={checkUpUnitVirtual}
+        currentLesson={checkUpLessonVirtual}
         currentStage={currentStage}
         progress={progress}
         onSelectStage={handleStageChange}
@@ -366,6 +385,8 @@ export default function App() {
               unitB={checkUpUnitB!}
               onCompleted={handleCheckUpCompleted}
               onCorrectAnswer={() => addStars(1)}
+              activeStage={currentStage}
+              onStageChange={(st) => setCurrentStage(st)}
             />
           ) : (
             <>
@@ -529,26 +550,24 @@ export default function App() {
           )}
 
           {/* Navigation Controls Footer */}
-          {currentCheckUpNum === null && (
-            <div className="flex items-center justify-between border-t border-red-100 pt-4 mt-6">
-              <button
-                onClick={() => setIsDrawerOpen(true)}
-                className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5"
-              >
-                <BookOpen className="w-4 h-4" /> Switch Unit / Lesson
-              </button>
+          <div className="flex items-center justify-between border-t border-red-100 pt-4 mt-6">
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5"
+            >
+              <BookOpen className="w-4 h-4" /> Switch Unit / Lesson
+            </button>
 
-              {currentStage !== 'completed' && (
-                <button
-                  onClick={handleNextStage}
-                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold px-5 py-2 rounded-xl shadow-xs flex items-center gap-1.5 transition-colors"
-                >
-                  <span>Next Stage</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          )}
+            {currentStage !== 'completed' && (
+              <button
+                onClick={handleNextStage}
+                className="bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold px-5 py-2 rounded-xl shadow-xs flex items-center gap-1.5 transition-colors"
+              >
+                <span>Next Stage</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </div>
       </main>
 
