@@ -1,0 +1,6 @@
+{
+  "name": "LeeGo English Explorer AI",
+  "description": "Interactive Cambridge Young Learners English learning app with AI Teacher LeeGo",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
