@@ -12,16 +12,11 @@ interface Props {
 }
 
 const STAGE_ORDER: { id: Stage; label: string; icon: string }[] = [
-  { id: 'greeting', label: 'Greeting', icon: '👋' },
-  { id: 'warmup', label: 'Warm-up', icon: '🔥' },
   { id: 'vocabulary', label: 'Vocabulary', icon: '🔤' },
-  { id: 'modelSentence', label: 'Model Pattern', icon: '💬' },
-  { id: 'guidedPractice', label: 'Practice', icon: '✏️' },
-  { id: 'game', label: 'Game', icon: '🎮' },
+  { id: 'modelPattern', label: 'Model Pattern', icon: '💬' },
+  { id: 'practice', label: 'Practice', icon: '✏️' },
   { id: 'speaking', label: 'Speaking', icon: '🎙️' },
-  { id: 'miniReview', label: 'Review', icon: '🔄' },
-  { id: 'reward', label: 'Reward', icon: '🏆' },
-  { id: 'goodbye', label: 'Goodbye', icon: '✨' },
+  { id: 'completed', label: 'Completed', icon: '🎉' },
 ];
 
 export const LessonFlowHeader: React.FC<Props> = ({
