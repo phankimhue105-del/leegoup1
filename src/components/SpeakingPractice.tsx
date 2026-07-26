@@ -265,9 +265,9 @@ export const SpeakingPractice: React.FC<Props> = ({
         accuracy: score,
         completeness: score + 2,
         confidence: score,
-        strength: 'Clear voice and great confidence!',
-        suggestion: 'Try saying the end sound clearly next time.',
-        encouragement: 'Amazing speaking! You earned 2 stars! ⭐⭐',
+        strength: 'Giọng đọc to và rõ ràng, phát âm rất tốt!',
+        suggestion: 'Chú ý phát âm mượt mà hơn ở các âm cuối nhé.',
+        encouragement: 'Tuyệt vời quá! Chúc mừng em đã hoàn thành nhiệm vụ! ⭐',
       };
       setAssessment(fallback);
       setScores((prev) => [...prev, score]);
@@ -469,7 +469,7 @@ export const SpeakingPractice: React.FC<Props> = ({
             <div className="flex items-center justify-between mb-3 border-b border-emerald-200 pb-2">
               <div className="flex items-center gap-1.5">
                 <Award className="w-5 h-5 text-amber-500" />
-                <span className="font-extrabold text-emerald-950 text-xs md:text-sm">LeeGo AI Result</span>
+                <span className="font-extrabold text-emerald-950 text-xs md:text-sm">Kết quả từ LeeGo AI</span>
               </div>
               <div className="flex items-center gap-1 bg-amber-400 text-slate-900 px-3 py-1 rounded-full font-black text-xs shadow-2xs">
                 <Star className="w-3.5 h-3.5 fill-slate-900" />
@@ -481,18 +481,26 @@ export const SpeakingPractice: React.FC<Props> = ({
 
             <div className="grid grid-cols-2 gap-2 mb-3 text-[10px]">
               <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
-                <span className="text-slate-500 font-semibold block">Pronunciation</span>
+                <span className="text-slate-500 font-semibold block">Phát âm</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.pronunciation}%</span>
               </div>
               <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
-                <span className="text-slate-500 font-semibold block">Fluency</span>
+                <span className="text-slate-500 font-semibold block">Độ trôi chảy</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.fluency}%</span>
+              </div>
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
+                <span className="text-slate-500 font-semibold block">Độ chính xác</span>
+                <span className="font-black text-emerald-700 text-xs">{assessment.accuracy || 90}%</span>
+              </div>
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
+                <span className="text-slate-500 font-semibold block">Mức độ hoàn thành</span>
+                <span className="font-black text-emerald-700 text-xs">{assessment.completeness || 90}%</span>
               </div>
             </div>
 
             <div className="text-[10px] space-y-1 text-slate-700 bg-white/60 p-2.5 rounded-xl border border-emerald-100/50">
-              <p><strong>🌟 Strength:</strong> {assessment.strength}</p>
-              <p><strong>💡 Tip:</strong> {assessment.suggestion}</p>
+              <p><strong>🌟 Điểm mạnh:</strong> {assessment.strength}</p>
+              <p><strong>💡 Gợi ý cải thiện:</strong> {assessment.suggestion}</p>
             </div>
           </div>
         )}
