@@ -126,22 +126,31 @@ app.post('/api/evaluate-speaking', async (req, res) => {
         accuracy: 90,
         completeness: 95,
         confidence: 90,
-        strength: 'Clear voice and great confidence!',
-        suggestion: 'Try saying the end sound clearly next time.',
-        encouragement: 'Amazing speaking! You earned 2 stars! ⭐⭐',
+        strength: 'Giọng nói rất to, rõ ràng và tự tin!',
+        suggestion: 'Cố gắng phát âm rõ các âm đuôi hơn một chút nhé.',
+        encouragement: 'Tuyệt vời quá! Em đã hoàn thành thử thách và nhận được 2 sao! ⭐⭐',
       });
     }
 
     const systemInstruction = `
-You are evaluating actual speech transcript from a young ESL learner (age 6-11) practicing English at LeeGo English Center.
+You are evaluating an actual speech transcript from a young ESL learner (age 6-11) practicing English at LeeGo English Center.
 Target phrase to pronounce: "${targetPhrase}"
 Actual learner transcript: "${transcript || ''}"
 
 Evaluation Rules (LeeGo Speaking Assessment Protocol):
-- NEVER generate fake fixed default scores if transcript exists, evaluate actual similarity to target phrase.
-- If transcript is empty or silent, return lower score (e.g. 50) and ask student gently to record again.
-- Be encouraging and supportive! Never penalize harshly.
-- Provide constructiveness and a bright LeeGo praise message.
+1. Evaluate exactly four separate criteria (0-100 each):
+   - Pronunciation (Phát âm): Evaluate only pronunciation accuracy. Minor mistakes reduce only this score. Correct pronunciation yields a very high score.
+   - Fluency (Độ trôi chảy): Evaluate speaking speed, continuity, and natural rhythm. Pauses/hesitations reduce this score.
+   - Accuracy (Độ chính xác): Evaluate word and sentence accuracy. Missing words or incorrect substitutions reduce this score.
+   - Completeness (Mức độ hoàn thành): Evaluate if the student finishes the required word/sentence completely. Stopping halfway reduces this score.
+2. The overallScore must be calculated directly from these four criteria (e.g. average or composite). Never generate a fixed or random score.
+3. All written feedback (strength, suggestion, encouragement) must be written ENTIRELY IN VIETNAMESE.
+4. The tone must be warm, child-friendly, and positive. Never give overly negative comments.
+5. The feedback text must always match the overall score:
+   - 95-100: Excellent feedback (Khen ngợi nồng nhiệt, ca ngợi sự xuất sắc).
+   - 85-94: Very positive with exactly one constructive suggestion (Khen ngợi và đưa ra đúng một gợi ý nhỏ).
+   - 70-84: Good effort with several suggestions (Ghi nhận nỗ lực tốt kèm theo một số gợi ý cải thiện).
+   - Below 70: Encouraging feedback with clear, supportive guidance for improvement.
 
 Output JSON format ONLY:
 {
@@ -151,9 +160,9 @@ Output JSON format ONLY:
   "accuracy": number (0-100),
   "completeness": number (0-100),
   "confidence": number (0-100),
-  "strength": "Short sentence about student's strength",
-  "suggestion": "One simple improvement tip",
-  "encouragement": "Warm LeeGo teacher praise message"
+  "strength": "Nhận xét chi tiết về điểm mạnh bằng tiếng Việt (1 câu)",
+  "suggestion": "Một gợi ý cụ thể để cải thiện bằng tiếng Việt (1 câu)",
+  "encouragement": "Lời khen ngợi và động viên của giáo viên bằng tiếng Việt (1 câu)"
 }
 `;
 
@@ -176,7 +185,7 @@ Output JSON format ONLY:
             suggestion: { type: Type.STRING },
             encouragement: { type: Type.STRING },
           },
-          required: ['overallScore', 'strength', 'suggestion', 'encouragement'],
+          required: ['overallScore', 'pronunciation', 'fluency', 'accuracy', 'completeness', 'strength', 'suggestion', 'encouragement'],
         },
       },
     });
@@ -192,9 +201,9 @@ Output JSON format ONLY:
       accuracy: 88,
       completeness: 90,
       confidence: 88,
-      strength: 'Great loud and clear speaking!',
-      suggestion: 'Keep practicing every day with LeeGo!',
-      encouragement: 'Fantastic job! You did it! ⭐',
+      strength: 'Giọng đọc to và rõ ràng, phát âm tương đối chính xác!',
+      suggestion: 'Em chú ý phát âm nối âm hoặc âm đuôi mượt mà hơn nhé.',
+      encouragement: 'Làm tốt lắm! Chúc mừng em đã hoàn thành xuất sắc nhiệm vụ! ⭐',
     });
   }
 });
