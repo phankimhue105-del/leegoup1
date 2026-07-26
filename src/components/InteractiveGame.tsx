@@ -172,9 +172,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
       const cards: any[] = [];
       activeWords.forEach((word, idx) => {
-        const emoji = EMOJI_MAP[word.toLowerCase()] || '🔤';
         cards.push({ id: idx * 2, value: word, type: 'word', flipped: false, matched: false });
-        cards.push({ id: idx * 2 + 1, value: emoji, type: 'emoji', flipped: false, matched: false });
+        cards.push({ id: idx * 2 + 1, value: word, type: 'illustration', flipped: false, matched: false });
       });
 
       setMemoryCards(cards.sort(() => Math.random() - 0.5));
@@ -234,11 +233,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const firstCard = memoryCards.find(c => c.id === newSelected[0])!;
       const secondCard = card;
 
-      // Check match: either word-emoji match or vice versa
-      const isWordEmojiMatch =
-        (firstCard.type === 'word' && secondCard.type === 'emoji' && EMOJI_MAP[firstCard.value.toLowerCase()] === secondCard.value) ||
-        (firstCard.type === 'emoji' && secondCard.type === 'word' && EMOJI_MAP[secondCard.value.toLowerCase()] === firstCard.value) ||
-        (firstCard.value === secondCard.value); // Fallback
+      // Check match: cards match if they have the same word value but different types
+      const isWordEmojiMatch = firstCard.value === secondCard.value && firstCard.type !== secondCard.type;
 
       if (isWordEmojiMatch) {
         setTimeout(() => {
@@ -455,28 +451,51 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-2">
               Match 3 Pairs!
             </span>
-            <div className="grid grid-cols-3 gap-3 max-w-sm w-full justify-center">
+            <div className="grid grid-cols-3 gap-4 max-w-lg w-full justify-center px-2">
               {memoryCards.map((card) => {
                 const isFlipped = card.flipped || card.matched;
+                const iconName = card.value.toLowerCase().replace(/\s+/g, '-');
                 return (
                   <button
                     key={card.id}
                     disabled={card.matched || isAnswerCorrect === true}
                     onClick={() => handleCardClick(card.id, currentQuestion)}
-                    className={`w-24 h-24 rounded-2xl border-3 flex items-center justify-center font-black text-sm transition-all duration-300 transform active:scale-90 ${
+                    className={`w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl border-3 flex flex-col items-center justify-center font-black transition-all duration-300 transform active:scale-90 overflow-hidden relative ${
                       card.matched
-                        ? 'bg-emerald-100 border-emerald-400 text-emerald-800 scale-95 shadow-inner'
-                        : isFlipped
-                        ? 'bg-amber-100 border-amber-400 text-slate-900 shadow-md font-bold text-lg'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-inner ring-4 ring-emerald-100'
+                        : card.flipped
+                        ? 'bg-amber-50 border-amber-400 text-slate-900 shadow-md'
                         : 'bg-gradient-to-tr from-red-500 to-rose-600 border-red-600 text-white text-3xl shadow-md hover:scale-[1.03]'
                     }`}
                   >
-                    {card.matched ? (
-                      <span className="text-2xl">✅</span>
-                    ) : isFlipped ? (
-                      <span className="capitalize">{card.value}</span>
+                    {isFlipped ? (
+                      card.type === 'word' ? (
+                        <span className="capitalize text-xs sm:text-sm md:text-base font-extrabold px-1 truncate max-w-full text-center">
+                          {card.value}
+                        </span>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center p-1">
+                          <img
+                            src={`https://img.icons8.com/color/256/${encodeURIComponent(iconName)}.png`}
+                            alt={card.value}
+                            className="w-[75%] h-[75%] object-contain animate-fadeIn"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent) {
+                                const fallback = parent.querySelector('.fallback-emoji');
+                                if (fallback) fallback.setAttribute('style', 'display: block');
+                              }
+                            }}
+                          />
+                          <span className="fallback-emoji text-3xl sm:text-4xl md:text-5xl font-normal hidden">
+                            {EMOJI_MAP[card.value.toLowerCase()] || '🔤'}
+                          </span>
+                        </div>
+                      )
                     ) : (
-                      '❓'
+                      <span className="text-2xl sm:text-3xl md:text-4xl select-none">❓</span>
                     )}
                   </button>
                 );
