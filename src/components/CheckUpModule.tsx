@@ -10,6 +10,8 @@ interface Props {
   unitB: Unit;
   onCompleted: () => void;
   onCorrectAnswer: () => void;
+  activeStage: string;
+  onStageChange: (stage: any) => void;
 }
 
 const EMOJI_MAP: Record<string, string> = {
@@ -36,8 +38,26 @@ export const CheckUpModule: React.FC<Props> = ({
   unitB,
   onCompleted,
   onCorrectAnswer,
+  activeStage,
+  onStageChange,
 }) => {
   const [currentStage, setCurrentStage] = useState<CheckUpStage>('vocabReview');
+
+  // Synchronize internal stage with app-level activeStage
+  useEffect(() => {
+    if (activeStage === 'vocabulary') {
+      setCurrentStage('vocabReview');
+    } else if (activeStage === 'modelPattern') {
+      setCurrentStage('patternReview');
+    } else if (activeStage === 'practice') {
+      // If we are in practice stage, support sub-stages (listening -> mixed puzzle)
+      setCurrentStage((prev) => (prev === 'mixedPractice' ? 'mixedPractice' : 'listeningTest'));
+    } else if (activeStage === 'speaking') {
+      setCurrentStage('speakingTest');
+    } else if (activeStage === 'completed') {
+      setCurrentStage('completed');
+    }
+  }, [activeStage]);
 
   // Review lists (combining both previous units)
   const vocabList = [...unitA.lessons, ...unitB.lessons]
@@ -177,7 +197,7 @@ export const CheckUpModule: React.FC<Props> = ({
       if (Object.keys(updated).length === matchingItems.words.length) {
         soundFX.playCorrect();
         setTimeout(() => {
-          setCurrentStage('patternReview');
+          onStageChange('modelPattern');
         }, 1200);
       }
     } else {
@@ -239,7 +259,7 @@ export const CheckUpModule: React.FC<Props> = ({
     if (listenIndex < 2) {
       setListenIndex(listenIndex + 1);
     } else {
-      setCurrentStage('speakingTest');
+      setCurrentStage('mixedPractice');
     }
   };
 
@@ -345,7 +365,7 @@ export const CheckUpModule: React.FC<Props> = ({
     if (speakingIndex < 1) {
       setSpeakingIndex(speakingIndex + 1);
     } else {
-      setCurrentStage('mixedPractice');
+      onStageChange('completed');
     }
   };
 
@@ -505,7 +525,7 @@ export const CheckUpModule: React.FC<Props> = ({
               <button
                 onClick={() => {
                   soundFX.playClick();
-                  setCurrentStage('listeningTest');
+                  onStageChange('practice');
                 }}
                 className="bg-red-600 hover:bg-red-700 text-white font-black px-6 py-3 rounded-2xl text-xs flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all"
               >
@@ -720,7 +740,7 @@ export const CheckUpModule: React.FC<Props> = ({
                     onClick={handleNextSpeaking}
                     className="bg-red-600 hover:bg-red-700 text-white font-black px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md"
                   >
-                    <span>{speakingIndex === 1 ? 'Go to Mixed Practice' : 'Next Speaking Task'}</span>
+                    <span>{speakingIndex === 1 ? 'Finish Check-Up' : 'Next Speaking Task'}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -770,11 +790,11 @@ export const CheckUpModule: React.FC<Props> = ({
                 <button
                   onClick={() => {
                     soundFX.playFanfare();
-                    setCurrentStage('completed');
+                    onStageChange('speaking');
                   }}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-md"
                 >
-                  <span>Finish Check-Up</span>
+                  <span>Go to Speaking Activity</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
