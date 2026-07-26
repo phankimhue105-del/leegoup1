@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, BookOpen, Star, Award, CheckCircle2, ChevronRight, Lock, Sparkles } from 'lucide-react';
+import { X, BookOpen, Star, Award, CheckCircle2, ChevronRight, Lock, Sparkles, Play } from 'lucide-react';
 import { Unit, Lesson, StudentProgress } from '../types';
 import { CURRICULUM_UNITS } from '../data/curriculum';
 
@@ -10,6 +10,26 @@ interface Props {
   currentLessonId: string;
   progress: StudentProgress;
   onSelectLesson: (unit: Unit, lesson: Lesson) => void;
+  onSelectCheckUp: (number: number, unitA: Unit, unitB: Unit) => void;
+  currentCheckUpNum: number | null;
+}
+
+// Unit locking logic based on completed checkup IDs
+function isUnitLocked(unitNumber: number, completedUnitIds: string[]): boolean {
+  if (unitNumber <= 2) return false;
+  if (unitNumber <= 4) return !completedUnitIds.includes('checkup-1');
+  if (unitNumber <= 6) return !completedUnitIds.includes('checkup-2');
+  if (unitNumber <= 8) return !completedUnitIds.includes('checkup-3');
+  return false;
+}
+
+// Returns the checkup info corresponding to the even unit bottom position
+function getCheckUpForUnit(unitNumber: number) {
+  if (unitNumber === 2) return { number: 1, data: CURRICULUM_UNITS[0].checkUp, prevUnit: CURRICULUM_UNITS[0], currentUnit: CURRICULUM_UNITS[1] };
+  if (unitNumber === 4) return { number: 2, data: CURRICULUM_UNITS[2].checkUp, prevUnit: CURRICULUM_UNITS[2], currentUnit: CURRICULUM_UNITS[3] };
+  if (unitNumber === 6) return { number: 3, data: CURRICULUM_UNITS[4].checkUp, prevUnit: CURRICULUM_UNITS[4], currentUnit: CURRICULUM_UNITS[5] };
+  if (unitNumber === 8) return { number: 4, data: CURRICULUM_UNITS[6].checkUp, prevUnit: CURRICULUM_UNITS[6], currentUnit: CURRICULUM_UNITS[7] };
+  return null;
 }
 
 export const CurriculumDrawer: React.FC<Props> = ({
@@ -19,6 +39,8 @@ export const CurriculumDrawer: React.FC<Props> = ({
   currentLessonId,
   progress,
   onSelectLesson,
+  onSelectCheckUp,
+  currentCheckUpNum,
 }) => {
   if (!isOpen) return null;
 
@@ -45,18 +67,19 @@ export const CurriculumDrawer: React.FC<Props> = ({
         {/* Units & Lessons List */}
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
           {CURRICULUM_UNITS.map((unit) => {
-            const isCurrentUnit = unit.id === currentUnitId;
+            const isCurrentUnit = unit.id === currentUnitId && currentCheckUpNum === null;
+            const isLocked = isUnitLocked(unit.number, progress.completedUnitIds);
 
             return (
-              <div key={unit.id} className="border-2 border-red-100 rounded-2xl overflow-hidden bg-slate-50/50">
+              <div key={unit.id} className={`border-2 rounded-2xl overflow-hidden bg-slate-50/50 transition-all ${isLocked ? 'border-slate-100 opacity-70' : 'border-red-100'}`}>
                 {/* Unit Banner */}
-                <div className={`p-4 ${isCurrentUnit ? 'bg-red-500 text-white' : 'bg-red-50 text-slate-800'} flex items-center justify-between`}>
+                <div className={`p-4 ${isLocked ? 'bg-slate-200 text-slate-500' : isCurrentUnit ? 'bg-red-500 text-white' : 'bg-red-50 text-slate-800'} flex items-center justify-between`}>
                   <div>
-                    <span className={`text-[10px] font-extrabold uppercase tracking-wider block ${isCurrentUnit ? 'text-amber-300' : 'text-red-600'}`}>
-                      Unit {unit.number}
+                    <span className={`text-[10px] font-extrabold uppercase tracking-wider block ${isLocked ? 'text-slate-400' : isCurrentUnit ? 'text-amber-300' : 'text-red-600'}`}>
+                      Unit {unit.number} {isLocked && '🔒 Locked'}
                     </span>
                     <h3 className="font-black text-base">{unit.title}</h3>
-                    <p className={`text-xs ${isCurrentUnit ? 'text-red-100' : 'text-slate-500'} font-medium line-clamp-1`}>
+                    <p className={`text-xs ${isLocked ? 'text-slate-400' : isCurrentUnit ? 'text-red-100' : 'text-slate-500'} font-medium line-clamp-1`}>
                       {unit.theme}
                     </p>
                   </div>
@@ -70,27 +93,36 @@ export const CurriculumDrawer: React.FC<Props> = ({
                 {/* Lessons in Unit */}
                 <div className="p-2 space-y-1 bg-white">
                   {unit.lessons.map((lesson) => {
-                    const isSelected = lesson.id === currentLessonId;
+                    const isSelected = lesson.id === currentLessonId && currentCheckUpNum === null;
                     const isCompleted = progress.completedLessonIds.includes(lesson.id);
 
                     return (
                       <button
                         key={lesson.id}
+                        disabled={isLocked}
                         onClick={() => {
                           onSelectLesson(unit, lesson);
                           onClose();
                         }}
                         className={`w-full text-left p-3 rounded-xl flex items-center justify-between transition-all ${
-                          isSelected
+                          isLocked
+                            ? 'opacity-50 cursor-not-allowed text-slate-400 bg-slate-50'
+                            : isSelected
                             ? 'bg-red-50 border-2 border-red-500 text-red-900 font-bold shadow-xs'
                             : 'hover:bg-slate-50 text-slate-700 font-semibold'
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black ${
-                            isCompleted ? 'bg-emerald-500 text-white' : isSelected ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-700'
+                            isLocked ? 'bg-slate-100 text-slate-400' : isCompleted ? 'bg-emerald-500 text-white' : isSelected ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-700'
                           }`}>
-                            {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : lesson.number}
+                            {isLocked ? (
+                              <Lock className="w-3.5 h-3.5" />
+                            ) : isCompleted ? (
+                              <CheckCircle2 className="w-4 h-4" />
+                            ) : (
+                              lesson.number
+                            )}
                           </div>
                           <div>
                             <span className="text-xs block line-clamp-1">Lesson {lesson.number}: {lesson.title}</span>
@@ -104,19 +136,71 @@ export const CurriculumDrawer: React.FC<Props> = ({
                     );
                   })}
 
-                  {/* Check Up Section if available */}
-                  {unit.checkUp && (
-                    <div className="mt-2 p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900">
-                      <div className="flex items-center gap-1.5 text-xs font-black mb-1">
-                        <Sparkles className="w-4 h-4 text-amber-500" />
-                        <span>{unit.checkUp.title}</span>
+                  {/* Check Up Section placed at bottom of even units */}
+                  {(() => {
+                    const checkUp = getCheckUpForUnit(unit.number);
+                    if (!checkUp || !checkUp.data) return null;
+
+                    const isUnitACompleted = checkUp.prevUnit.lessons.every(l => progress.completedLessonIds.includes(l.id));
+                    const isUnitBCompleted = checkUp.currentUnit.lessons.every(l => progress.completedLessonIds.includes(l.id));
+                    const isCheckUpUnlocked = isUnitACompleted && isUnitBCompleted;
+                    const isCheckUpFinished = progress.completedUnitIds.includes(`checkup-${checkUp.number}`);
+                    const isCheckUpActive = currentCheckUpNum === checkUp.number;
+
+                    return (
+                      <div className={`mt-3 p-3 rounded-xl border transition-all ${
+                        isCheckUpActive
+                          ? 'bg-amber-100 border-amber-400 text-amber-900 font-bold'
+                          : isCheckUpFinished
+                          ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                          : isCheckUpUnlocked
+                          ? 'bg-amber-50 border-amber-200 text-amber-900'
+                          : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
+                      }`}>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="flex items-center gap-1.5 text-xs font-black">
+                            <Sparkles className={`w-4 h-4 ${isCheckUpUnlocked ? 'text-amber-500 animate-pulse' : 'text-slate-400'}`} />
+                            <span>{checkUp.data.title}</span>
+                          </div>
+                          {isCheckUpFinished && (
+                            <span className="bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              PASSED
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[10px] font-medium leading-relaxed mb-2">{checkUp.data.description}</p>
+                        
+                        <button
+                          disabled={!isCheckUpUnlocked}
+                          onClick={() => {
+                            onSelectCheckUp(checkUp.number, checkUp.prevUnit, checkUp.currentUnit);
+                            onClose();
+                          }}
+                          className={`w-full py-2 px-3 rounded-lg text-xs font-black flex items-center justify-center gap-1.5 transition-all ${
+                            isCheckUpActive
+                              ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-md'
+                              : isCheckUpFinished
+                              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                              : isCheckUpUnlocked
+                              ? 'bg-amber-400 hover:bg-amber-500 text-slate-900 shadow-md animate-pulse'
+                              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                          }`}
+                        >
+                          {!isCheckUpUnlocked ? (
+                            <>
+                              <Lock className="w-3.5 h-3.5" />
+                              <span>Complete both units to unlock</span>
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-3.5 h-3.5 fill-current" />
+                              <span>{isCheckUpFinished ? 'Play Review Again' : 'Play Check-Up Now'}</span>
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <p className="text-[10px] text-amber-800 font-medium">{unit.checkUp.description}</p>
-                      <p className="text-[10px] text-amber-700 font-bold mt-1">
-                        🎨 Project: {unit.checkUp.project}
-                      </p>
-                    </div>
-                  )}
+                    );
+                  })()}
                 </div>
               </div>
             );
