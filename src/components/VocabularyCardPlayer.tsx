@@ -278,8 +278,9 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted 
   const pronunciation = IPA_LOOKUP[wordLower] || `/${currentItem.word}/`;
   const emoji = EMOJI_LOOKUP[wordLower] || '🔤';
 
-  // Format illustration URL using loremflickr for cute, kid-friendly cartoon illustrations
-  const imageUrl = `https://loremflickr.com/320/320/${encodeURIComponent(wordLower)},cartoon/all`;
+  // Format illustration URL using Icons8 color icons for clean, child-friendly vector illustrations
+  const iconName = wordLower.replace(/\s+/g, '-');
+  const imageUrl = `https://img.icons8.com/color/256/${encodeURIComponent(iconName)}.png`;
 
   React.useEffect(() => {
     // Speak word automatically when card changes
