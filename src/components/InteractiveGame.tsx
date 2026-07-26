@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, CheckCircle2, XCircle, Sparkles, Star, ArrowRight, RefreshCw, Box, Trophy, Grid } from 'lucide-react';
-import { Lesson, VocabularyItem } from '../types';
-import { speakText } from '../utils/ttsPlayer';
+import { Sparkles, Star, ArrowRight, RotateCcw, CheckCircle2, XCircle, Award } from 'lucide-react';
+import { Lesson } from '../types';
+import { EMOJI_MAP } from '../data/curriculum';
 import { soundFX } from '../utils/soundEffects';
 
 interface Props {
@@ -9,23 +9,6 @@ interface Props {
   onCorrectAnswer: () => void;
   onGameCompleted: () => void;
 }
-
-// Emoji lookup dictionary for vocabulary items
-const EMOJI_MAP: Record<string, string> = {
-  pencil: '✏️', eraser: '🧽', ruler: '📏', 'pencil case': '👝', backpack: '🎒', notebook: '📓', desk: '🏫', chair: '🪑', book: '📖',
-  circle: '🔴', square: '🟩', triangle: '🔺', rectangle: '▮', paint: '🎨', paper: '📄', chalk: '🖍️', yarn: '🧶', glue: '🧴', tape: '🩹',
-  red: '🔴', yellow: '🟡', blue: '🔵', white: '⚪', black: '⚫', green: '🟢', purple: '🟣', orange: '🟠', pink: '🌸', gray: '🔘', brown: '🟤',
-  one: '1️⃣', two: '2️⃣', three: '3️⃣', four: '4️⃣', five: '5️⃣', six: '6️⃣', seven: '7️⃣', eight: '8️⃣', nine: '9️⃣', ten: '🔟', eleven: '⑪', twelve: '⑫',
-  doll: '🧸', dolls: '🧸🧸', ball: '⚽', balls: '⚽⚾', car: '🚗', cars: '🚗🚗', kite: '🪁', kites: '🪁🪁', game: '🎮', marble: '🔮', puzzle: '🧩', card: '🃏',
-  mother: '👩', father: '👨', brother: '👦', sister: '👧', grandmother: '👵', grandfather: '👴', juice: '🧃', chicken: '🍗', fish: '🐟', 'ice cream': '🍦',
-  pizza: '🍕', rice: '🍚', cookie: '🍪', bread: '🍞', flower: '🌸', tree: '🌳', rock: '🪨', river: '🏞️', hill: '⛰️', lake: '🌅',
-  'play soccer': '⚽🏃', 'jump rope': '🏃‍♀️', 'fly a kite': '🪁🏃', 'ride a bike': '🚴', turtle: '🐢', frog: '🐸', spider: '🕷️', ant: '🐜',
-  elephant: '🐘', monkey: '🐒', tiger: '🐅', bear: '🐻', kangaroo: '🦘', penguin: '🐧', snake: '🐍', giraffe: '🦒', zebra: '🦓',
-  run: '🏃', hop: '🐇', swim: '🏊', walk: '🚶', arm: '💪', hand: '✋', finger: '☝️', leg: '🦵', foot: '🦶', toe: '🦶',
-  eye: '👁️', nose: '👃', mouth: '👄', ear: '👂', 'wash my face': '🧼', 'wash my hands': '👐🧼', 'brush my hair': '🪮', 'brush my teeth': '🪥',
-  old: '🧓', new: '✨', big: '🐘', small: '🐭', long: '📏', short: '📐', fast: '⚡', slow: '🐢', noisy: '📢', quiet: '🤫',
-  bus: '🚌', truck: '🚚', train: '🚆', boat: '⛵'
-};
 
 const ODD_WORDS = ['dinosaur', 'spaceship', 'hamburger', 'guitar', 'alien', 'octopus', 'wizard', 'volcano'];
 
@@ -38,7 +21,17 @@ interface Question {
   choices: string[];
   sentencePattern?: string;
   unscrambledLetters?: string[];
-  oddChoices?: string[]; // For odd one out
+  oddChoices?: string[];
+}
+
+interface UserAnswer {
+  questionNumber: number;
+  questionType: string;
+  targetWord: string;
+  studentAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  explanation: string;
 }
 
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
@@ -56,13 +49,18 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const [unscrambleInput, setUnscrambleInput] = useState<string[]>([]);
 
   // Memory Game state
-  const [memoryCards, setMemoryCards] = useState<{ id: number; value: string; type: 'word' | 'emoji'; flipped: boolean; matched: boolean }[]>([]);
+  const [memoryCards, setMemoryCards] = useState<{ id: number; value: string; type: 'word' | 'illustration'; flipped: boolean; matched: boolean }[]>([]);
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
 
   // Matching Game state
   const [leftSelected, setLeftSelected] = useState<string | null>(null);
   const [rightSelected, setRightSelected] = useState<string | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<Record<string, string>>({});
+
+  // Summary and single attempt tracking
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  const [showSummary, setShowSummary] = useState(false);
+  const [activeTimer, setActiveTimer] = useState<any | null>(null);
 
   const vocabList = lesson.vocabulary.length > 0 ? lesson.vocabulary : [
     { id: 'v-fb-1', word: 'pencil', meaningVi: 'bút chì', exampleSentence: 'It is a pencil.' },
@@ -71,15 +69,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     { id: 'v-fb-4', word: 'ruler', meaningVi: 'thước kẻ', exampleSentence: 'It is a ruler.' }
   ];
 
-  useEffect(() => {
-    // 1. Choose 2 random games
-    const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
-    const shuffledGames = [...games].sort(() => Math.random() - 0.5);
-    setGame1(shuffledGames[0]);
-    setGame2(shuffledGames[1]);
-    setSelectedGame(shuffledGames[0]);
-
-    // 2. Generate 10 questions using ONLY vocab and patterns of current lesson
+  // Helper to generate the 10 questions
+  const generateQuestions = () => {
     const generatedQs: Question[] = [];
     for (let i = 0; i < 10; i++) {
       const vocab = vocabList[i % vocabList.length];
@@ -103,7 +94,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       let pattern = 'It is a/an ______.';
       if (lesson.sentencePatterns && lesson.sentencePatterns.length > 0) {
         const selectedPattern = lesson.sentencePatterns[i % lesson.sentencePatterns.length].pattern;
-        // Replace vocabulary word with blanks
         const currentVocabWords = vocabList.map((v) => v.word.toLowerCase());
         let replaced = selectedPattern;
         for (const w of currentVocabWords) {
@@ -119,7 +109,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         pattern = replaced;
       }
 
-      // Odd choices (3 from current vocab, 1 completely odd)
+      // Odd choices
       const oddDistractor = ODD_WORDS[Math.floor(Math.random() * ODD_WORDS.length)];
       const oddList = [vocab.word];
       vocabList.filter((v) => v.word !== vocab.word).slice(0, 2).forEach((v) => oddList.push(v.word));
@@ -138,10 +128,20 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         oddChoices: oddChoices
       });
     }
-
     setQuestions(generatedQs);
+  };
+
+  useEffect(() => {
+    const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
+    const shuffledGames = [...games].sort(() => Math.random() - 0.5);
+    setGame1(shuffledGames[0]);
+    setGame2(shuffledGames[1]);
+    setSelectedGame(shuffledGames[0]);
+
+    generateQuestions();
     setCurrentQIndex(0);
-    resetGameState(shuffledGames[0], generatedQs[0]);
+    setUserAnswers([]);
+    setShowSummary(false);
   }, [lesson]);
 
   // Track stage (Question 1-5 = Game 1, Question 6-10 = Game 2)
@@ -161,7 +161,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setMatchedPairs({});
 
     if (gameType === 'memoryGame') {
-      // Generate memory cards for 3 words (target and 2 distractors)
       const activeWords = [q.targetWord];
       const otherWords = vocabList.filter(v => v.word !== q.targetWord).map(v => v.word);
       if (otherWords.length > 0) activeWords.push(otherWords[0]);
@@ -181,44 +180,92 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
   };
 
+  // Record student response and compile brief Vietnamese explanations
+  const recordAnswer = (studentAns: string, isCorrect: boolean, customCorrectAns?: string) => {
+    const currentQ = questions[currentQIndex];
+    let correctAnswer = customCorrectAns || currentQ.targetWord;
+    let explanation = `Đáp án đúng là "${correctAnswer}" vì từ này có nghĩa là "${currentQ.meaningVi}".`;
+
+    if (selectedGame === 'chooseCorrect' && currentQ.sentencePattern) {
+      correctAnswer = currentQ.sentencePattern.replace('______', currentQ.targetWord);
+      explanation = `Mẫu câu đúng là "${correctAnswer}" (Nghĩa: "${currentQ.meaningVi}").`;
+    }
+
+    const newAnswer: UserAnswer = {
+      questionNumber: currentQIndex + 1,
+      questionType: selectedGame,
+      targetWord: currentQ.targetWord,
+      studentAnswer: studentAns,
+      correctAnswer: correctAnswer,
+      isCorrect,
+      explanation
+    };
+
+    setUserAnswers(prev => {
+      const filtered = prev.filter(ans => ans.questionNumber !== newAnswer.questionNumber);
+      return [...filtered, newAnswer];
+    });
+  };
+
   const handleChooseOption = (option: string, correctValue: string) => {
+    if (isAnswerCorrect !== null) return;
     setSelectedOption(option);
-    if (option.toLowerCase() === correctValue.toLowerCase()) {
+
+    const isCorrect = option.toLowerCase() === correctValue.toLowerCase();
+    recordAnswer(option, isCorrect);
+
+    if (isCorrect) {
       setIsAnswerCorrect(true);
       soundFX.playCorrect();
       onCorrectAnswer();
+      const timer = setTimeout(() => {
+        handleNextQuestion();
+      }, 1500);
+      setActiveTimer(timer);
     } else {
       setIsAnswerCorrect(false);
       soundFX.playClick();
+      const timer = setTimeout(() => {
+        handleNextQuestion();
+      }, 4000);
+      setActiveTimer(timer);
     }
   };
 
-  // Word Puzzle (Unscramble) handlers
+  // Word Puzzle letter builder
   const handleLetterClick = (letter: string, index: number, targetWord: string) => {
+    if (isAnswerCorrect !== null) return;
     soundFX.playClick();
     const newInput = [...unscrambleInput, letter];
     setUnscrambleInput(newInput);
 
     if (newInput.length === targetWord.length) {
       const spelled = newInput.join('');
-      if (spelled.toLowerCase() === targetWord.toLowerCase()) {
+      const isCorrect = spelled.toLowerCase() === targetWord.toLowerCase();
+      recordAnswer(spelled, isCorrect);
+
+      if (isCorrect) {
         setIsAnswerCorrect(true);
         soundFX.playCorrect();
         onCorrectAnswer();
+        const timer = setTimeout(() => {
+          handleNextQuestion();
+        }, 1500);
+        setActiveTimer(timer);
       } else {
         setIsAnswerCorrect(false);
-        // auto reset after 1s on mistake
-        setTimeout(() => {
-          setUnscrambleInput([]);
-          setIsAnswerCorrect(null);
-        }, 1000);
+        soundFX.playClick();
+        const timer = setTimeout(() => {
+          handleNextQuestion();
+        }, 4000);
+        setActiveTimer(timer);
       }
     }
   };
 
-  // Memory Game match handler
+  // Memory Game pairs matching
   const handleCardClick = (cardId: number, q: Question) => {
-    if (selectedCards.length >= 2) return;
+    if (selectedCards.length >= 2 || isAnswerCorrect !== null) return;
     const card = memoryCards.find(c => c.id === cardId);
     if (!card || card.flipped || card.matched) return;
 
@@ -233,7 +280,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const firstCard = memoryCards.find(c => c.id === newSelected[0])!;
       const secondCard = card;
 
-      // Check match: cards match if they have the same word value but different types
       const isWordEmojiMatch = firstCard.value === secondCard.value && firstCard.type !== secondCard.type;
 
       if (isWordEmojiMatch) {
@@ -244,26 +290,38 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           setMemoryCards(matchedCards);
           setSelectedCards([]);
 
-          // Check win
           if (matchedCards.every(c => c.matched)) {
             setIsAnswerCorrect(true);
             soundFX.playCorrect();
             onCorrectAnswer();
+            recordAnswer('Match 3 Pairs', true);
+            const timer = setTimeout(() => {
+              handleNextQuestion();
+            }, 1500);
+            setActiveTimer(timer);
           }
         }, 600);
       } else {
         setTimeout(() => {
-          setMemoryCards(updatedCards.map(c =>
-            c.id === firstCard.id || c.id === secondCard.id ? { ...c, flipped: false } : c
-          ));
+          soundFX.playClick();
+          setIsAnswerCorrect(false);
+          // Reveal all cards instantly to show correct layout
+          setMemoryCards(updatedCards.map(c => ({ ...c, flipped: true })));
           setSelectedCards([]);
-        }, 1000);
+          recordAnswer('Mismatched Cards', false);
+          
+          const timer = setTimeout(() => {
+            handleNextQuestion();
+          }, 4000);
+          setActiveTimer(timer);
+        }, 600);
       }
     }
   };
 
-  // Matching Game handlers
+  // Matching Game clicks check
   const handleMatchingLeft = (item: string) => {
+    if (isAnswerCorrect !== null) return;
     soundFX.playClick();
     setLeftSelected(item);
     if (rightSelected) {
@@ -272,6 +330,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   };
 
   const handleMatchingRight = (item: string) => {
+    if (isAnswerCorrect !== null) return;
     soundFX.playClick();
     setRightSelected(item);
     if (leftSelected) {
@@ -288,31 +347,182 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       setRightSelected(null);
       soundFX.playStar();
 
-      // Check win (all 3 pairs matched)
-      if (Object.keys(newPairs).length === 3) {
+      const startIndex = Math.min(currentQIndex, 7);
+      const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+
+      if (Object.keys(newPairs).length === matchingWords.length) {
         setIsAnswerCorrect(true);
         soundFX.playCorrect();
         onCorrectAnswer();
+        recordAnswer('All Matched', true);
+        const timer = setTimeout(() => {
+          handleNextQuestion();
+        }, 1500);
+        setActiveTimer(timer);
       }
     } else {
       soundFX.playClick();
       setLeftSelected(null);
       setRightSelected(null);
+
+      // Incorrect connection! Immediately reveal correct pairings & mark wrong
+      setIsAnswerCorrect(false);
+      
+      const startIndex = Math.min(currentQIndex, 7);
+      const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+      const correctPairs: Record<string, string> = {};
+      matchingWords.forEach(w => {
+        correctPairs[w] = EMOJI_MAP[w.toLowerCase()] || '🔤';
+      });
+      setMatchedPairs(correctPairs);
+
+      recordAnswer('Incorrect matching connection', false);
+
+      const timer = setTimeout(() => {
+        handleNextQuestion();
+      }, 4000);
+      setActiveTimer(timer);
     }
   };
 
   const handleNextQuestion = () => {
+    if (activeTimer) {
+      clearTimeout(activeTimer);
+      setActiveTimer(null);
+    }
+
+    setSelectedOption(null);
+    setIsAnswerCorrect(null);
+    setUnscrambleInput([]);
+    setLeftSelected(null);
+    setRightSelected(null);
+    setMatchedPairs({});
+
     if (currentQIndex < 9) {
       setCurrentQIndex(currentQIndex + 1);
     } else {
       soundFX.playFanfare();
-      onGameCompleted();
+      setShowSummary(true);
     }
+  };
+
+  // Actions for Summary Screen
+  const handleTryAgain = () => {
+    soundFX.playClick();
+    setUserAnswers([]);
+    setShowSummary(false);
+    setCurrentQIndex(0);
+    
+    // Choose 2 random games
+    const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
+    const shuffledGames = [...games].sort(() => Math.random() - 0.5);
+    setGame1(shuffledGames[0]);
+    setGame2(shuffledGames[1]);
+    setSelectedGame(shuffledGames[0]);
+
+    generateQuestions();
+  };
+
+  const handleContinueToSpeaking = () => {
+    soundFX.playClick();
+    onGameCompleted();
   };
 
   if (questions.length === 0) return null;
   const currentQuestion = questions[currentQIndex];
 
+  // RENDER SUMMARY PAGE
+  if (showSummary) {
+    const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
+    const scorePercentage = Math.round((correctCount / 10) * 100);
+    const incorrectAnswers = userAnswers.filter(ans => !ans.isCorrect);
+
+    return (
+      <div id="interactive-game-container" className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md max-w-2xl mx-auto my-2 text-center flex flex-col justify-between min-h-[460px] animate-fadeIn">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 border-b border-red-50 pb-3">
+          <div className="flex items-center gap-2">
+            <Award className="w-6 h-6 text-amber-500 animate-bounce" />
+            <span className="font-black text-slate-800 text-sm md:text-base capitalize">
+              Practice Completed! (Hoàn thành luyện tập)
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-black bg-red-50 text-red-600 px-3.5 py-1.5 rounded-full border border-red-200 shadow-2xs">
+            <span>Result Summary</span>
+          </div>
+        </div>
+
+        {/* Results Info Cards */}
+        <div className="flex-1 flex flex-col items-center py-2 space-y-4">
+          <div className="flex items-center gap-4 bg-gradient-to-r from-red-500 to-rose-600 text-white px-8 py-4 rounded-3xl shadow-md w-full max-w-md justify-around">
+            <div className="text-center">
+              <span className="text-[10px] font-black text-amber-300 block uppercase">SCORE</span>
+              <span className="text-3xl font-black">{correctCount} / 10</span>
+            </div>
+            <div className="w-px bg-white/20 h-10"></div>
+            <div className="text-center">
+              <span className="text-[10px] font-black text-amber-300 block uppercase">PERCENTAGE</span>
+              <span className="text-3xl font-black">{scorePercentage}%</span>
+            </div>
+            <div className="w-px bg-white/20 h-10"></div>
+            <div className="text-center">
+              <span className="text-[10px] font-black text-amber-300 block uppercase">STARS</span>
+              <span className="text-3xl font-black flex items-center gap-1">
+                <Star className="w-6 h-6 fill-amber-300 text-amber-300" />
+                +{correctCount}
+              </span>
+            </div>
+          </div>
+
+          {/* Details list of incorrect answers */}
+          <div className="w-full max-w-md bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left">
+            <h4 className="text-xs font-black text-slate-700 uppercase mb-3 flex items-center gap-1">
+              <span>Review Mistakes (Xem lại lỗi sai)</span>
+            </h4>
+            
+            <div className="space-y-2.5 max-h-[180px] overflow-y-auto pr-1">
+              {incorrectAnswers.length > 0 ? (
+                incorrectAnswers.map((ans, idx) => (
+                  <div key={idx} className="bg-white border border-rose-100 p-2.5 rounded-xl text-xs space-y-1">
+                    <span className="font-extrabold text-red-600 block">Question {ans.questionNumber}: {ans.questionType.replace(/([A-Z])/g, ' $1')}</span>
+                    <p className="text-slate-600 font-semibold">Your Answer: <span className="text-rose-600 line-through capitalize font-bold">{ans.studentAnswer}</span></p>
+                    <p className="text-slate-700 font-extrabold">Correct Answer: <span className="text-emerald-600 capitalize">{ans.correctAnswer}</span></p>
+                    <p className="text-[10px] font-medium italic text-slate-400 mt-1">💡 {ans.explanation}</p>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-emerald-600 font-black flex flex-col items-center gap-1.5">
+                  <Star className="w-8 h-8 fill-amber-300 text-amber-400 animate-spin" />
+                  <span>Excellent! Perfect 10/10 Score! 🌟</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-4 border-t border-red-50 pt-4 mt-2 justify-center">
+          <button
+            onClick={handleTryAgain}
+            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-black px-6 py-3 rounded-2xl text-xs flex items-center gap-2 transition-all active:scale-95 border border-slate-200"
+          >
+            <RotateCcw className="w-4 h-4" />
+            <span>Try Again (Luyện tập lại)</span>
+          </button>
+          
+          <button
+            onClick={handleContinueToSpeaking}
+            className="bg-red-600 hover:bg-red-700 text-white font-black px-6 py-3 rounded-2xl text-xs flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 transition-all"
+          >
+            <span>Continue to Speaking (Luyện nói)</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // RENDER NORMAL GAME SCREEN
   return (
     <div id="interactive-game-container" className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md max-w-2xl mx-auto my-2 text-center flex flex-col justify-between min-h-[460px]">
       {/* Game Header */}
@@ -348,7 +558,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 return (
                   <button
                     key={idx}
-                    disabled={isAnswerCorrect === true}
+                    disabled={isAnswerCorrect !== null}
                     onClick={() => handleChooseOption(choice, currentQuestion.targetWord)}
                     className={`p-4 rounded-2xl border-2 text-base font-extrabold capitalize transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
                   >
@@ -381,33 +591,19 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               {unscrambleInput.length === 0 && <span className="text-slate-400 font-semibold italic text-sm">Click letters below</span>}
             </div>
 
-            {/* Letter Selection Grid */}
-            <div className="flex flex-wrap gap-3 justify-center max-w-md">
+            {/* Selection letters */}
+            <div className="flex flex-wrap gap-2.5 justify-center max-w-sm">
               {currentQuestion.unscrambledLetters?.map((letter, idx) => (
                 <button
                   key={idx}
-                  disabled={isAnswerCorrect === true || unscrambleInput.length === currentQuestion.targetWord.length}
+                  disabled={isAnswerCorrect !== null}
                   onClick={() => handleLetterClick(letter, idx, currentQuestion.targetWord)}
-                  className="w-12 h-12 rounded-xl bg-slate-100 border-2 border-slate-200 text-slate-800 hover:bg-red-50 hover:border-red-300 font-black text-lg shadow-xs flex items-center justify-center capitalize active:scale-90"
+                  className="w-12 h-12 rounded-xl bg-slate-100 border-2 border-slate-200 text-slate-800 hover:bg-amber-55 hover:border-amber-35 font-black text-lg shadow-xs flex items-center justify-center capitalize active:scale-95 transition-all"
                 >
                   {letter}
                 </button>
               ))}
             </div>
-
-            {unscrambleInput.length > 0 && isAnswerCorrect !== true && (
-              <button
-                onClick={() => {
-                  soundFX.playClick();
-                  setUnscrambleInput([]);
-                  setIsAnswerCorrect(null);
-                }}
-                className="text-xs font-extrabold text-red-600 flex items-center gap-1 hover:underline"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Reset Spelling</span>
-              </button>
-            )}
           </div>
         )}
 
@@ -433,7 +629,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 return (
                   <button
                     key={idx}
-                    disabled={isAnswerCorrect === true}
+                    disabled={isAnswerCorrect !== null}
                     onClick={() => handleChooseOption(choice, currentQuestion.targetWord)}
                     className={`p-4 rounded-2xl border-2 text-base font-extrabold capitalize transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
                   >
@@ -458,7 +654,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 return (
                   <button
                     key={card.id}
-                    disabled={card.matched || isAnswerCorrect === true}
+                    disabled={card.matched || isAnswerCorrect !== null}
                     onClick={() => handleCardClick(card.id, currentQuestion)}
                     className={`w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl border-3 flex flex-col items-center justify-center font-black transition-all duration-300 transform active:scale-90 overflow-hidden relative ${
                       card.matched
@@ -515,50 +711,58 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <div className="grid grid-cols-2 gap-8 w-full max-w-md mx-auto">
               {/* Words (Left) */}
               <div className="space-y-3">
-                {Array.from(new Set(questions.slice(0, 3).map(q => q.targetWord))).map((word, idx) => {
-                  const isMatched = !!matchedPairs[word];
-                  const isSelected = leftSelected === word;
-                  return (
-                    <button
-                      key={idx}
-                      disabled={isMatched || isAnswerCorrect === true}
-                      onClick={() => handleMatchingLeft(word)}
-                      className={`w-full p-3 rounded-xl border-2 font-black text-sm capitalize transition-all text-center ${
-                        isMatched
-                          ? 'bg-emerald-100 border-emerald-300 text-emerald-800 line-through'
-                          : isSelected
-                          ? 'bg-red-500 border-red-500 text-white shadow-md'
-                          : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50'
-                      }`}
-                    >
-                      {word}
-                    </button>
-                  );
-                })}
+                {(() => {
+                  const startIndex = Math.min(currentQIndex, 7);
+                  const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+                  return matchingWords.map((word, idx) => {
+                    const isMatched = !!matchedPairs[word];
+                    const isSelected = leftSelected === word;
+                    return (
+                      <button
+                        key={idx}
+                        disabled={isMatched || isAnswerCorrect !== null}
+                        onClick={() => handleMatchingLeft(word)}
+                        className={`w-full p-3 rounded-xl border-2 font-black text-sm capitalize transition-all text-center ${
+                          isMatched
+                            ? 'bg-emerald-100 border-emerald-300 text-emerald-800 line-through'
+                            : isSelected
+                            ? 'bg-red-500 border-red-500 text-white shadow-md'
+                            : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50'
+                        }`}
+                      >
+                        {word}
+                      </button>
+                    );
+                  });
+                })()}
               </div>
 
               {/* Emojis (Right) */}
               <div className="space-y-3">
-                {Array.from(new Set(questions.slice(0, 3).map(q => q.emoji))).sort().map((emoji, idx) => {
-                  const isMatched = Object.values(matchedPairs).includes(emoji);
-                  const isSelected = rightSelected === emoji;
-                  return (
-                    <button
-                      key={idx}
-                      disabled={isMatched || isAnswerCorrect === true}
-                      onClick={() => handleMatchingRight(emoji)}
-                      className={`w-full p-3 rounded-xl border-2 font-normal text-2xl transition-all text-center ${
-                        isMatched
-                          ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
-                          : isSelected
-                          ? 'bg-amber-500 border-amber-500 text-white shadow-md'
-                          : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-amber-50'
-                      }`}
-                    >
-                      {emoji}
-                    </button>
-                  );
-                })}
+                {(() => {
+                  const startIndex = Math.min(currentQIndex, 7);
+                  const matchingEmojis = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.emoji))).sort();
+                  return matchingEmojis.map((emoji, idx) => {
+                    const isMatched = Object.values(matchedPairs).includes(emoji);
+                    const isSelected = rightSelected === emoji;
+                    return (
+                      <button
+                        key={idx}
+                        disabled={isMatched || isAnswerCorrect !== null}
+                        onClick={() => handleMatchingRight(emoji)}
+                        className={`w-full p-3 rounded-xl border-2 font-normal text-2xl transition-all text-center ${
+                          isMatched
+                            ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                            : isSelected
+                            ? 'bg-amber-500 border-amber-500 text-white shadow-md'
+                            : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-amber-50'
+                        }`}
+                      >
+                        {emoji}
+                      </button>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </div>
@@ -583,7 +787,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 return (
                   <button
                     key={idx}
-                    disabled={isAnswerCorrect === true}
+                    disabled={isAnswerCorrect !== null}
                     onClick={() => handleChooseOption(choice, ODD_WORDS.includes(choice) ? choice : 'nonsense_value_to_fail')}
                     className={`p-4 rounded-2xl border-2 text-base font-extrabold capitalize transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
                   >
@@ -608,17 +812,29 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               onClick={handleNextQuestion}
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95"
             >
-              <span>{currentQIndex === 9 ? 'Complete Practice' : 'Next Question'}</span>
+              <span>{currentQIndex === 9 ? 'See Practice Results' : 'Next Question'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}
 
         {isAnswerCorrect === false && (
-          <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl animate-fadeIn">
-            <p className="text-rose-700 font-extrabold text-xs">
-              Almost! Try again, you can do it! LeeGo is cheering for you! 🌟
-            </p>
+          <div className="w-full bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl text-rose-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn shadow-2xs">
+            <div className="text-left space-y-1">
+              <span className="font-extrabold text-sm text-rose-800 block">Oops! Sai một chút rồi 🌟</span>
+              <p className="text-[11px] font-bold text-rose-700">
+                {selectedGame === 'chooseCorrect'
+                  ? `Mẫu câu đúng: "${currentQuestion.sentencePattern?.replace('______', currentQuestion.targetWord)}" (Nghĩa: "${currentQuestion.meaningVi}").`
+                  : `Đáp án đúng là "${currentQuestion.targetWord}" vì từ này có nghĩa là "${currentQuestion.meaningVi}".`}
+              </p>
+            </div>
+            <button
+              onClick={handleNextQuestion}
+              className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
+            >
+              <span>Tiếp tục (Continue)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         )}
       </div>
