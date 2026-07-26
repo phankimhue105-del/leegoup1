@@ -121,38 +121,56 @@ app.post('/api/evaluate-speaking', async (req, res) => {
     const expectedText = targetPhrase.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").trim();
 
     let isMismatch = false;
+    let isCompletelyUnrelated = false;
     if (studentText && expectedText) {
       if (!expectedText.includes(' ')) {
-        // Target is a single word (e.g. "red")
+        // Single word target (e.g. "red")
         const studentWords = studentText.split(/\s+/);
         if (!studentWords.includes(expectedText)) {
           isMismatch = true;
+          // check if completely unrelated
+          isCompletelyUnrelated = studentWords.length > 0 && !studentText.includes(expectedText.substring(0, 2));
         }
       } else {
-        // Target is a sentence (e.g. "It is red.")
+        // Sentence target (e.g. "It is red.")
         const expectedWords = expectedText.split(/\s+/).filter(w => w.length > 2);
         const studentWords = studentText.split(/\s+/);
         if (expectedWords.length > 0) {
           const overlap = expectedWords.filter(w => studentWords.includes(w));
-          // If student speaks less than 30% of key words, count as mismatch
-          if (overlap.length < expectedWords.length * 0.3) {
+          if (overlap.length === 0) {
+            isCompletelyUnrelated = true;
+          } else if (overlap.length < expectedWords.length * 0.3) {
             isMismatch = true;
           }
         }
       }
     }
 
+    if (isCompletelyUnrelated) {
+      return res.json({
+        overallScore: 25,
+        pronunciation: 20,
+        fluency: 80,
+        accuracy: 5,
+        completeness: 100,
+        confidence: 30,
+        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
+        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
+        encouragement: `Cố lên nhé! Hãy tập trung đọc đúng từ yêu cầu: "${targetPhrase}".`,
+      });
+    }
+
     if (isMismatch) {
       return res.json({
-        overallScore: 66,
-        pronunciation: 65,
-        fluency: 92,
+        overallScore: 45,
+        pronunciation: 40,
+        fluency: 85,
         accuracy: 10,
         completeness: 100,
-        confidence: 60,
-        strength: 'Em nói khá trôi chảy và tự nhiên.',
-        suggestion: `Em đã đọc sang một từ khác với yêu cầu ("${transcript || 'Chưa rõ'}" thay vì "${targetPhrase}").`,
-        encouragement: `Em hãy nghe lại mẫu của LeeGo và đọc đúng từ "${targetPhrase}" nhé!`,
+        confidence: 45,
+        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
+        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
+        encouragement: `Luyện tập thêm để nhớ và phát âm đúng từ "${targetPhrase}" nhé!`,
       });
     }
 
@@ -165,43 +183,61 @@ app.post('/api/evaluate-speaking', async (req, res) => {
         accuracy: 90,
         completeness: 95,
         confidence: 90,
-        strength: 'Giọng nói rất to, rõ ràng và tự tin!',
-        suggestion: 'Cố gắng phát âm rõ các âm đuôi hơn một chút nhé.',
-        encouragement: 'Tuyệt vời quá! Em đã hoàn thành thử thách và nhận được 2 sao! ⭐⭐',
+        strength: 'Em đọc đúng hầu hết các từ.',
+        suggestion: 'Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn.',
+        encouragement: 'Tuyệt vời quá! Em đã hoàn thành thử thách xuất sắc! ⭐⭐',
       });
     }
 
     const systemInstruction = `
 You are evaluating an actual speech transcript from a young ESL learner (age 6-11) practicing English at LeeGo English Center.
-Target phrase to pronounce: "${targetPhrase}"
+Expected Target Phrase: "${targetPhrase}"
 Actual learner transcript: "${transcript || ''}"
 
 Evaluation Rules (LeeGo Speaking Assessment Protocol):
-1. CRITICAL CONTENT CHECK: Compare learner transcript to target phrase.
-   - If they spoke the wrong word/phrase (e.g. target is "red" but they said "blue", or the words differ completely):
-     * Accuracy (Độ chính xác) MUST be between 5 and 20.
-     * Pronunciation (Phát âm) MUST NOT exceed 65.
-     * Overall Score MUST be between 55 and 70. Never assign scores above 90 when the student speaks the wrong word or sentence!
-     * feedback suggestion/encouragement must explain: "Em đã đọc nhầm sang từ khác với yêu cầu ('[spoken word]' thay vì '${targetPhrase}')."
+1. CRITICAL SCORING BRACKETS:
+   - Exact pronunciation + exact answer matching target phrase → 90-100.
+   - Correct answer with minor pronunciation errors → 75-89.
+   - Correct meaning but several pronunciation mistakes → 60-74.
+   - Pronunciation difficult to understand → 40-59.
+   - Wrong word or wrong sentence → Below 50.
+   - Completely unrelated answer → Below 30.
+   - CRITICAL: Never give an overall score above 90 unless the expected target phrase is spoken correctly!
+
 2. Evaluate exactly four separate criteria (0-100 each):
-   - Pronunciation (Phát âm): Evaluate pronunciation quality of correct matched words.
-   - Fluency (Độ trôi chảy): Evaluate rhythm and speed only (do not penalize fluency for correctness errors).
-   - Accuracy (Độ chính xác): Compare spoken words against the target. Penalize for deletions, substitutions, additions, or mismatch.
-   - Completeness (Mức độ hoàn thành): Evaluate how much of the target word/phrase was completed.
-3. The overallScore must be calculated as a composite of these four criteria. Never generate a fixed/static score.
-4. All feedback must be in VIETNAMESE, child-friendly, and match the score ranges (95-100: Great praise; 85-94: 1 constructive suggestion; 70-84: Good + suggestions; <70: Encouraging advice detailing the specific mistake).
+   - Pronunciation (Phát âm): Evaluate pronunciation quality of the target word/sentence.
+   - Fluency (Độ trôi chảy): Evaluate rhythm, continuity, and pauses only. Do not confuse fluency with correctness.
+   - Accuracy (Độ chính xác): Compare spoken words against target. Penalize for substitutions, omissions, additions, or mismatch.
+   - Completeness (Mức độ hoàn thành): Evaluate if the student finished the required word/sentence completely.
+
+3. The overallScore must be calculated directly as a composite of these four criteria.
+
+4. Dynamic Vietnamese Feedback templates (MUST match the score exactly):
+   - Overall Score >= 95:
+     * strength: "Em phát âm rất rõ và đọc đúng hoàn toàn yêu cầu."
+     * suggestion: "Hãy tiếp tục giữ nhịp đọc tự nhiên như vậy."
+   - Overall Score between 80 and 94:
+     * strength: "Em đọc đúng hầu hết các từ."
+     * suggestion: "Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn."
+   - Overall Score between 60 and 79:
+     * strength: "Em đã đọc được phần lớn nội dung."
+     * suggestion: "Em nên nghe lại mẫu và luyện phát âm từng từ trước khi đọc cả câu."
+   - Overall Score < 60:
+     * strength: "Em đã cố gắng hoàn thành phần luyện nói."
+     * suggestion: "Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn."
+   - encouragement: A warm, supportive teacher comment in Vietnamese.
 
 Output JSON format ONLY:
 {
-  "overallScore": number (0-100),
-  "pronunciation": number (0-100),
-  "fluency": number (0-100),
-  "accuracy": number (0-100),
-  "completeness": number (0-100),
-  "confidence": number (0-100),
-  "strength": "Nhận xét chi tiết về điểm mạnh bằng tiếng Việt (1 câu)",
-  "suggestion": "Một gợi ý cụ thể để cải thiện bằng tiếng Việt (1 câu)",
-  "encouragement": "Lời khen ngợi và động viên của giáo viên bằng tiếng Việt (1 câu)"
+  "overallScore": number,
+  "pronunciation": number,
+  "fluency": number,
+  "accuracy": number,
+  "completeness": number,
+  "confidence": number,
+  "strength": "string (strength from templates)",
+  "suggestion": "string (suggestion from templates)",
+  "encouragement": "string"
 }
 `;
 
@@ -239,34 +275,50 @@ Output JSON format ONLY:
     const expectedText = targetPhrase.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").trim();
     
     let isMismatch = false;
+    let isCompletelyUnrelated = false;
     if (studentText && expectedText) {
       if (!expectedText.includes(' ')) {
         const studentWords = studentText.split(/\s+/);
         if (!studentWords.includes(expectedText)) {
           isMismatch = true;
+          isCompletelyUnrelated = studentWords.length > 0 && !studentText.includes(expectedText.substring(0, 2));
         }
       } else {
         const expectedWords = expectedText.split(/\s+/).filter(w => w.length > 2);
         const studentWords = studentText.split(/\s+/);
         if (expectedWords.length > 0) {
           const overlap = expectedWords.filter(w => studentWords.includes(w));
-          if (overlap.length < expectedWords.length * 0.3) {
+          if (overlap.length === 0) {
+            isCompletelyUnrelated = true;
+          } else if (overlap.length < expectedWords.length * 0.3) {
             isMismatch = true;
           }
         }
       }
     }
 
-    if (isMismatch) {
+    if (isCompletelyUnrelated) {
       res.json({
-        overallScore: 66,
-        pronunciation: 65,
-        fluency: 92,
+        overallScore: 25,
+        pronunciation: 20,
+        fluency: 80,
+        accuracy: 5,
+        completeness: 100,
+        confidence: 30,
+        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
+        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
+        encouragement: `Luyện nói thêm để nhớ đúng câu: "${targetPhrase}".`,
+      });
+    } else if (isMismatch) {
+      res.json({
+        overallScore: 45,
+        pronunciation: 40,
+        fluency: 85,
         accuracy: 10,
         completeness: 100,
-        confidence: 60,
-        strength: 'Em nói khá trôi chảy và tự nhiên.',
-        suggestion: `Em đã đọc sang một từ khác với yêu cầu ("${transcript || 'Chưa rõ'}" thay vì "${targetPhrase}").`,
+        confidence: 45,
+        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
+        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
         encouragement: `Em hãy nghe lại mẫu của LeeGo và đọc đúng từ "${targetPhrase}" nhé!`,
       });
     } else {
@@ -277,8 +329,8 @@ Output JSON format ONLY:
         accuracy: 88,
         completeness: 90,
         confidence: 88,
-        strength: 'Giọng đọc to và rõ ràng, phát âm tương đối chính xác!',
-        suggestion: 'Em chú ý phát âm nối âm hoặc âm đuôi mượt mà hơn nhé.',
+        strength: 'Em đọc đúng hầu hết các từ.',
+        suggestion: 'Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn.',
         encouragement: 'Làm tốt lắm! Chúc mừng em đã hoàn thành xuất sắc nhiệm vụ! ⭐',
       });
     }
