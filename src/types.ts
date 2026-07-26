@@ -1,14 +1,9 @@
 export type Stage =
-  | 'greeting'
-  | 'warmup'
   | 'vocabulary'
-  | 'modelSentence'
-  | 'guidedPractice'
-  | 'game'
+  | 'modelPattern'
+  | 'practice'
   | 'speaking'
-  | 'miniReview'
-  | 'reward'
-  | 'goodbye';
+  | 'completed';
 
 export type GameType =
   | 'flashcard'
