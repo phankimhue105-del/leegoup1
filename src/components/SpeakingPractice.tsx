@@ -473,34 +473,27 @@ export const SpeakingPractice: React.FC<Props> = ({
               </div>
               <div className="flex items-center gap-1 bg-amber-400 text-slate-900 px-3 py-1 rounded-full font-black text-xs shadow-2xs">
                 <Star className="w-3.5 h-3.5 fill-slate-900" />
-                <span>{assessment.overallScore} / 100</span>
+                <span>Điểm tổng: {assessment.overallScore} / 100</span>
               </div>
             </div>
 
-            <p className="text-emerald-900 font-extrabold text-xs mb-3">{assessment.encouragement}</p>
-
-            <div className="grid grid-cols-2 gap-2 mb-3 text-[10px]">
-              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
+            <div className="grid grid-cols-3 gap-2 mb-3 text-[10px]">
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50 text-center">
                 <span className="text-slate-500 font-semibold block">Phát âm</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.pronunciation}%</span>
               </div>
-              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50 text-center">
                 <span className="text-slate-500 font-semibold block">Độ trôi chảy</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.fluency}%</span>
               </div>
-              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
-                <span className="text-slate-500 font-semibold block">Độ chính xác</span>
-                <span className="font-black text-emerald-700 text-xs">{assessment.accuracy || 90}%</span>
-              </div>
-              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50">
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50 text-center">
                 <span className="text-slate-500 font-semibold block">Mức độ hoàn thành</span>
-                <span className="font-black text-emerald-700 text-xs">{assessment.completeness || 90}%</span>
+                <span className="font-black text-emerald-700 text-xs">{assessment.completeness}%</span>
               </div>
             </div>
 
-            <div className="text-[10px] space-y-1 text-slate-700 bg-white/60 p-2.5 rounded-xl border border-emerald-100/50">
-              <p><strong>🌟 Điểm mạnh:</strong> {assessment.strength}</p>
-              <p><strong>💡 Gợi ý cải thiện:</strong> {assessment.suggestion}</p>
+            <div className="text-[11px] space-y-1 text-slate-700 bg-white/60 p-2.5 rounded-xl border border-emerald-100/50">
+              <p><strong>📝 Nhận xét:</strong> {assessment.comment || assessment.encouragement}</p>
             </div>
           </div>
         )}
