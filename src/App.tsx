@@ -162,6 +162,8 @@ export default function App() {
   const [currentUnit, setCurrentUnit] = useState<Unit>(CURRICULUM_UNITS[0]);
   const [currentLesson, setCurrentLesson] = useState<Lesson>(CURRICULUM_UNITS[0].lessons[0]);
   const [currentStage, setCurrentStage] = useState<Stage>('vocabulary');
+  const [lastPracticeScore, setLastPracticeScore] = useState<number>(100);
+  const [lastSpeakingScore, setLastSpeakingScore] = useState<number>(90);
 
   // Check-Up active state
   const [currentCheckUpNum, setCurrentCheckUpNum] = useState<number | null>(null);
@@ -304,27 +306,55 @@ export default function App() {
   };
 
   const handleSpeakingCompleted = (averageScore: number) => {
-    // Award lesson completion bonus stars (5 stars)
-    addStars(5);
+    // Calculate Overall Score
+    const overall = Math.round(lastPracticeScore * 0.6 + averageScore * 0.4);
+    
+    // Determine stars to award
+    let starsAwarded = 1;
+    if (overall >= 95) starsAwarded = 5;
+    else if (overall >= 90) starsAwarded = 4.5;
+    else if (overall >= 80) starsAwarded = 4;
+    else if (overall >= 70) starsAwarded = 3;
+    else if (overall >= 60) starsAwarded = 2;
+
+    addStars(starsAwarded);
+
+    // Determine badge to award
+    let badge = "Never Give Up";
+    if (overall >= 95) badge = "Excellent Explorer";
+    else if (overall >= 85) badge = "Smart Explorer";
+    else if (overall >= 70) badge = "Active Learner";
+    else if (overall >= 60) badge = "Keep Practicing";
 
     // Save lesson progression
-    if (!progress.completedLessonIds.includes(currentLesson.id)) {
-      const updatedCompleted = [...progress.completedLessonIds, currentLesson.id];
-      const earnedBadge = updatedCompleted.length === 2 ? 'Cambridge Master' : undefined;
-      
-      setProgress((prev) => ({
-        ...prev,
-        completedLessonIds: updatedCompleted,
-        badges: earnedBadge ? [...prev.badges, earnedBadge] : prev.badges,
-      }));
+    const isCheckUp = currentCheckUpNum !== null;
+    const currentId = isCheckUp ? `checkup-${currentCheckUpNum}` : currentLesson.id;
 
-      if (earnedBadge) {
-        setUnlockedBadge(earnedBadge);
-      } else {
-        setUnlockedBadge('Lesson Master Badge');
+    setProgress((prev) => {
+      const updatedLessons = isCheckUp ? prev.completedLessonIds : [...prev.completedLessonIds];
+      if (!isCheckUp && !updatedLessons.includes(currentId)) {
+        updatedLessons.push(currentId);
       }
-    }
-    
+
+      const updatedUnits = [...prev.completedUnitIds];
+      if (isCheckUp && !updatedUnits.includes(currentId)) {
+        updatedUnits.push(currentId);
+      }
+
+      const updatedBadges = [...prev.badges];
+      if (!updatedBadges.includes(badge)) {
+        updatedBadges.push(badge);
+      }
+
+      return {
+        ...prev,
+        completedLessonIds: updatedLessons,
+        completedUnitIds: updatedUnits,
+        badges: updatedBadges,
+      };
+    });
+
+    setUnlockedBadge(badge);
     handleStageChange('completed');
   };
 
@@ -464,7 +494,10 @@ export default function App() {
                 <InteractiveGame
                   lesson={currentLessonToUse}
                   onCorrectAnswer={() => addStars(1)}
-                  onGameCompleted={handleNextStage}
+                  onGameCompleted={(score) => {
+                    setLastPracticeScore(score);
+                    handleNextStage();
+                  }}
                 />
               )}
 
@@ -473,108 +506,342 @@ export default function App() {
                 <SpeakingPractice
                   lesson={currentLessonToUse}
                   studentName="Explorer"
-                  onSpeakingCompleted={handleSpeakingCompleted}
+                  onSpeakingCompleted={(averageScore) => {
+                    setLastSpeakingScore(averageScore);
+                    handleSpeakingCompleted(averageScore);
+                  }}
                 />
               )}
 
               {/* STAGE 5: COMPLETED */}
-              {currentStage === 'completed' && (
-                <div className="flex flex-col items-center text-center my-auto py-8">
-                  <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-4 border-4 border-amber-200 animate-bounce">
-                    <span className="text-5xl">🎉</span>
-                  </div>
-                  <span className="text-xs font-black text-red-600 uppercase tracking-widest mb-1">
-                    LeeGo English Explorer
-                  </span>
-                  <h2 className="text-3xl font-black text-slate-900 mb-2 animate-pulse">
-                    {currentCheckUpNum !== null ? 'Check-Up Completed!' : 'Lesson Completed!'}
-                  </h2>
-                  <p className="text-sm text-slate-600 max-w-md mb-6 font-semibold">
-                    {currentCheckUpNum !== null
-                      ? `Super job! You have completed the review of Units ${checkUpUnitA?.number} & ${checkUpUnitB?.number}!`
-                      : `Super job! You have finished all activities for ${currentLessonToUse.title}!`}
-                  </p>
+              {currentStage === 'completed' && (() => {
+                const isCheckUp = currentCheckUpNum !== null;
+                const overallScore = Math.round(lastPracticeScore * 0.6 + lastSpeakingScore * 0.4);
 
-                  {/* Reward stats display */}
-                  <div className="bg-red-50/50 p-5 rounded-3xl border-2 border-red-100 max-w-sm w-full mb-6 space-y-3">
-                    <div className="flex items-center justify-between border-b border-red-50 pb-2">
-                      <span className="text-slate-500 font-extrabold text-xs">Total Stars:</span>
-                      <span className="text-amber-600 font-black text-sm flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
-                        {progress.stars} Stars
+                // Star Conversion
+                let stars = 1;
+                if (overallScore >= 95) stars = 5;
+                else if (overallScore >= 90) stars = 4.5;
+                else if (overallScore >= 80) stars = 4;
+                else if (overallScore >= 70) stars = 3;
+                else if (overallScore >= 60) stars = 2;
+
+                // Badge Awarded
+                let badge = "Never Give Up";
+                if (overallScore >= 95) badge = "Excellent Explorer";
+                else if (overallScore >= 85) badge = "Smart Explorer";
+                else if (overallScore >= 70) badge = "Active Learner";
+                else if (overallScore >= 60) badge = "Keep Practicing";
+
+                // Teacher Comment
+                const getTeacherComment = (p: number, s: number) => {
+                  if (p >= 95 && s >= 95) {
+                    return "🌟 Xuất sắc! Em đã hoàn thành rất tốt cả phần Practice và Speaking. Hãy tiếp tục phát huy nhé!";
+                  }
+                  if (p >= 85 && s < 80) {
+                    return "👍 Em làm rất tốt phần Practice. Hãy luyện Speaking thêm để phát âm rõ hơn và trả lời tự nhiên hơn.";
+                  }
+                  if (p < 80 && s >= 85) {
+                    return "🎤 Em giao tiếp rất tốt. Tuy nhiên em nên ôn lại từ vựng và cấu trúc để làm tốt hơn phần Practice.";
+                  }
+                  if (p >= 50 && s >= 50) {
+                    return "💪 Em đã hoàn thành bài học. Hãy xem lại từ vựng, cấu trúc và luyện nói thêm trước khi sang bài tiếp theo.";
+                  }
+                  return "📚 Em đã cố gắng hoàn thành bài học. Hãy ôn lại bài học này rồi thử lại để đạt kết quả cao hơn.";
+                };
+                const teacherComment = getTeacherComment(lastPracticeScore, lastSpeakingScore);
+
+                // Performance Analysis
+                const analysisItems = [];
+                if (lastPracticeScore >= 80) {
+                  analysisItems.push({ status: 'good', text: 'Vocabulary: Good' });
+                  analysisItems.push({ status: 'good', text: 'Sentence Pattern: Good' });
+                } else {
+                  analysisItems.push({ status: 'warn', text: 'Vocabulary: Needs review' });
+                }
+                if (lastSpeakingScore >= 85) {
+                  analysisItems.push({ status: 'good', text: 'Speaking Accuracy: Good' });
+                } else {
+                  analysisItems.push({ status: 'warn', text: 'Speaking Accuracy: Needs more practice' });
+                }
+                if (lastSpeakingScore < 90) {
+                  analysisItems.push({ status: 'warn', text: 'Pronunciation: Practice ending sounds' });
+                }
+
+                // Course Progress
+                const currentUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id);
+                const currentLessonIdx = currentUnit.lessons.findIndex(l => l.id === currentLesson.id);
+                const absoluteLessonNum = (currentUnitIdx * 4) + currentLessonIdx + 1;
+
+                // Stars Helper
+                const renderStarsList = (sNum: number) => {
+                  const elements = [];
+                  const fullStars = Math.floor(sNum);
+                  const hasHalf = sNum % 1 !== 0;
+                  for (let i = 1; i <= 5; i++) {
+                    if (i <= fullStars) {
+                      elements.push(<Star key={i} className="w-5 h-5 fill-amber-400 text-amber-500 shrink-0" />);
+                    } else if (i === fullStars + 1 && hasHalf) {
+                      elements.push(
+                        <div key={i} className="relative inline-block w-5 h-5 select-none shrink-0">
+                          <Star className="absolute top-0 left-0 w-5 h-5 text-slate-200" />
+                          <div className="absolute top-0 left-0 w-2.5 h-5 overflow-hidden">
+                            <Star className="w-5 h-5 fill-amber-400 text-amber-500 max-w-none" />
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      elements.push(<Star key={i} className="w-5 h-5 text-slate-200 shrink-0" />);
+                    }
+                  }
+                  return elements;
+                };
+
+                // RESET COURSE HANDLER
+                const handleReviewCourse = () => {
+                  soundFX.playClick();
+                  setProgress({
+                    stars: 0,
+                    badges: ['First Step'],
+                    completedLessonIds: [],
+                    completedUnitIds: [],
+                    speakingScoreAvg: 90,
+                    dailyStreak: 1,
+                    currentUnitId: CURRICULUM_UNITS[0].id,
+                    currentLessonId: CURRICULUM_UNITS[0].lessons[0].id,
+                    currentStage: 'vocabulary',
+                  });
+                  setCurrentUnit(CURRICULUM_UNITS[0]);
+                  setCurrentLesson(CURRICULUM_UNITS[0].lessons[0]);
+                  setCurrentStage('vocabulary');
+                  setCurrentCheckUpNum(null);
+                  setCheckUpUnitA(null);
+                  setCheckUpUnitB(null);
+                };
+
+                // Check if Check-Up 4 is completed to show COURSE COMPLETION
+                if (isCheckUp && currentCheckUpNum === 4) {
+                  return (
+                    <div className="flex flex-col items-center text-center my-auto py-4 w-full max-w-xl mx-auto animate-fadeIn">
+                      <div className="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center mb-4 border-4 border-amber-200 animate-bounce">
+                        <span className="text-4xl">🎓</span>
+                      </div>
+                      <span className="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1 bg-red-50 px-3.5 py-1 rounded-full">
+                        Course Completed
                       </span>
+                      <h2 className="text-3xl font-black text-slate-900 mb-2">
+                        Congratulations!
+                      </h2>
+                      <p className="text-sm text-slate-600 font-semibold mb-6">
+                        You have completed the LeeGo English Explorer course.
+                      </p>
+
+                      <div className="bg-red-50/50 p-5 rounded-3xl border-2 border-red-100 w-full mb-6 space-y-3.5 text-left text-xs">
+                        <div className="flex items-center justify-between border-b border-red-100 pb-2">
+                          <span className="text-slate-500 font-extrabold">Total Stars Earned:</span>
+                          <span className="text-amber-600 font-black text-sm flex items-center gap-1">
+                            <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+                            {progress.stars} Stars
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between border-b border-red-100 pb-2">
+                          <span className="text-slate-500 font-extrabold">Final Badge:</span>
+                          <span className="text-rose-600 font-black flex items-center gap-1">
+                            <Award className="w-4 h-4" />
+                            {badge}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between border-b border-red-100 pb-2">
+                          <span className="text-slate-500 font-extrabold">Lessons Completed:</span>
+                          <span className="text-slate-800 font-black">32 / 32</span>
+                        </div>
+                        <div className="flex items-center justify-between border-b border-red-100 pb-2">
+                          <span className="text-slate-500 font-extrabold">Speaking Activities Completed:</span>
+                          <span className="text-slate-800 font-black">32 Completed</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500 font-extrabold">Practice Activities Completed:</span>
+                          <span className="text-slate-800 font-black">32 Completed</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-4 justify-center w-full">
+                        <button
+                          onClick={handleReviewCourse}
+                          className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-black px-6 py-3 rounded-2xl transition-all text-xs active:scale-95 border border-slate-200"
+                        >
+                          Review Course
+                        </button>
+                        <button
+                          onClick={() => {
+                            soundFX.playClick();
+                            setCurrentCheckUpNum(null);
+                            setIsDrawerOpen(true);
+                          }}
+                          className="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-3 rounded-2xl shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all text-xs"
+                        >
+                          <span>Back to Curriculum</span> <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    {unlockedBadge && (
-                      <div className="flex items-center justify-between border-b border-red-50 pb-2">
-                        <span className="text-slate-500 font-extrabold text-xs">Badge Earned:</span>
-                        <span className="text-rose-600 font-black text-xs flex items-center gap-1">
-                          <Award className="w-4 h-4" />
-                          {unlockedBadge}
+                  );
+                }
+
+                // Otherwise show standard LEARNING REPORT
+                return (
+                  <div className="flex flex-col items-center text-center my-auto py-4 w-full max-w-xl mx-auto animate-fadeIn">
+                    <div className="w-14 h-14 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mb-3">
+                      <span className="text-2xl animate-bounce">🎉</span>
+                    </div>
+                    <h2 className="text-2xl font-black text-slate-900 tracking-tight mb-0.5">
+                      {isCheckUp ? 'Check-Up Completed!' : 'Lesson Completed!'}
+                    </h2>
+                    <span className="text-[9px] font-black text-red-600 uppercase tracking-widest mb-4 bg-red-50 border border-red-100 px-3 py-0.5 rounded-full">
+                      Learning Report
+                    </span>
+
+                    {/* Scores Card */}
+                    <div className="grid grid-cols-3 gap-2 w-full mb-3 text-left">
+                      <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 text-center">
+                        <span className="text-[9px] text-slate-400 font-bold block mb-1">📊 Practice</span>
+                        <span className="text-sm font-black text-slate-800">{lastPracticeScore} / 100</span>
+                      </div>
+                      <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 text-center">
+                        <span className="text-[9px] text-slate-400 font-bold block mb-1">🎤 Speaking</span>
+                        <span className="text-sm font-black text-slate-800">{lastSpeakingScore} / 100</span>
+                      </div>
+                      <div className="bg-red-50 p-3 rounded-2xl border border-red-100 text-center">
+                        <span className="text-[9px] text-red-500 font-bold block mb-1">📈 Overall</span>
+                        <span className="text-sm font-black text-red-600">{overallScore} / 100</span>
+                      </div>
+                    </div>
+
+                    {/* Stars & Badge Row */}
+                    <div className="grid grid-cols-2 gap-2 w-full mb-3">
+                      <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 flex flex-col items-center justify-center">
+                        <span className="text-[9px] text-slate-400 font-bold block mb-1">Achievement</span>
+                        <div className="flex gap-0.5">{renderStarsList(stars)}</div>
+                      </div>
+                      <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 flex flex-col items-center justify-center">
+                        <span className="text-[9px] text-slate-400 font-bold block mb-1">Badge Earned</span>
+                        <span className="text-xs font-black text-rose-600 flex items-center gap-1">
+                          <Award className="w-3.5 h-3.5 shrink-0" />
+                          {badge}
                         </span>
                       </div>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500 font-extrabold text-xs">Daily Streak:</span>
-                      <span className="text-emerald-600 font-black text-xs">
-                        🔥 {progress.dailyStreak} Days
-                      </span>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={() => {
-                      soundFX.playClick();
-                      if (currentCheckUpNum !== null) {
-                        const nextUnitIdx = currentCheckUpNum * 2; // e.g. Check-Up 1 -> Unit 3 (index 2)
-                        if (nextUnitIdx < CURRICULUM_UNITS.length) {
-                          const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
-                          const updatedCompleted = [...progress.completedUnitIds];
-                          if (!updatedCompleted.includes(`checkup-${currentCheckUpNum}`)) {
-                            updatedCompleted.push(`checkup-${currentCheckUpNum}`);
-                          }
-                          setProgress((prev) => ({
-                            ...prev,
-                            completedUnitIds: updatedCompleted,
-                          }));
-                          setCurrentCheckUpNum(null);
-                          handleLessonSelect(nextUnit, nextUnit.lessons[0]);
-                        } else {
-                          setCurrentCheckUpNum(null);
-                          setIsDrawerOpen(true);
-                        }
-                      } else {
-                        const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
-                        if (currentIdx < currentUnit.lessons.length - 1) {
-                          handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
-                        } else {
-                          // Check if this even unit has a checkup and triggers it automatically
-                          const checkUpNumber = currentUnit.number / 2;
-                          const isEvenUnit = currentUnit.number % 2 === 0;
-                          const isCheckUpCompleted = progress.completedUnitIds.includes(`checkup-${checkUpNumber}`);
-                          
-                          if (isEvenUnit && !isCheckUpCompleted) {
-                            const unitA = CURRICULUM_UNITS[currentUnit.number - 2];
-                            const unitB = CURRICULUM_UNITS[currentUnit.number - 1];
-                            handleSelectCheckUp(checkUpNumber, unitA, unitB);
-                          } else {
-                            // Normal flow: load first lesson of next unit
-                            const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
-                            if (nextUnitIdx < CURRICULUM_UNITS.length) {
-                              const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
-                              handleLessonSelect(nextUnit, nextUnit.lessons[0]);
-                            } else {
+                    {/* Teacher Comment */}
+                    <div className="bg-red-50/30 border border-red-100/60 p-4 rounded-2xl w-full mb-3 text-left">
+                      <span className="text-[9px] font-black text-red-600 uppercase tracking-wider block mb-1">
+                        💬 Nhận xét từ giáo viên LeeGo AI
+                      </span>
+                      <p className="text-[11px] font-bold text-slate-700 leading-relaxed">
+                        {teacherComment}
+                      </p>
+                    </div>
+
+                    {/* Performance Analysis & Course Progress */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-4 text-left">
+                      <div className="bg-slate-50/60 border border-slate-100 p-3 rounded-2xl">
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block mb-1.5">
+                          📈 Phân tích kết quả
+                        </span>
+                        <div className="space-y-1 text-[10px] font-bold text-slate-700">
+                          {analysisItems.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-1">
+                              <span>{item.status === 'good' ? '✅' : '⚠️'}</span>
+                              <span>{item.text}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-50/60 border border-slate-100 p-3 rounded-2xl flex flex-col justify-between">
+                        <div>
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block mb-1">
+                            📚 Tiến trình học tập
+                          </span>
+                          <span className="text-xs font-black text-slate-800">
+                            {isCheckUp ? `Check-Up ${currentCheckUpNum} / 4` : `Lesson ${absoluteLessonNum} / 32`}
+                          </span>
+                        </div>
+                        <div className="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden">
+                          <div
+                            className="bg-red-500 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${isCheckUp ? (currentCheckUpNum / 4) * 100 : (absoluteLessonNum / 32) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Next Button Controls */}
+                    {(() => {
+                      const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
+                      const isEvenUnit = currentUnit.number % 2 === 0;
+                      const isLastLessonOfUnit = currentIdx === currentUnit.lessons.length - 1;
+                      
+                      const checkUpNumber = currentUnit.number / 2;
+                      const isCheckUpCompleted = progress.completedUnitIds.includes(`checkup-${checkUpNumber}`);
+                      const isGoToCheckUp = !isCheckUp && isEvenUnit && isLastLessonOfUnit && !isCheckUpCompleted;
+
+                      return (
+                        <div className="flex gap-4">
+                          <button
+                            onClick={() => {
+                              soundFX.playClick();
                               setIsDrawerOpen(true);
-                            }
-                          }
-                        }
-                      }
-                    }}
-                    className="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all text-sm animate-bounce"
-                  >
-                    <span>Continue to Next Lesson</span> <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              )}
+                            }}
+                            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold px-5 py-3 rounded-2xl text-xs transition-all active:scale-95 border border-slate-200"
+                          >
+                            Review Lesson
+                          </button>
+                          <button
+                            onClick={() => {
+                              soundFX.playClick();
+                              if (isCheckUp) {
+                                const nextUnitIdx = currentCheckUpNum * 2;
+                                if (nextUnitIdx < CURRICULUM_UNITS.length) {
+                                  const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+                                  setCurrentCheckUpNum(null);
+                                  handleLessonSelect(nextUnit, nextUnit.lessons[0]);
+                                } else {
+                                  setCurrentCheckUpNum(null);
+                                  setIsDrawerOpen(true);
+                                }
+                              } else {
+                                if (currentIdx < currentUnit.lessons.length - 1) {
+                                  handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
+                                } else {
+                                  if (isEvenUnit && !isCheckUpCompleted) {
+                                    const unitA = CURRICULUM_UNITS[currentUnit.number - 2];
+                                    const unitB = CURRICULUM_UNITS[currentUnit.number - 1];
+                                    handleSelectCheckUp(checkUpNumber, unitA, unitB);
+                                  } else {
+                                    const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
+                                    if (nextUnitIdx < CURRICULUM_UNITS.length) {
+                                      const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+                                      handleLessonSelect(nextUnit, nextUnit.lessons[0]);
+                                    } else {
+                                      setIsDrawerOpen(true);
+                                    }
+                                  }
+                                }
+                              }
+                            }}
+                            className="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-3 rounded-2xl shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all text-xs animate-bounce"
+                          >
+                            <span>
+                              {isGoToCheckUp ? 'Go to Check-Up' : 'Continue to Next Lesson'}
+                            </span>
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                );
+              })()}
             </>
 
           {/* Navigation Controls Footer */}
