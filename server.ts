@@ -178,24 +178,24 @@ app.post('/api/evaluate-speaking', async (req, res) => {
     }
 
     const systemInstruction = `
-You are evaluating an actual speech transcript from a young ESL learner (age 6-11) practicing English at LeeGo English Center.
-Expected Target Phrase: "${targetPhrase}"
-Actual learner transcript: "${transcript || ''}"
+You are evaluating a speech transcript from a young ESL learner practicing English.
+Expected Target Phrase (Reference): "${targetPhrase}"
+Learner's Spoken Transcript: "${transcript || ''}"
 
 Evaluation Rules (LeeGo Speaking Assessment Protocol):
-1. COMPARE target phrase against learner transcript.
-2. CRITICAL SCORING BRACKETS (must reflect actual performance):
-   - Correct answer → 90-100.
-   - One missing word → 70-85.
-   - Several mistakes → 50-70.
-   - Wrong answer → Below 50.
-   - Completely unrelated answer → Below 30.
-   - CRITICAL: Never give an overall score above 90 unless the student's response matches the expected answer very closely!
-3. Evaluate exactly three separate criteria (0-100 each):
-   - Pronunciation (Phát âm): Evaluate pronunciation quality. Reduce if incorrect, increase if clear/natural.
-   - Fluency (Độ trôi chảy): Evaluate rhythm, hesitation, pauses, response time only.
-   - Completeness (Mức độ hoàn thành): Evaluate if the student finished the required answer (e.g. expected "This is a pencil." but said "This is..." -> low score).
-4. The overallScore must be calculated directly based on similarity, pronunciation, fluency, and completion.
+1. COMPARE the Spoken Transcript directly to the Expected Target Phrase (Reference). Never evaluate speech independently.
+2. The overallScore MUST depend primarily on similarity with the expected target phrase.
+3. Scoring Criteria (0-100 each):
+   - Pronunciation (Phát âm): Evaluate pronunciation quality of the spoken words only.
+   - Fluency (Độ trôi chảy): Evaluate speaking speed, pauses, and continuity.
+   - Completeness (Mức độ hoàn thành): Evaluate whether the student finishes the required target answer.
+4. STRICT SCORING BRACKETS & EXAMPLES:
+   - Expected: "red", Student: "red" -> overallScore: 95-100.
+   - Expected: "red", Student: "reed" -> overallScore: 75-90.
+   - Expected: "red", Student: "blue" -> overallScore: Below 40.
+   - Expected: "This is a pencil.", Student: "This is pencil." -> overallScore: 60-80.
+   - Expected: "This is a pencil.", Student: "My name is Tom." -> overallScore: Below 30.
+   - CRITICAL: Never give an overallScore above 90 unless the spoken response matches the expected target phrase very closely.
 5. Vietnamese Feedback (comment): Output exactly ONE short comment depending on the overallScore:
    - Score 95-100: "Rất tốt! Em đọc rõ ràng và hoàn thành đúng yêu cầu."
    - Score 80-94: "Em đọc khá tốt. Chỉ cần phát âm rõ hơn một vài từ."
