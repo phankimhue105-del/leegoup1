@@ -90,6 +90,10 @@ export interface SpeakingAssessment {
   suggestion: string;
   encouragement: string;
   comment?: string;
+  correctWords?: string[];
+  missingWords?: string[];
+  incorrectWords?: { expected: string; student: string }[];
+  pronunciationProblems?: string[];
 }
 
 export interface AITeacherResponse {
