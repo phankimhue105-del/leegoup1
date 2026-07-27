@@ -118,29 +118,85 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         }
       }
 
-      const choices = seededShuffle([vocab.word, distractors[0], distractors[1], distractors[2]]);
+      // Check if the lesson pattern contains a question/dialogue prompt
+      let questionPrompt = '';
+      let isConversational = false;
 
-      // 2. Sentence Pattern (deterministic fill in the blank based on exampleSentence)
+      // Detect conversational topics
+      if (lesson.id.includes('u3-l1') || lesson.id.includes('checkup-l-2')) {
+        isConversational = true;
+        questionPrompt = 'How old are you?';
+      } else if (lesson.id.includes('u2-l2') || lesson.id.includes('checkup-l-1')) {
+        isConversational = true;
+        questionPrompt = 'What color is it?';
+      } else if (lesson.id.includes('u2-l1')) {
+        isConversational = true;
+        questionPrompt = "What's this?";
+      } else if (lesson.id.includes('u1-l1')) {
+        isConversational = true;
+        questionPrompt = 'What is it?';
+      } else if (lesson.id.includes('u3-l2')) {
+        isConversational = true;
+        questionPrompt = `How many ${vocab.word}?`;
+      } else if (lesson.id.includes('u4-l1')) {
+        isConversational = true;
+        questionPrompt = "Who's this?";
+      }
+
+      const makeFullSentence = (word: string) => {
+        const wordLower = word.toLowerCase();
+        if (questionPrompt.includes('How old are you')) {
+          return `I'm ${wordLower}.`;
+        }
+        if (questionPrompt.includes('What color is it')) {
+          return `It's ${wordLower}.`;
+        }
+        if (questionPrompt.includes("What's this")) {
+          return `This is ${wordLower}.`;
+        }
+        if (questionPrompt.includes('What is it')) {
+          const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
+          return `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
+        }
+        if (questionPrompt.includes('How many')) {
+          return `${word.charAt(0).toUpperCase() + word.slice(1)}.`;
+        }
+        if (questionPrompt.includes("Who's this")) {
+          return `This is my ${wordLower}.`;
+        }
+        return word;
+      };
+
       let sentencePattern = 'It is a/an ______.';
-      if (vocab.exampleSentence) {
-        const regex = new RegExp(`\\b${vocab.word}\\b`, 'gi');
-        if (regex.test(vocab.exampleSentence)) {
-          sentencePattern = vocab.exampleSentence.replace(regex, '______');
-        } else {
-          sentencePattern = vocab.exampleSentence + ' (______)';
-        }
-      } else if (lesson.sentencePatterns && lesson.sentencePatterns.length > 0) {
-        const selectedPattern = lesson.sentencePatterns[i % lesson.sentencePatterns.length].pattern;
-        const currentVocabWords = vocabList.map((v) => v.word.toLowerCase());
-        let replaced = selectedPattern;
-        for (const w of currentVocabWords) {
-          const regex = new RegExp(`\\b${w}\\b`, 'gi');
-          if (regex.test(replaced)) {
-            replaced = replaced.replace(regex, '______');
-            break;
+      let choices: string[] = [];
+
+      if (isConversational) {
+        sentencePattern = questionPrompt;
+        const correctChoice = makeFullSentence(vocab.word);
+        const distractorOptions = distractors.map(d => makeFullSentence(d));
+        choices = seededShuffle([correctChoice, distractorOptions[0], distractorOptions[1], distractorOptions[2]]);
+      } else {
+        if (vocab.exampleSentence) {
+          const regex = new RegExp(`\\b${vocab.word}\\b`, 'gi');
+          if (regex.test(vocab.exampleSentence)) {
+            sentencePattern = vocab.exampleSentence.replace(regex, '______');
+          } else {
+            sentencePattern = vocab.exampleSentence + ' (______)';
           }
+        } else if (lesson.sentencePatterns && lesson.sentencePatterns.length > 0) {
+          const selectedPattern = lesson.sentencePatterns[i % lesson.sentencePatterns.length].pattern;
+          const currentVocabWords = vocabList.map((v) => v.word.toLowerCase());
+          let replaced = selectedPattern;
+          for (const w of currentVocabWords) {
+            const regex = new RegExp(`\\b${w}\\b`, 'gi');
+            if (regex.test(replaced)) {
+              replaced = replaced.replace(regex, '______');
+              break;
+            }
+          }
+          sentencePattern = replaced;
         }
-        sentencePattern = replaced;
+        choices = seededShuffle([vocab.word, distractors[0], distractors[1], distractors[2]]);
       }
 
       // 3. Odd Choices
@@ -154,7 +210,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const oddChoices = seededShuffle([...oddList, oddDistractor]);
 
       generatedQs.push({
-        targetWord: vocab.word,
+        targetWord: isConversational ? makeFullSentence(vocab.word) : vocab.word,
         meaningVi: vocab.meaningVi || vocab.word,
         emoji,
         choices,
@@ -432,8 +488,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
       let allCorrect = true;
       matchingWords.forEach(w => {
-        const correctEmoji = EMOJI_MAP[w.toLowerCase()];
-        if (tempPairs[w] !== correctEmoji) {
+        const vocabItem = vocabList.find(v => v.word.toLowerCase() === w.toLowerCase());
+        const correctMeaningVi = vocabItem ? vocabItem.meaningVi : '';
+        if (tempPairs[w] !== correctMeaningVi) {
           allCorrect = false;
         }
       });
@@ -444,7 +501,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       // Force correct answers display
       const correctPairs: Record<string, string> = {};
       matchingWords.forEach(w => {
-        correctPairs[w] = EMOJI_MAP[w.toLowerCase()] || '🔤';
+        const vocabItem = vocabList.find(v => v.word.toLowerCase() === w.toLowerCase());
+        correctPairs[w] = vocabItem ? vocabItem.meaningVi : '';
       });
       setTempPairs(correctPairs);
 
@@ -632,13 +690,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         {selectedGame === 'pictureQuiz' && (
           <div className="flex flex-col items-center gap-5">
             <div className="text-8xl select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
-              {currentQuestion.emoji}
+              {currentQuestion?.emoji || '🔤'}
             </div>
             <h4 className="text-xl font-black text-slate-800 mt-2">What is this in English?</h4>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {currentQuestion.choices.map((choice, idx) => {
+              {(currentQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
-                const isTarget = choice.toLowerCase() === currentQuestion.targetWord.toLowerCase();
+                const isTarget = choice.toLowerCase() === (currentQuestion?.targetWord || '').toLowerCase();
                 
                 let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
                 if (isAnswerCorrect !== null) {
@@ -673,8 +731,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               Unscramble the word!
             </span>
             <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
-              <p className="text-2xl font-black text-amber-800">{currentQuestion.emoji}</p>
-              <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {currentQuestion.meaningVi}</p>
+              <p className="text-2xl font-black text-amber-800">{currentQuestion?.emoji || '🔤'}</p>
+              <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {currentQuestion?.meaningVi || ''}</p>
             </div>
 
             <div className="flex gap-2 min-h-[50px] border-b-2 border-dashed border-red-200 px-6 py-2 items-center relative">
@@ -696,7 +754,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </div>
 
             <div className="flex flex-wrap gap-2 justify-center max-w-sm">
-              {currentQuestion.unscrambledLetters?.map((letter, idx) => (
+              {(currentQuestion?.unscrambledLetters || []).map((letter, idx) => (
                 <button
                   key={idx}
                   disabled={isAnswerCorrect !== null}
@@ -717,13 +775,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               Fill in the Blank!
             </span>
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
-              <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion.sentencePattern}"</h4>
-              <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion.meaningVi})</p>
+              <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
+              <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion?.meaningVi || ''})</p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {currentQuestion.choices.map((choice, idx) => {
+              {(currentQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
-                const isTarget = choice.toLowerCase() === currentQuestion.targetWord.toLowerCase();
+                const isTarget = choice.toLowerCase() === (currentQuestion?.targetWord || '').toLowerCase();
                 
                 let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
                 if (isAnswerCorrect !== null) {
@@ -799,7 +857,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                             }}
                           />
                           <span className="fallback-emoji text-3xl font-normal hidden">
-                            {EMOJI_MAP[card.value.toLowerCase()] || '🔤'}
+                            {EMOJI_MAP[(card.value || '').toLowerCase()] || '🔤'}
                           </span>
                         </div>
                       )
@@ -813,25 +871,23 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           </div>
         )}
 
-        {/* MATCHING GAME WITH HYPHEN TRANSLATIONS */}
+        {/* MATCHING GAME WITH LANG SEPARATION */}
         {selectedGame === 'matchingGame' && (
           <div className="flex flex-col items-center gap-4 w-full">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-3">
-              Match word with picture! (Nối từ với ảnh đúng)
+              Match word with meaning! (Nối từ với nghĩa đúng)
             </span>
             <div className="grid grid-cols-2 gap-8 w-full max-w-md mx-auto">
               {/* Words (Left) */}
               <div className="space-y-3">
                 {(() => {
                   const startIndex = Math.min(currentQIndex, 7);
-                  const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+                  const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
                   return matchingWords.map((word, idx) => {
                     const isMatched = !!tempPairs[word];
                     const isSelected = leftSelected === word;
                     
-                    // Retrieve translation for en-dash display: Pencil - bút chì
-                    const vocabItem = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
-                    const displayLabel = vocabItem ? `${word} – ${vocabItem.meaningVi}` : word;
+                    const displayLabel = word.charAt(0).toUpperCase() + word.slice(1);
 
                     return (
                       <button
@@ -854,28 +910,33 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 })()}
               </div>
 
-              {/* Emojis (Right) */}
+              {/* Meanings (Right) */}
               <div className="space-y-3">
                 {(() => {
                   const startIndex = Math.min(currentQIndex, 7);
-                  const matchingEmojis = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.emoji))).sort();
-                  return matchingEmojis.map((emoji, idx) => {
-                    const isMatched = Object.values(tempPairs).includes(emoji);
-                    const isSelected = rightSelected === emoji;
+                  const matchingMeanings = Array.from(new Set(
+                    (questions || []).slice(startIndex, startIndex + 3).map(q => {
+                      const vocabItem = (vocabList || []).find(v => v.word.toLowerCase() === q.targetWord.toLowerCase());
+                      return vocabItem ? vocabItem.meaningVi : q.targetWord;
+                    })
+                  )).sort();
+                  return matchingMeanings.map((meaningVi, idx) => {
+                    const isMatched = Object.values(tempPairs).includes(meaningVi);
+                    const isSelected = rightSelected === meaningVi;
                     return (
                       <button
                         key={idx}
                         disabled={isAnswerCorrect !== null}
-                        onClick={() => handleMatchingRight(emoji)}
-                        className={`w-full p-3 rounded-2xl border-2 font-normal text-2xl transition-all text-center flex justify-between items-center px-4 ${
+                        onClick={() => handleMatchingRight(meaningVi)}
+                        className={`w-full p-3 rounded-2xl border-2 font-extrabold text-xs transition-all text-center flex justify-between items-center px-4 ${
                           isMatched
-                            ? 'bg-red-50 border-red-300 shadow-2xs'
+                            ? 'bg-red-50 border-red-300 shadow-2xs text-red-700 font-bold'
                             : isSelected
                             ? 'bg-amber-500 border-amber-500 text-white shadow-md'
                             : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-amber-50'
                         }`}
                       >
-                        <span>{emoji}</span>
+                        <span className="capitalize">{meaningVi}</span>
                         {isMatched && <span className="text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-md font-bold">🔗</span>}
                       </button>
                     );
@@ -894,7 +955,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </span>
             <h4 className="text-xl font-black text-slate-800">One of these is NOT like the others! Tap it:</h4>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {currentQuestion.oddChoices?.map((choice, idx) => {
+              {(currentQuestion?.oddChoices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
                 const isTarget = ODD_WORDS.includes(choice);
                 
@@ -937,14 +998,26 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           </button>
         ) : (
           isAnswerCorrect === true ? (
-            <div className="w-full bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-emerald-950 flex items-center justify-between animate-fadeIn shadow-2xs">
-              <div className="flex items-center gap-2">
-                <Star className="w-6 h-6 text-amber-500 fill-amber-400" />
+            <div className="w-full bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn shadow-2xs">
+              <div className="text-left space-y-1">
                 <span className="font-extrabold text-xs sm:text-sm text-emerald-800">✅ Correct! Good job! (Chính xác!) ⭐</span>
+                {selectedGame === 'matchingGame' && (
+                  <p className="text-[11px] font-bold text-emerald-700">
+                    {(() => {
+                      const startIndex = Math.min(currentQIndex, 7);
+                      const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+                      return matchingWords.map(w => {
+                        const vocabItem = (vocabList || []).find(v => v.word.toLowerCase() === w.toLowerCase());
+                        const meaning = vocabItem ? vocabItem.meaningVi : '';
+                        return `${w.charAt(0).toUpperCase() + w.slice(1)} = ${meaning}`;
+                      }).join(', ');
+                    })()}
+                  </p>
+                )}
               </div>
               <button
                 onClick={handleNextQuestion}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
               >
                 <span>Continue (Tiếp tục)</span>
                 <ArrowRight className="w-4 h-4" />
@@ -955,9 +1028,21 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               <div className="text-left space-y-1">
                 <span className="font-extrabold text-xs sm:text-sm text-rose-800 block">❌ Incorrect (Chưa chính xác)</span>
                 <p className="text-[11px] font-bold text-rose-700">
-                  {selectedGame === 'chooseCorrect' && currentQuestion.sentencePattern
-                    ? `Mẫu câu đúng: "${currentQuestion.sentencePattern.replace('______', currentQuestion.targetWord)}" (Nghĩa: "${currentQuestion.meaningVi}").`
-                    : `Đáp án đúng là "${currentQuestion.targetWord}" vì từ này có nghĩa là "${currentQuestion.meaningVi}".`}
+                  {selectedGame === 'matchingGame'
+                    ? `Đáp án đúng: ` + (() => {
+                        const startIndex = Math.min(currentQIndex, 7);
+                        const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+                        return matchingWords.map(w => {
+                          const vocabItem = (vocabList || []).find(v => v.word.toLowerCase() === w.toLowerCase());
+                          const meaning = vocabItem ? vocabItem.meaningVi : '';
+                          return `${w.charAt(0).toUpperCase() + w.slice(1)} = ${meaning}`;
+                        }).join(', ');
+                      })()
+                    : selectedGame === 'chooseCorrect' && currentQuestion?.sentencePattern
+                    ? (currentQuestion.sentencePattern.includes('______')
+                        ? `Mẫu câu đúng: "${currentQuestion.sentencePattern.replace('______', currentQuestion.targetWord)}" (Nghĩa: "${currentQuestion.meaningVi}").`
+                        : `Mẫu câu đúng: "${currentQuestion.sentencePattern} ${currentQuestion.targetWord}" (Nghĩa: "${currentQuestion.meaningVi}").`)
+                    : `Đáp án đúng là "${currentQuestion?.targetWord || ''}" vì từ này có nghĩa là "${currentQuestion?.meaningVi || ''}".`}
                 </p>
               </div>
               <button
