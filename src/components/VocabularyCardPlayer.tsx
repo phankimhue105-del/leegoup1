@@ -269,7 +269,7 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted 
   const [imageError, setImageError] = useState(false);
 
   // Handle empty state (though curriculum should have vocab, some story lessons might be empty)
-  const items = vocabulary.length > 0 ? vocabulary : [
+  const items = vocabulary && vocabulary.length > 0 ? vocabulary : [
     { id: 'v-fallback-1', word: 'explorer', meaningVi: 'nhà thám hiểm' }
   ];
 
