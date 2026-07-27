@@ -257,21 +257,81 @@ export const SpeakingPractice: React.FC<Props> = ({
       soundFX.playFanfare();
     } catch (err) {
       console.error('Evaluate API error:', err);
-      // Fallback response matching layout
-      const score = Math.floor(Math.random() * 15) + 85;
+      
+      const studentClean = (text || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").trim();
+      const expectedClean = (activeTask.targetPhrase || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").trim();
+      
+      const isSingleWord = !expectedClean.includes(' ');
+      let accuracy = 0;
+      let correctWords: string[] = [];
+      let missingWords: string[] = [];
+      let incorrectWords: { expected: string; student: string }[] = [];
+      
+      if (isSingleWord) {
+        accuracy = studentClean === expectedClean ? 100 : (studentClean.includes(expectedClean) || expectedClean.includes(studentClean) ? 75 : 0);
+        if (accuracy === 100) {
+          correctWords = [expectedClean];
+        } else {
+          missingWords = [expectedClean];
+          incorrectWords = [{ expected: expectedClean, student: studentClean || '?' }];
+        }
+      } else {
+        const expWords = expectedClean.split(/\s+/).filter(w => w.length > 0);
+        const studWords = studentClean.split(/\s+/).filter(w => w.length > 0);
+        correctWords = expWords.filter(w => studWords.includes(w));
+        missingWords = expWords.filter(w => !studWords.includes(w));
+        studWords.filter(w => !expWords.includes(w)).forEach((w, idx) => {
+          incorrectWords.push({ expected: missingWords[idx] || '', student: w });
+        });
+        accuracy = expWords.length > 0 ? Math.round((correctWords.length / expWords.length) * 100) : 0;
+      }
+      
+      let accuracyScore = accuracy;
+      if (accuracy < 60) accuracyScore = Math.min(40, accuracy);
+      
+      let pronunciationScore = accuracy === 100 ? 95 : (accuracy >= 70 ? 75 : Math.min(40, accuracy));
+      let fluencyScore = 90;
+      let completionScore = isSingleWord ? (accuracy > 0 ? 100 : 0) : Math.min(100, Math.round(((studentClean.split(/\s+/).length) / (expectedClean.split(/\s+/).length)) * 100));
+      
+      let overallScore = Math.round(accuracyScore * 0.5 + pronunciationScore * 0.3 + fluencyScore * 0.1 + completionScore * 0.1);
+      
+      const matchesHighScore = isSingleWord ? (accuracy === 100) : (accuracy >= 90 && completionScore >= 90 && pronunciationScore >= 90);
+      if (!matchesHighScore && overallScore >= 90) {
+        overallScore = 89;
+      }
+
+      let comment = "";
+      if (overallScore >= 95) {
+        comment = "Xuất sắc! Em đọc đúng gần như hoàn toàn, phát âm rõ ràng và hoàn thành đầy đủ câu trả lời.";
+      } else if (overallScore >= 85) {
+        comment = "Em trả lời đúng hầu hết nội dung. Chỉ còn một vài âm cần phát âm rõ hơn để đạt điểm tối đa.";
+      } else if (overallScore >= 70) {
+        comment = "Em đã đọc đúng phần lớn câu trả lời, tuy nhiên còn thiếu hoặc sai một vài từ. Hãy nghe lại mẫu và luyện đọc thêm.";
+      } else if (overallScore >= 50) {
+        comment = "Em mới hoàn thành một phần câu trả lời. Hãy chú ý đọc đầy đủ và chính xác từng từ theo mẫu.";
+      } else {
+        comment = "Câu trả lời của em chưa khớp với yêu cầu. Hãy nghe lại mẫu và thử đọc lại từng từ trước khi đọc cả câu.";
+      }
+
       const fallback: SpeakingAssessment = {
-        overallScore: score,
-        pronunciation: score - 2,
-        fluency: score + 1,
-        accuracy: score,
-        completeness: score + 2,
-        confidence: score,
-        strength: 'Giọng đọc to và rõ ràng, phát âm rất tốt!',
-        suggestion: 'Chú ý phát âm mượt mà hơn ở các âm cuối nhé.',
-        encouragement: 'Tuyệt vời quá! Chúc mừng em đã hoàn thành nhiệm vụ! ⭐',
+        overallScore,
+        pronunciation: pronunciationScore,
+        fluency: fluencyScore,
+        accuracy: accuracyScore,
+        completeness: completionScore,
+        confidence: overallScore,
+        strength: '',
+        suggestion: '',
+        encouragement: '',
+        comment,
+        correctWords,
+        missingWords,
+        incorrectWords,
+        pronunciationProblems: []
       };
+
       setAssessment(fallback);
-      setScores((prev) => [...prev, score]);
+      setScores((prev) => [...prev, overallScore]);
       soundFX.playStar();
     } finally {
       setIsEvaluating(false);
@@ -478,7 +538,11 @@ export const SpeakingPractice: React.FC<Props> = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 mb-3 text-[10px]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3 text-[10px]">
+              <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50 text-center">
+                <span className="text-slate-500 font-semibold block">Độ chính xác</span>
+                <span className="font-black text-emerald-700 text-xs">{assessment.accuracy !== undefined ? assessment.accuracy : assessment.overallScore}%</span>
+              </div>
               <div className="bg-white/80 p-2 rounded-lg border border-emerald-100/50 text-center">
                 <span className="text-slate-500 font-semibold block">Phát âm</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.pronunciation}%</span>
@@ -491,6 +555,57 @@ export const SpeakingPractice: React.FC<Props> = ({
                 <span className="text-slate-500 font-semibold block">Mức độ hoàn thành</span>
                 <span className="font-black text-emerald-700 text-xs">{assessment.completeness}%</span>
               </div>
+            </div>
+
+            {/* Error Highlighting */}
+            <div className="mb-3 text-[11px] space-y-1.5 bg-white/60 p-2.5 rounded-xl border border-emerald-100/50 text-left">
+              {/* Correct Words */}
+              {assessment.correctWords && assessment.correctWords.length > 0 && (
+                <div>
+                  <span className="font-extrabold text-emerald-800">✅ Correct Words:</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {assessment.correctWords.map((w, idx) => (
+                      <span key={idx} className="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-md font-bold capitalize">{w}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Missing Words */}
+              {assessment.missingWords && assessment.missingWords.length > 0 && (
+                <div className="pt-1">
+                  <span className="font-extrabold text-rose-800">❌ Missing Words:</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {assessment.missingWords.map((w, idx) => (
+                      <span key={idx} className="bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded-md font-bold capitalize">{w}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Incorrect Words */}
+              {assessment.incorrectWords && assessment.incorrectWords.length > 0 && (
+                <div className="pt-1">
+                  <span className="font-extrabold text-amber-800">❌ Incorrect Words:</span>
+                  <div className="space-y-1 mt-1">
+                    {assessment.incorrectWords.map((item, idx) => (
+                      <div key={idx} className="text-[10px]">
+                        <span className="text-rose-600 font-bold line-through">Student: "{item.student}"</span>
+                        <span className="text-emerald-600 font-bold ml-1.5">Expected: "{item.expected}"</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Pronunciation Problems */}
+              {assessment.pronunciationProblems && assessment.pronunciationProblems.length > 0 && (
+                <div className="pt-1">
+                  <span className="font-extrabold text-amber-900">⚠️ Practice pronunciation of:</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {assessment.pronunciationProblems.map((w, idx) => (
+                      <span key={idx} className="bg-amber-100 text-amber-950 px-1.5 py-0.5 rounded-md font-bold border border-amber-300 capitalize">{w}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="text-[11px] space-y-1 text-slate-700 bg-white/60 p-2.5 rounded-xl border border-emerald-100/50">
