@@ -151,12 +151,8 @@ app.post('/api/evaluate-speaking', async (req, res) => {
         overallScore: 25,
         pronunciation: 20,
         fluency: 80,
-        accuracy: 5,
-        completeness: 100,
-        confidence: 30,
-        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
-        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
-        encouragement: `Cố lên nhé! Hãy tập trung đọc đúng từ yêu cầu: "${targetPhrase}".`,
+        completeness: 30,
+        comment: 'Em hãy nghe lại mẫu và thử đọc lại chậm hơn nhé.',
       });
     }
 
@@ -165,12 +161,8 @@ app.post('/api/evaluate-speaking', async (req, res) => {
         overallScore: 45,
         pronunciation: 40,
         fluency: 85,
-        accuracy: 10,
         completeness: 100,
-        confidence: 45,
-        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
-        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
-        encouragement: `Luyện tập thêm để nhớ và phát âm đúng từ "${targetPhrase}" nhé!`,
+        comment: 'Em hãy nghe lại mẫu và thử đọc lại chậm hơn nhé.',
       });
     }
 
@@ -180,12 +172,8 @@ app.post('/api/evaluate-speaking', async (req, res) => {
         overallScore: 92,
         pronunciation: 90,
         fluency: 95,
-        accuracy: 90,
         completeness: 95,
-        confidence: 90,
-        strength: 'Em đọc đúng hầu hết các từ.',
-        suggestion: 'Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn.',
-        encouragement: 'Tuyệt vời quá! Em đã hoàn thành thử thách xuất sắc! ⭐⭐',
+        comment: 'Em đọc khá tốt. Chỉ cần phát âm rõ hơn một vài từ.',
       });
     }
 
@@ -195,49 +183,32 @@ Expected Target Phrase: "${targetPhrase}"
 Actual learner transcript: "${transcript || ''}"
 
 Evaluation Rules (LeeGo Speaking Assessment Protocol):
-1. CRITICAL SCORING BRACKETS:
-   - Exact pronunciation + exact answer matching target phrase → 90-100.
-   - Correct answer with minor pronunciation errors → 75-89.
-   - Correct meaning but several pronunciation mistakes → 60-74.
-   - Pronunciation difficult to understand → 40-59.
-   - Wrong word or wrong sentence → Below 50.
+1. COMPARE target phrase against learner transcript.
+2. CRITICAL SCORING BRACKETS (must reflect actual performance):
+   - Correct answer → 90-100.
+   - One missing word → 70-85.
+   - Several mistakes → 50-70.
+   - Wrong answer → Below 50.
    - Completely unrelated answer → Below 30.
-   - CRITICAL: Never give an overall score above 90 unless the expected target phrase is spoken correctly!
-
-2. Evaluate exactly four separate criteria (0-100 each):
-   - Pronunciation (Phát âm): Evaluate pronunciation quality of the target word/sentence.
-   - Fluency (Độ trôi chảy): Evaluate rhythm, continuity, and pauses only. Do not confuse fluency with correctness.
-   - Accuracy (Độ chính xác): Compare spoken words against target. Penalize for substitutions, omissions, additions, or mismatch.
-   - Completeness (Mức độ hoàn thành): Evaluate if the student finished the required word/sentence completely.
-
-3. The overallScore must be calculated directly as a composite of these four criteria.
-
-4. Dynamic Vietnamese Feedback templates (MUST match the score exactly):
-   - Overall Score >= 95:
-     * strength: "Em phát âm rất rõ và đọc đúng hoàn toàn yêu cầu."
-     * suggestion: "Hãy tiếp tục giữ nhịp đọc tự nhiên như vậy."
-   - Overall Score between 80 and 94:
-     * strength: "Em đọc đúng hầu hết các từ."
-     * suggestion: "Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn."
-   - Overall Score between 60 and 79:
-     * strength: "Em đã đọc được phần lớn nội dung."
-     * suggestion: "Em nên nghe lại mẫu và luyện phát âm từng từ trước khi đọc cả câu."
-   - Overall Score < 60:
-     * strength: "Em đã cố gắng hoàn thành phần luyện nói."
-     * suggestion: "Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn."
-   - encouragement: A warm, supportive teacher comment in Vietnamese.
+   - CRITICAL: Never give an overall score above 90 unless the student's response matches the expected answer very closely!
+3. Evaluate exactly three separate criteria (0-100 each):
+   - Pronunciation (Phát âm): Evaluate pronunciation quality. Reduce if incorrect, increase if clear/natural.
+   - Fluency (Độ trôi chảy): Evaluate rhythm, hesitation, pauses, response time only.
+   - Completeness (Mức độ hoàn thành): Evaluate if the student finished the required answer (e.g. expected "This is a pencil." but said "This is..." -> low score).
+4. The overallScore must be calculated directly based on similarity, pronunciation, fluency, and completion.
+5. Vietnamese Feedback (comment): Output exactly ONE short comment depending on the overallScore:
+   - Score 95-100: "Rất tốt! Em đọc rõ ràng và hoàn thành đúng yêu cầu."
+   - Score 80-94: "Em đọc khá tốt. Chỉ cần phát âm rõ hơn một vài từ."
+   - Score 60-79: "Em đã hoàn thành phần lớn câu trả lời. Hãy luyện thêm để phát âm chính xác hơn."
+   - Score < 60: "Em hãy nghe lại mẫu và thử đọc lại chậm hơn nhé."
 
 Output JSON format ONLY:
 {
   "overallScore": number,
   "pronunciation": number,
   "fluency": number,
-  "accuracy": number,
   "completeness": number,
-  "confidence": number,
-  "strength": "string (strength from templates)",
-  "suggestion": "string (suggestion from templates)",
-  "encouragement": "string"
+  "comment": "string"
 }
 `;
 
@@ -253,14 +224,10 @@ Output JSON format ONLY:
             overallScore: { type: Type.INTEGER },
             pronunciation: { type: Type.INTEGER },
             fluency: { type: Type.INTEGER },
-            accuracy: { type: Type.INTEGER },
             completeness: { type: Type.INTEGER },
-            confidence: { type: Type.INTEGER },
-            strength: { type: Type.STRING },
-            suggestion: { type: Type.STRING },
-            encouragement: { type: Type.STRING },
+            comment: { type: Type.STRING },
           },
-          required: ['overallScore', 'pronunciation', 'fluency', 'accuracy', 'completeness', 'strength', 'suggestion', 'encouragement'],
+          required: ['overallScore', 'pronunciation', 'fluency', 'completeness', 'comment'],
         },
       },
     });
@@ -302,36 +269,24 @@ Output JSON format ONLY:
         overallScore: 25,
         pronunciation: 20,
         fluency: 80,
-        accuracy: 5,
-        completeness: 100,
-        confidence: 30,
-        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
-        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
-        encouragement: `Luyện nói thêm để nhớ đúng câu: "${targetPhrase}".`,
+        completeness: 30,
+        comment: 'Em hãy nghe lại mẫu và thử đọc lại chậm hơn nhé.',
       });
     } else if (isMismatch) {
       res.json({
         overallScore: 45,
         pronunciation: 40,
         fluency: 85,
-        accuracy: 10,
         completeness: 100,
-        confidence: 45,
-        strength: 'Em đã cố gắng hoàn thành phần luyện nói.',
-        suggestion: 'Hãy nghe lại mẫu, đọc chậm từng từ và thử lại để phát âm chính xác hơn.',
-        encouragement: `Em hãy nghe lại mẫu của LeeGo và đọc đúng từ "${targetPhrase}" nhé!`,
+        comment: 'Em hãy nghe lại mẫu và thử đọc lại chậm hơn nhé.',
       });
     } else {
       res.json({
         overallScore: 88,
         pronunciation: 85,
         fluency: 90,
-        accuracy: 88,
         completeness: 90,
-        confidence: 88,
-        strength: 'Em đọc đúng hầu hết các từ.',
-        suggestion: 'Chú ý phát âm rõ hơn một vài âm cuối để đạt điểm cao hơn.',
-        encouragement: 'Làm tốt lắm! Chúc mừng em đã hoàn thành xuất sắc nhiệm vụ! ⭐',
+        comment: 'Em đọc khá tốt. Chỉ cần phát âm rõ hơn một vài từ.',
       });
     }
   }
