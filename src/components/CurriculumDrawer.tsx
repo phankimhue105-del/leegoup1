@@ -24,7 +24,7 @@ function getCheckUpForUnit(unitNumber: number) {
   if (unitNumber === 2) return { number: 1, data: CURRICULUM_UNITS[0].checkUp, prevUnit: CURRICULUM_UNITS[0], currentUnit: CURRICULUM_UNITS[1] };
   if (unitNumber === 4) return { number: 2, data: CURRICULUM_UNITS[2].checkUp, prevUnit: CURRICULUM_UNITS[2], currentUnit: CURRICULUM_UNITS[3] };
   if (unitNumber === 6) return { number: 3, data: CURRICULUM_UNITS[4].checkUp, prevUnit: CURRICULUM_UNITS[4], currentUnit: CURRICULUM_UNITS[5] };
-  if (unitNumber === 8) return { number: 4, data: CURRICULUM_UNITS[6].checkUp, prevUnit: CURRICULUM_UNITS[6], currentUnit: CURRICULUM_UNITS[7] };
+  if (unitNumber === 8) return { number: 4, data: CURRICULUM_UNITS[7].checkUp, prevUnit: CURRICULUM_UNITS[6], currentUnit: CURRICULUM_UNITS[7] };
   return null;
 }
 
