@@ -86,8 +86,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const generateQuestions = () => {
     const rng = createSeededRandom(lesson.id || 'default-seed');
 
-    // Seeded shuffle helper
-    const seededShuffle = <T>(arr: T[]): T[] => {
+    function seededShuffle<T>(arr: T[]): T[] {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(rng() * (i + 1));
@@ -96,7 +95,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         copy[j] = temp;
       }
       return copy;
-    };
+    }
 
     const generatedQs: Question[] = [];
     for (let i = 0; i < 10; i++) {
@@ -214,7 +213,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     if (gameType === 'memoryGame') {
       const rng = createSeededRandom(`${lesson.id}-${currentQIndex}`);
-      const seededShuffle = <T>(arr: T[]): T[] => {
+      function seededShuffle<T>(arr: T[]): T[] {
         const copy = [...arr];
         for (let i = copy.length - 1; i > 0; i--) {
           const j = Math.floor(rng() * (i + 1));
@@ -223,7 +222,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           copy[j] = temp;
         }
         return copy;
-      };
+      }
 
       const activeWords = [q.targetWord];
       const otherWords = vocabList.filter(v => v.word.toLowerCase() !== q.targetWord.toLowerCase()).map(v => v.word);
@@ -489,7 +488,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setCurrentQIndex(0);
 
     const rng = createSeededRandom(lesson.id || 'default-seed');
-    const seededShuffle = <T>(arr: T[]): T[] => {
+    function seededShuffle<T>(arr: T[]): T[] {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(rng() * (i + 1));
@@ -498,7 +497,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         copy[j] = temp;
       }
       return copy;
-    };
+    }
 
     const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
     const shuffledGames = seededShuffle(games);
@@ -976,3 +975,4 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     </div>
   );
 };
+
