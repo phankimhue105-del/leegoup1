@@ -406,6 +406,7 @@ export default function App() {
                 <VocabularyCardPlayer
                   vocabulary={currentLessonToUse.vocabulary}
                   onCompleted={handleNextStage}
+                  isCheckUp={currentCheckUpNum !== null}
                 />
               )}
 
