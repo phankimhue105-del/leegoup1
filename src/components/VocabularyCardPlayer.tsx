@@ -7,6 +7,7 @@ import { soundFX } from '../utils/soundEffects';
 interface Props {
   vocabulary: VocabularyItem[];
   onCompleted: () => void;
+  isCheckUp?: boolean;
 }
 
 // IPA lookup dictionary for curriculum vocabulary
@@ -263,7 +264,7 @@ const EMOJI_LOOKUP: Record<string, string> = {
   boat: '⛵'
 };
 
-export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted }) => {
+export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted, isCheckUp }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showVietnamese, setShowVietnamese] = useState(true);
   const [imageError, setImageError] = useState(false);
@@ -274,6 +275,38 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted 
   ];
 
   const currentItem = items[currentIndex];
+  
+  const getTwoExampleSentences = (word: string, fallback: string) => {
+    const wordLower = word.toLowerCase().trim();
+    const plural = wordLower === 'bus' ? 'buses' : wordLower + 's';
+    
+    // Unit 7: Body parts
+    if (['arm', 'leg', 'foot', 'nose', 'mouth', 'eye', 'nose', 'ear', 'finger', 'toe', 'hand'].includes(wordLower)) {
+      return [`This is my ${wordLower}.`, `These are my ${plural}.`];
+    }
+    
+    // Unit 7: Healthy habits
+    if (wordLower.includes('wash') || wordLower.includes('brush')) {
+      return [`I can ${wordLower}.`, `Can you ${wordLower}?`];
+    }
+    
+    // Unit 8: Adjectives
+    if (['old', 'new', 'big', 'small', 'long', 'short', 'fast', 'slow', 'noisy', 'quiet'].includes(wordLower)) {
+      return [`That's an ${wordLower} toy.`, `Those are new toys.`];
+    }
+    
+    // Unit 8: Transportation
+    if (['bus', 'truck', 'train', 'boat'].includes(wordLower)) {
+      return [`It's a ${wordLower}.`, `They're ${plural}.`];
+    }
+    
+    return [
+      fallback || `It is a ${wordLower}.`,
+      `What is it? It's a ${wordLower}.`
+    ];
+  };
+
+  const twoExamples = isCheckUp ? getTwoExampleSentences(currentItem.word, currentItem.exampleSentence || '') : [];
   const wordLower = currentItem.word.toLowerCase().trim();
   const pronunciation = IPA_LOOKUP[wordLower] || `/${currentItem.word}/`;
   const emoji = EMOJI_LOOKUP[wordLower] || '🔤';
@@ -377,6 +410,40 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted 
             </p>
           )}
         </div>
+
+        {isCheckUp && (
+          <div className="w-full mt-5 pt-4 border-t border-red-100/60 text-left space-y-2">
+            <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block">
+              Review Example Sentences (Mẫu câu ôn tập)
+            </span>
+            {twoExamples.map((ex, idx) => (
+              <div key={idx} className="flex items-center gap-2 bg-slate-50 border border-slate-100 p-2 rounded-xl text-xs font-bold text-slate-700">
+                <span className="w-4 h-4 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-[10px] font-black shrink-0">{idx + 1}</span>
+                <span className="capitalize">{ex}</span>
+              </div>
+            ))}
+            
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent card tap
+                soundFX.playClick();
+                if (twoExamples[0]) {
+                  speakText(twoExamples[0], () => {
+                    setTimeout(() => {
+                      if (twoExamples[1]) {
+                        speakText(twoExamples[1], undefined, 0.85, 1.15);
+                      }
+                    }, 1200);
+                  }, 0.85, 1.15);
+                }
+              }}
+              className="w-full bg-red-100 hover:bg-red-200 text-red-700 font-black py-2.5 rounded-xl text-[10px] flex items-center justify-center gap-1.5 transition-all mt-2 active:scale-95 border border-red-200 shadow-2xs"
+            >
+              <Volume2 className="w-3.5 h-3.5 animate-pulse" />
+              <span>Listen Model Audio</span>
+            </button>
+          </div>
+        )}
 
         {/* Speaker Action Hint */}
         <div className="mt-6 flex items-center gap-2 text-xs font-black text-slate-400 group-hover:text-red-500 transition-colors bg-slate-50 group-hover:bg-red-50 px-4 py-2 rounded-full border border-slate-100 group-hover:border-red-200">
