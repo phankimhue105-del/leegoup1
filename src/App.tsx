@@ -24,7 +24,6 @@ import { SpeakingPractice } from './components/SpeakingPractice';
 import { CurriculumDrawer } from './components/CurriculumDrawer';
 import { RewardModal } from './components/RewardModal';
 import { VocabularyCardPlayer } from './components/VocabularyCardPlayer';
-import { CheckUpModule } from './components/CheckUpModule';
 import { speakText } from './utils/ttsPlayer';
 import { soundFX } from './utils/soundEffects';
 
@@ -33,6 +32,14 @@ function getModelPatternInfo(unitNumber: number, lessonNumber: number, lesson: L
   const defaultExamples = lesson.sentencePatterns.map(p => p.example).slice(0, 2);
   while (defaultExamples.length < 2) {
     defaultExamples.push(lesson.sentencePatterns[0]?.example || 'It is a pencil.');
+  }
+
+  if (lesson.id.startsWith('checkup-')) {
+    return {
+      structure: 'Check-Up Review (Ôn tập tổng hợp)',
+      examples: defaultExamples,
+      translationVi: 'Luyện nghe và luyện nói các mẫu câu cốt lõi đã học trong hai Unit vừa qua.'
+    };
   }
 
   // Define lookup patterns based on curriculum
@@ -333,7 +340,17 @@ export default function App() {
     }, 0.85, 1.15);
   };
 
-  const modelPatternInfo = getModelPatternInfo(currentUnit.number, currentLesson.number, currentLesson);
+  const checkUpVocab = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
+    ? [...checkUpUnitA.lessons, ...checkUpUnitB.lessons]
+        .flatMap((l) => l.vocabulary)
+        .filter((item, index, self) => self.findIndex(t => t.word === item.word) === index)
+    : [];
+
+  const checkUpPatterns = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
+    ? [...checkUpUnitA.lessons, ...checkUpUnitB.lessons]
+        .flatMap((l) => l.sentencePatterns)
+        .filter((item, index, self) => self.findIndex(t => t.pattern === item.pattern) === index)
+    : [];
 
   const checkUpUnitVirtual: Unit = currentCheckUpNum !== null ? {
     id: `checkup-u-${currentCheckUpNum}`,
@@ -349,17 +366,22 @@ export default function App() {
     number: currentCheckUpNum,
     title: `Units ${checkUpUnitA?.number} & ${checkUpUnitB?.number} Review`,
     learningObjective: `Review vocabulary, key patterns, listening, and speaking from Units ${checkUpUnitA?.number} and ${checkUpUnitB?.number}.`,
-    vocabulary: [],
-    sentencePatterns: [],
-    suggestedGames: []
+    vocabulary: checkUpVocab,
+    sentencePatterns: checkUpPatterns,
+    suggestedGames: ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut']
   } : currentLesson;
+
+  const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : currentLesson;
+  const currentUnitToUse = currentCheckUpNum !== null ? checkUpUnitVirtual : currentUnit;
+
+  const modelPatternInfo = getModelPatternInfo(currentUnitToUse.number, currentLessonToUse.number, currentLessonToUse);
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col font-sans">
       {/* Lesson Routine Header */}
       <LessonFlowHeader
-        currentUnit={checkUpUnitVirtual}
-        currentLesson={checkUpLessonVirtual}
+        currentUnit={currentUnitToUse}
+        currentLesson={currentLessonToUse}
         currentStage={currentStage}
         progress={progress}
         onSelectStage={handleStageChange}
@@ -378,22 +400,11 @@ export default function App() {
         {/* Dynamic Classroom Arena for Current Stage / Check-Up */}
         <div className="flex-1 bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md min-h-[420px] flex flex-col justify-between">
           
-          {currentCheckUpNum !== null ? (
-            <CheckUpModule
-              checkUpNumber={currentCheckUpNum}
-              unitA={checkUpUnitA!}
-              unitB={checkUpUnitB!}
-              onCompleted={handleCheckUpCompleted}
-              onCorrectAnswer={() => addStars(1)}
-              activeStage={currentStage}
-              onStageChange={(st) => setCurrentStage(st)}
-            />
-          ) : (
             <>
               {/* STAGE 1: VOCABULARY */}
               {currentStage === 'vocabulary' && (
                 <VocabularyCardPlayer
-                  vocabulary={currentLesson.vocabulary}
+                  vocabulary={currentLessonToUse.vocabulary}
                   onCompleted={handleNextStage}
                 />
               )}
@@ -450,7 +461,7 @@ export default function App() {
               {/* STAGE 3: PRACTICE */}
               {currentStage === 'practice' && (
                 <InteractiveGame
-                  lesson={currentLesson}
+                  lesson={currentLessonToUse}
                   onCorrectAnswer={() => addStars(1)}
                   onGameCompleted={handleNextStage}
                 />
@@ -459,7 +470,7 @@ export default function App() {
               {/* STAGE 4: SPEAKING */}
               {currentStage === 'speaking' && (
                 <SpeakingPractice
-                  lesson={currentLesson}
+                  lesson={currentLessonToUse}
                   studentName="Explorer"
                   onSpeakingCompleted={handleSpeakingCompleted}
                 />
@@ -475,10 +486,12 @@ export default function App() {
                     LeeGo English Explorer
                   </span>
                   <h2 className="text-3xl font-black text-slate-900 mb-2 animate-pulse">
-                    Lesson Completed!
+                    {currentCheckUpNum !== null ? 'Check-Up Completed!' : 'Lesson Completed!'}
                   </h2>
                   <p className="text-sm text-slate-600 max-w-md mb-6 font-semibold">
-                    Super job! You have finished all activities for <strong>{currentLesson.title}</strong>!
+                    {currentCheckUpNum !== null
+                      ? `Super job! You have completed the review of Units ${checkUpUnitA?.number} & ${checkUpUnitB?.number}!`
+                      : `Super job! You have finished all activities for ${currentLessonToUse.title}!`}
                   </p>
 
                   {/* Reward stats display */}
@@ -510,32 +523,47 @@ export default function App() {
                   <button
                     onClick={() => {
                       soundFX.playClick();
-                      const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
-                      if (currentIdx < currentUnit.lessons.length - 1) {
-                        handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
-                      } else {
-                        // Check if this even unit has a checkup and triggers it automatically
-                        const checkUpNumber = currentUnit.number / 2;
-                        const isEvenUnit = currentUnit.number % 2 === 0;
-                        const isCheckUpCompleted = progress.completedUnitIds.includes(`checkup-${checkUpNumber}`);
-                        
-                        if (isEvenUnit && !isCheckUpCompleted) {
-                          const unitA = CURRICULUM_UNITS[currentUnit.number - 2];
-                          const unitB = CURRICULUM_UNITS[currentUnit.number - 1];
-                          handleSelectCheckUp(checkUpNumber, unitA, unitB);
+                      if (currentCheckUpNum !== null) {
+                        const nextUnitIdx = currentCheckUpNum * 2; // e.g. Check-Up 1 -> Unit 3 (index 2)
+                        if (nextUnitIdx < CURRICULUM_UNITS.length) {
+                          const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+                          const updatedCompleted = [...progress.completedUnitIds];
+                          if (!updatedCompleted.includes(`checkup-${currentCheckUpNum}`)) {
+                            updatedCompleted.push(`checkup-${currentCheckUpNum}`);
+                          }
+                          setProgress((prev) => ({
+                            ...prev,
+                            completedUnitIds: updatedCompleted,
+                          }));
+                          setCurrentCheckUpNum(null);
+                          handleLessonSelect(nextUnit, nextUnit.lessons[0]);
                         } else {
-                          // Normal flow: load first lesson of next unit if unlocked
-                          const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
-                          if (nextUnitIdx < CURRICULUM_UNITS.length) {
-                            const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
-                            const isLocked = false;
-                            if (isLocked) {
-                              setIsDrawerOpen(true);
-                            } else {
-                              handleLessonSelect(nextUnit, nextUnit.lessons[0]);
-                            }
+                          setCurrentCheckUpNum(null);
+                          setIsDrawerOpen(true);
+                        }
+                      } else {
+                        const currentIdx = currentUnit.lessons.findIndex((l) => l.id === currentLesson.id);
+                        if (currentIdx < currentUnit.lessons.length - 1) {
+                          handleLessonSelect(currentUnit, currentUnit.lessons[currentIdx + 1]);
+                        } else {
+                          // Check if this even unit has a checkup and triggers it automatically
+                          const checkUpNumber = currentUnit.number / 2;
+                          const isEvenUnit = currentUnit.number % 2 === 0;
+                          const isCheckUpCompleted = progress.completedUnitIds.includes(`checkup-${checkUpNumber}`);
+                          
+                          if (isEvenUnit && !isCheckUpCompleted) {
+                            const unitA = CURRICULUM_UNITS[currentUnit.number - 2];
+                            const unitB = CURRICULUM_UNITS[currentUnit.number - 1];
+                            handleSelectCheckUp(checkUpNumber, unitA, unitB);
                           } else {
-                            setIsDrawerOpen(true);
+                            // Normal flow: load first lesson of next unit
+                            const nextUnitIdx = CURRICULUM_UNITS.findIndex(u => u.id === currentUnit.id) + 1;
+                            if (nextUnitIdx < CURRICULUM_UNITS.length) {
+                              const nextUnit = CURRICULUM_UNITS[nextUnitIdx];
+                              handleLessonSelect(nextUnit, nextUnit.lessons[0]);
+                            } else {
+                              setIsDrawerOpen(true);
+                            }
                           }
                         }
                       }
@@ -547,7 +575,6 @@ export default function App() {
                 </div>
               )}
             </>
-          )}
 
           {/* Navigation Controls Footer */}
           <div className="flex items-center justify-between border-t border-red-100 pt-4 mt-6">
