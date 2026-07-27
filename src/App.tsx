@@ -217,8 +217,8 @@ export default function App() {
           lessonTitle: currentLesson.title,
           stage: currentStage,
           userMessage: userMsg,
-          currentVocab: currentLesson.vocabulary.map((v) => v.word),
-          currentPattern: currentLesson.sentencePatterns[0]?.pattern,
+          currentVocab: (currentLesson.vocabulary || []).map((v) => v.word),
+          currentPattern: (currentLesson.sentencePatterns || [])[0]?.pattern,
         }),
       });
 
@@ -342,13 +342,13 @@ export default function App() {
 
   const checkUpVocab = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
     ? [...checkUpUnitA.lessons, ...checkUpUnitB.lessons]
-        .flatMap((l) => l.vocabulary)
+        .flatMap((l) => l.vocabulary || [])
         .filter((item, index, self) => self.findIndex(t => t.word === item.word) === index)
     : [];
 
   const checkUpPatterns = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
     ? [...checkUpUnitA.lessons, ...checkUpUnitB.lessons]
-        .flatMap((l) => l.sentencePatterns)
+        .flatMap((l) => l.sentencePatterns || [])
         .filter((item, index, self) => self.findIndex(t => t.pattern === item.pattern) === index)
     : [];
 
