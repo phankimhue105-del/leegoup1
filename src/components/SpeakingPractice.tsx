@@ -57,16 +57,17 @@ export const SpeakingPractice: React.FC<Props> = ({
 
   // Generate 5 speaking tasks when lesson changes
   useEffect(() => {
-    const vocabList = lesson.vocabulary.length > 0 ? lesson.vocabulary : [
+    const vocabList = lesson.vocabulary && lesson.vocabulary.length > 0 ? lesson.vocabulary : [
       { id: 'v-fb-1', word: 'pencil', meaningVi: 'bút chì', exampleSentence: 'It is a pencil.' },
       { id: 'v-fb-2', word: 'book', meaningVi: 'sách', exampleSentence: 'It is a book.' },
       { id: 'v-fb-3', word: 'eraser', meaningVi: 'cục tẩy', exampleSentence: 'It is an eraser.' },
       { id: 'v-fb-4', word: 'ruler', meaningVi: 'thước kẻ', exampleSentence: 'It is a ruler.' }
     ];
 
-    const pattern = lesson.sentencePatterns[0]?.pattern || 'It is a/an ______.';
-    const example1 = lesson.sentencePatterns[0]?.example || 'It is a pencil.';
-    const example2 = lesson.sentencePatterns[1]?.example || lesson.sentencePatterns[0]?.example || 'It is a book.';
+    const sentencePatterns = lesson.sentencePatterns || [];
+    const pattern = sentencePatterns[0]?.pattern || 'It is a/an ______.';
+    const example1 = sentencePatterns[0]?.example || 'It is a pencil.';
+    const example2 = sentencePatterns[1]?.example || sentencePatterns[0]?.example || 'It is a book.';
 
     const word1 = vocabList[0].word;
     const word2 = vocabList[1]?.word || word1;
@@ -96,9 +97,9 @@ export const SpeakingPractice: React.FC<Props> = ({
         number: 3,
         type: 'answer_question',
         instruction: "Answer the teacher's question!",
-        teacherQuestion: lesson.sentencePatterns[0]?.pattern.includes('color')
+        teacherQuestion: pattern.includes('color')
           ? 'What color is it?'
-          : lesson.sentencePatterns[0]?.pattern.includes('many')
+          : pattern.includes('many')
           ? `How many ${word2}s?`
           : 'What is it?',
         promptText: example2,
@@ -116,9 +117,9 @@ export const SpeakingPractice: React.FC<Props> = ({
         number: 5,
         type: 'conversation',
         instruction: 'Complete the mini conversation!',
-        teacherQuestion: lesson.sentencePatterns[0]?.pattern.includes('color')
+        teacherQuestion: pattern.includes('color')
           ? 'What color is it?'
-          : lesson.sentencePatterns[0]?.pattern.includes('many')
+          : pattern.includes('many')
           ? `How many ${word1}s?`
           : 'What is it?',
         promptText: example1,
