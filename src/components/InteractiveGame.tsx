@@ -210,12 +210,12 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const oddChoices = seededShuffle([...oddList, oddDistractor]);
 
       generatedQs.push({
-        targetWord: isConversational ? makeFullSentence(vocab.word) : vocab.word,
+        targetWord: vocab.word,
         meaningVi: vocab.meaningVi || vocab.word,
         emoji,
         choices,
         sentencePattern,
-        unscrambledLetters: seededShuffle(vocab.word.split('')),
+        unscrambledLetters: seededShuffle((vocab.word || '').replace(/\s+/g, '').split('')),
         oddChoices
       });
     }
@@ -434,19 +434,39 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     soundFX.playStar();
   };
 
+  // Safe fail for stability checks (placed before state dependencies to prevent crashes on initial render)
+  if (!questions || questions.length === 0 || !questions[currentQIndex]) {
+    return (
+      <div className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md text-center max-w-lg mx-auto my-6 animate-fadeIn">
+        <p className="text-red-500 font-extrabold text-sm mb-2">⚠️ Lỗi tải bài tập luyện tập</p>
+        <p className="text-xs text-slate-500 font-semibold mb-4">Đang chuẩn bị câu hỏi luyện tập cho bài học...</p>
+        <button
+          onClick={generateQuestions}
+          className="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-5 py-2 rounded-xl transition-all shadow-xs"
+        >
+          Tải lại câu hỏi
+        </button>
+      </div>
+    );
+  }
+
+  const currentQuestion = questions[currentQIndex];
+
   const isReadyToSubmit = (() => {
+    if (!currentQuestion) return false;
     if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
       return selectedOption !== null;
     }
     if (selectedGame === 'wordPuzzle') {
-      return unscrambleInput.length === currentQuestion.targetWord.length;
+      const targetLen = currentQuestion.targetWord ? currentQuestion.targetWord.replace(/\s+/g, '').length : 0;
+      return unscrambleInput.length === targetLen;
     }
     if (selectedGame === 'matchingGame') {
       return Object.keys(tempPairs).length === 3;
     }
     if (selectedGame === 'memoryGame') {
       // Memory game is submitted once all cards are matched
-      return memoryCards.every(c => c.matched);
+      return memoryCards && memoryCards.length > 0 && memoryCards.every(c => c.matched);
     }
     return false;
   })();
@@ -455,9 +475,31 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     if (isAnswerCorrect !== null || !isReadyToSubmit) return;
 
     if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
-      const target = selectedGame === 'oddOneOut'
-        ? currentQuestion.oddChoices?.find(choice => ODD_WORDS.includes(choice)) || ''
-        : currentQuestion.targetWord;
+      let target = currentQuestion.targetWord;
+      if (selectedGame === 'oddOneOut') {
+        target = currentQuestion.oddChoices?.find(choice => ODD_WORDS.includes(choice)) || '';
+      } else if (selectedGame === 'chooseCorrect') {
+        // If it's a conversational question (sentencePattern has no blank ______)
+        if (currentQuestion.sentencePattern && !currentQuestion.sentencePattern.includes('______')) {
+          const word = currentQuestion.targetWord;
+          const wordLower = word.toLowerCase();
+          const prompt = currentQuestion.sentencePattern;
+          if (prompt.includes('How old are you')) {
+            target = `I'm ${wordLower}.`;
+          } else if (prompt.includes('What color is it')) {
+            target = `It's ${wordLower}.`;
+          } else if (prompt.includes("What's this")) {
+            target = `This is ${wordLower}.`;
+          } else if (prompt.includes('What is it')) {
+            const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
+            target = `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
+          } else if (prompt.includes('How many')) {
+            target = `${word.charAt(0).toUpperCase() + word.slice(1)}.`;
+          } else if (prompt.includes("Who's this")) {
+            target = `This is my ${wordLower}.`;
+          }
+        }
+      }
       const isCorrect = selectedOption?.toLowerCase() === target.toLowerCase();
 
       setIsAnswerCorrect(isCorrect);
@@ -471,7 +513,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       }
     } else if (selectedGame === 'wordPuzzle') {
       const spelled = unscrambleInput.join('');
-      const isCorrect = spelled.toLowerCase() === currentQuestion.targetWord.toLowerCase();
+      const targetClean = (currentQuestion?.targetWord || '').replace(/\s+/g, '');
+      const isCorrect = spelled.toLowerCase() === targetClean.toLowerCase();
 
       setIsAnswerCorrect(isCorrect);
       recordAnswer(spelled, isCorrect);
@@ -570,23 +613,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     onGameCompleted();
   };
 
-  // Safe fail for stability checks
-  if (questions.length === 0 || !questions[currentQIndex]) {
-    return (
-      <div className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md text-center max-w-lg mx-auto my-6">
-        <p className="text-red-500 font-extrabold text-sm mb-2">⚠️ Lỗi tải bài tập luyện tập</p>
-        <p className="text-xs text-slate-500 font-semibold mb-4">Không thể nạp dữ liệu câu hỏi từ học liệu. Hãy thử tải lại bài học!</p>
-        <button
-          onClick={generateQuestions}
-          className="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-5 py-2 rounded-xl transition-all shadow-xs"
-        >
-          Tải lại câu hỏi
-        </button>
-      </div>
-    );
-  }
 
-  const currentQuestion = questions[currentQIndex];
 
   // RENDER RESULTS SUMMARY
   if (showSummary) {
@@ -779,32 +806,79 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion?.meaningVi || ''})</p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {(currentQuestion?.choices || []).map((choice, idx) => {
-                const isSelected = selectedOption === choice;
-                const isTarget = choice.toLowerCase() === (currentQuestion?.targetWord || '').toLowerCase();
-                
-                let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
-                if (isAnswerCorrect !== null) {
-                  if (isSelected) {
-                    btnStyle = isAnswerCorrect ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg' : 'bg-rose-600 border-rose-600 text-white shadow-md';
-                  } else if (isTarget) {
-                    btnStyle = 'bg-emerald-100 border-emerald-500 text-emerald-800 font-extrabold';
+              {(() => {
+                const rawChoices = currentQuestion?.choices || [];
+                const isConv = currentQuestion?.sentencePattern && !currentQuestion.sentencePattern.includes('______');
+                return rawChoices.map((choice, idx) => {
+                  let displayChoice = choice;
+                  if (isConv) {
+                    const wordLower = choice.toLowerCase();
+                    const prompt = currentQuestion.sentencePattern || '';
+                    if (prompt.includes('How old are you')) {
+                      displayChoice = `I'm ${wordLower}.`;
+                    } else if (prompt.includes('What color is it')) {
+                      displayChoice = `It's ${wordLower}.`;
+                    } else if (prompt.includes("What's this")) {
+                      displayChoice = `This is ${wordLower}.`;
+                    } else if (prompt.includes('What is it')) {
+                      const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
+                      displayChoice = `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
+                    } else if (prompt.includes('How many')) {
+                      displayChoice = `${choice.charAt(0).toUpperCase() + choice.slice(1)}.`;
+                    } else if (prompt.includes("Who's this")) {
+                      displayChoice = `This is my ${wordLower}.`;
+                    }
                   }
-                } else if (isSelected) {
-                  btnStyle = 'bg-red-50 border-red-500 text-red-900 font-black shadow-xs scale-102';
-                }
 
-                return (
-                  <button
-                    key={idx}
-                    disabled={isAnswerCorrect !== null}
-                    onClick={() => handleSelectOption(choice)}
-                    className={`p-4 rounded-2xl border-2 text-base font-extrabold capitalize transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
-                  >
-                    {choice}
-                  </button>
-                );
-              })}
+                  const isSelected = selectedOption === displayChoice;
+                  
+                  // Compute target display string to highlight correct option
+                  let displayTarget = currentQuestion.targetWord;
+                  if (isConv) {
+                    const correctWord = currentQuestion.targetWord;
+                    const wordLower = correctWord.toLowerCase();
+                    const prompt = currentQuestion.sentencePattern || '';
+                    if (prompt.includes('How old are you')) {
+                      displayTarget = `I'm ${wordLower}.`;
+                    } else if (prompt.includes('What color is it')) {
+                      displayTarget = `It's ${wordLower}.`;
+                    } else if (prompt.includes("What's this")) {
+                      displayTarget = `This is ${wordLower}.`;
+                    } else if (prompt.includes('What is it')) {
+                      const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
+                      displayTarget = `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
+                    } else if (prompt.includes('How many')) {
+                      displayTarget = `${correctWord.charAt(0).toUpperCase() + correctWord.slice(1)}.`;
+                    } else if (prompt.includes("Who's this")) {
+                      displayTarget = `This is my ${wordLower}.`;
+                    }
+                  }
+
+                  const isTarget = displayChoice.toLowerCase() === displayTarget.toLowerCase();
+
+                  let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
+                  if (isAnswerCorrect !== null) {
+                    if (isSelected) {
+                      btnStyle = isAnswerCorrect ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg' : 'bg-rose-600 border-rose-600 text-white shadow-md';
+                    } else if (isTarget) {
+                      btnStyle = 'bg-emerald-100 border-emerald-500 text-emerald-800 font-extrabold';
+                    }
+                  } else if (isSelected) {
+                    btnStyle = 'bg-red-50 border-red-500 text-red-900 font-black shadow-xs scale-102';
+                  }
+
+                  return (
+                    <button
+                      key={idx}
+                      disabled={isAnswerCorrect !== null}
+                      onClick={() => handleSelectOption(displayChoice)}
+                      className={`p-4 rounded-2xl border-2 text-base font-extrabold capitalize transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
+                    >
+                      {displayChoice}
+                    </button>
+                  );
+                });
+              })()}
             </div>
           </div>
         )}
