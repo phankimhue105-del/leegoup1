@@ -170,8 +170,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   useEffect(() => {
     const rng = createSeededRandom(lesson.id || 'default-seed');
     
-    // Seeded shuffle helper
-    const seededShuffle = <T>(arr: T[]): T[] => {
+    function seededShuffle<T>(arr: T[]): T[] {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(rng() * (i + 1));
@@ -180,7 +179,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         copy[j] = temp;
       }
       return copy;
-    };
+    }
 
     const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
     const shuffledGames = seededShuffle(games);
@@ -975,4 +974,3 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     </div>
   );
 };
-
