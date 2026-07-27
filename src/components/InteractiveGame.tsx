@@ -7,7 +7,7 @@ import { soundFX } from '../utils/soundEffects';
 interface Props {
   lesson: Lesson;
   onCorrectAnswer: () => void;
-  onGameCompleted: () => void;
+  onGameCompleted: (score: number) => void;
 }
 
 const ODD_WORDS = ['dinosaur', 'spaceship', 'hamburger', 'guitar', 'alien', 'octopus', 'wizard', 'volcano'];
@@ -610,7 +610,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
   const handleContinueToSpeaking = () => {
     soundFX.playClick();
-    onGameCompleted();
+    const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
+    const scorePercentage = Math.round((correctCount / 10) * 100);
+    onGameCompleted(scorePercentage);
   };
 
 
