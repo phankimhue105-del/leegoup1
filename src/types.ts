@@ -89,6 +89,7 @@ export interface SpeakingAssessment {
   strength: string;
   suggestion: string;
   encouragement: string;
+  comment?: string;
 }
 
 export interface AITeacherResponse {
