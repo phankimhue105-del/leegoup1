@@ -104,6 +104,13 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be friendly.'
         },
         suggestedGames: ['flashcard', 'sentenceBuilder'],
+        practiceQuestions: [
+          { image: '👋', vocabulary: 'fine', question: 'What does the teacher ask?', choices: ["How are you?", "What is it?", "Is it a circle?", "Who's this?"], correctAnswer: "How are you?" },
+          { image: '😊', vocabulary: 'fine', question: 'How does the student feel?', choices: ["I'm fine. Thank you.", "No, it isn't.", "It's a pencil.", "This is paint."], correctAnswer: "I'm fine. Thank you." },
+          { image: '👋', vocabulary: 'fine', question: 'Complete the dialogue: "How are you? - I\'m ______, thank you."', choices: ["fine", "pencil", "ruler", "blue"], correctAnswer: "fine" },
+          { image: '😊', vocabulary: 'great', question: 'Complete the dialogue: "How are you? - I\'m great! ______."', choices: ["Thank you.", "No, it isn't.", "It is a circle.", "This is paint."], correctAnswer: "Thank you." },
+          { image: '👋', vocabulary: 'fine', question: 'When you meet your teacher, you say:', choices: ["How are you?", "It is a desk.", "What color is it?", "What's this?"], correctAnswer: "How are you?" }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '😊', promptText: 'great', targetPhrase: 'great' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '👋', promptText: 'How are you?', targetPhrase: 'How are you?' },
@@ -142,7 +149,21 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 1 (Units 1–2)',
       description: 'Review vocabulary and sentence patterns from Units 1 and 2.',
       phonics: ['dog', 'bug', 'pop', 'pig', 'fog', 'top', 'dad', 'dig', 'mat', 'mud', 'nap', 'nod'],
-      project: 'Color Poster'
+      project: 'Color Poster',
+      practiceQuestions: [
+        { image: '✏️', vocabulary: 'pencil', question: "What is it?", choices: ["It's a pencil.", "It's a backpack.", "This is paint.", "It's red."], correctAnswer: "It's a pencil." },
+        { image: '📓', vocabulary: 'notebook', question: "What is it?", choices: ["It's a notebook.", "It's a desk.", "This is paper.", "It's white."], correctAnswer: "It's a notebook." },
+        { image: '🪑', vocabulary: 'chair', question: "What is it?", choices: ["It's a chair.", "It's a book.", "This is chalk.", "It's blue."], correctAnswer: "It's a chair." },
+        { image: '🎨', vocabulary: 'paint', question: "What's this?", choices: ["This is paint.", "This is yarn.", "It's a notebook.", "It's red."], correctAnswer: "This is paint." },
+        { image: '🧴', vocabulary: 'glue', question: "What's this?", choices: ["This is glue.", "This is tape.", "It's a pencil case.", "It's yellow."], correctAnswer: "This is glue." }
+      ],
+      speakingTasks: [
+        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎒', promptText: 'backpack', targetPhrase: 'backpack' },
+        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '👝', promptText: 'It is a pencil case.', targetPhrase: 'It is a pencil case.' },
+        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '📖', teacherQuestion: 'What is it?', promptText: "It's a book.", targetPhrase: "It's a book." },
+        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🟢', promptText: "It's green.", targetPhrase: "It's green." },
+        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🧴', teacherQuestion: "What's this?", promptText: 'This is glue.', targetPhrase: 'This is glue.' }
+      ]
     }
   },
   {
@@ -248,6 +269,13 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be nice.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🤝', vocabulary: 'share', question: 'What does the friend want to do?', choices: ["Let's share.", "What color is it?", "This is glue.", "Is it a notebook?"], correctAnswer: "Let's share." },
+          { image: '🎨', vocabulary: 'paint', question: 'What do they share?', choices: ["blue paint", "a notebook", "a pencil case", "a backpack"], correctAnswer: "blue paint" },
+          { image: '🤝', vocabulary: 'share', question: 'Complete: "Let\'s share. - ______."', choices: ["OK.", "No, it isn't.", "This is chalk.", "It's yellow."], correctAnswer: "OK." },
+          { image: '🤝', vocabulary: 'share', question: 'Complete: "Can we share? - Yes, let\'s ______."', choices: ["share", "paint", "blue", "glue"], correctAnswer: "share" },
+          { image: '🤝', vocabulary: 'share', question: 'When you want to share your toys, you say:', choices: ["Let's share.", "What is it?", "Is this paint?", "What's this?"], correctAnswer: "Let's share." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🤝', promptText: 'share', targetPhrase: 'share' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🤝', promptText: "Let's share.", targetPhrase: "Let's share." },
@@ -282,32 +310,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🟤', teacherQuestion: 'What color is it?', promptText: "It's brown.", targetPhrase: "It's brown." }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 1 (Units 1–2)',
-      description: 'Review vocabulary and sentence patterns from Units 1 and 2.',
-      phonics: ['dog', 'bug', 'pop', 'pig', 'fog', 'top', 'dad', 'dig', 'mat', 'mud', 'nap', 'nod'],
-      project: 'Color Poster',
-      practiceQuestions: [
-        { image: '✏️', vocabulary: 'pencil', question: "What is it?", choices: ["It's a pencil.", "It's a backpack.", "This is paint.", "It's red."], correctAnswer: "It's a pencil." },
-        { image: '📓', vocabulary: 'notebook', question: "What is it?", choices: ["It's a notebook.", "It's a desk.", "This is paper.", "It's white."], correctAnswer: "It's a notebook." },
-        { image: '🪑', vocabulary: 'chair', question: "What is it?", choices: ["It's a chair.", "It's a book.", "This is chalk.", "It's blue."], correctAnswer: "It's a chair." },
-        { image: '🎨', vocabulary: 'paint', question: "What's this?", choices: ["This is paint.", "This is yarn.", "It's a notebook.", "It's red."], correctAnswer: "This is paint." },
-        { image: '🧴', vocabulary: 'glue', question: "What's this?", choices: ["This is glue.", "This is tape.", "It's a pencil case.", "It's yellow."], correctAnswer: "This is glue." },
-        { image: '🔴', vocabulary: 'red', question: "What color is it?", choices: ["It's red.", "It's blue.", "It's a desk.", "It's a ruler."], correctAnswer: "It's red." },
-        { image: '🔵', vocabulary: 'blue', question: "What color is it?", choices: ["It's blue.", "It's yellow.", "It's a chair.", "It's a book."], correctAnswer: "It's blue." },
-        { image: '🎒', vocabulary: 'backpack', question: "Is it a backpack?", choices: ["Yes, it is.", "No, it isn't.", "It's red.", "It's blue."], correctAnswer: "Yes, it is." },
-        { image: '📄', vocabulary: 'paper', question: "What's this?", choices: ["This is paper.", "This is paint.", "It's a notebook.", "It's a book."], correctAnswer: "This is paper." },
-        { image: '⚫', vocabulary: 'black', question: "What color is it?", choices: ["It's black.", "It's white.", "It's a circle.", "It's a square."], correctAnswer: "It's black." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎒', promptText: 'backpack', targetPhrase: 'backpack' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '👝', promptText: 'It is a pencil case.', targetPhrase: 'It is a pencil case.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '📖', teacherQuestion: 'What is it?', promptText: "It's a book.", targetPhrase: "It's a book." },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🟢', promptText: "It's green.", targetPhrase: "It's green." },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🧴', teacherQuestion: "What's this?", promptText: 'This is glue.', targetPhrase: 'This is glue.' }
-      ]
-    }
+    ]
   },
   {
     id: 'unit-3',
@@ -421,12 +424,19 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be fair.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🎮', vocabulary: 'play', question: 'What does the friend say when it is the student\'s turn?', choices: ["It's your turn.", "How many?", "I have one game.", "Let's play!"], correctAnswer: "It's your turn." },
+          { image: '🎮', vocabulary: 'play', question: 'What does the student say to show politeness?', choices: ["Thank you.", "It's your turn.", "I have a puzzle.", "Two cars."], correctAnswer: "Thank you." },
+          { image: '🎮', vocabulary: 'play', question: 'Complete: "It\'s your turn. - ______."', choices: ["Thank you.", "No, it isn't.", "One doll.", "I'm seven."], correctAnswer: "Thank you." },
+          { image: '🎮', vocabulary: 'play', question: 'Complete: "Let\'s play! - Okay, let\'s ______."', choices: ["play", "turn", "game", "puzzle"], correctAnswer: "play" },
+          { image: '🎮', vocabulary: 'play', question: 'When your friend gives you a toy to play, you say:', choices: ["Thank you.", "How many?", "Is it a car?", "No, it isn't."], correctAnswer: "Thank you." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎮', promptText: 'play', targetPhrase: 'play' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🎮', promptText: "Let's play!", targetPhrase: "Let's play!" },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '⚽⚽', teacherQuestion: 'How many?', promptText: 'Three balls.', targetPhrase: 'Three balls.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚗', promptText: 'I have one car.', targetPhrase: 'I have one car.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🎮', teacherQuestion: "Let's play soccer.", promptText: "Okay, let's play.", targetPhrase: "Okay, let's play." }
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '⚽⚽', teacherQuestion: 'It\'s your turn.', promptText: 'Thank you.', targetPhrase: 'Thank you.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🎮', promptText: "Let's play a game.", targetPhrase: "Let's play a game." },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '⚽🏃', teacherQuestion: "Let's play soccer.", promptText: "Okay, let's play.", targetPhrase: "Okay, let's play." }
         ]
       },
       {
@@ -460,6 +470,13 @@ export const CURRICULUM_UNITS: Unit[] = [
       description: 'Review vocabulary and sentence patterns from Units 3 and 4.',
       phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
       project: 'All About Me Book',
+      practiceQuestions: [
+        { image: '7️⃣', vocabulary: 'seven', question: "How old are you?", choices: ["I'm seven.", "I'm eight.", "This is my father.", "I like pizza."], correctAnswer: "I'm seven." },
+        { image: '🚗🚗', vocabulary: 'cars', question: "How many cars?", choices: ["Two cars.", "One car.", "This is my mother.", "I don't like juice."], correctAnswer: "Two cars." },
+        { image: '👩', vocabulary: 'mother', question: "Who's this?", choices: ["This is my mother.", "This is my brother.", "Two cars.", "I like ice cream."], correctAnswer: "This is my mother." },
+        { image: '🍕', vocabulary: 'pizza', question: "Do you like pizza?", choices: ["Yes, I do.", "No, it don't.", "This is my father.", "One doll."], correctAnswer: "Yes, I do." },
+        { image: '🍪', vocabulary: 'cookie', question: "What is it?", choices: ["It's a cookie.", "It's bread.", "This is my sister.", "Three balls."], correctAnswer: "It's a cookie." }
+      ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
         { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '8️⃣', promptText: "I'm eight years old.", targetPhrase: "I'm eight years old." },
@@ -561,6 +578,13 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be kind.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🍪', vocabulary: 'cookie', question: 'What does the friend say when giving a cookie?', choices: ["Here you are.", "Who's this?", "Do you like chicken?", "I like pizza."], correctAnswer: "Here you are." },
+          { image: '🍪', vocabulary: 'cookie', question: 'What does the friend say after the student says "Thank you"?', choices: ["You're welcome.", "Here you are.", "I like cookies.", "This is bread."], correctAnswer: "You're welcome." },
+          { image: '🍪', vocabulary: 'cookie', question: 'Complete: "Here you are. - ______."', choices: ["Thank you.", "You're welcome.", "I don't like juice.", "This is my mother."], correctAnswer: "Thank you." },
+          { image: '🍪', vocabulary: 'cookie', question: 'Complete: "Thank you. - You\'re ______."', choices: ["welcome", "here", "welcome you", "cookies"], correctAnswer: "welcome" },
+          { image: '🍪', vocabulary: 'cookie', question: 'When someone says "Thank you", you reply:', choices: ["You're welcome.", "Here you are.", "I like pizza.", "No, I don't."], correctAnswer: "You're welcome." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍪', promptText: 'cookie', targetPhrase: 'cookie' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🍪', promptText: 'Here you are.', targetPhrase: 'Here you are.' },
@@ -674,11 +698,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be helpful.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🏃', vocabulary: 'help', question: 'What does the friend say when they need help?', choices: ["Please help me.", "Look at me!", "Can you do it?", "I can run."], correctAnswer: "Please help me." },
+          { image: '🏃', vocabulary: 'help', question: 'What does the student reply to show they will help?', choices: ["Sure.", "Please help me.", "No, I can't.", "Look at me!"], correctAnswer: "Sure." },
+          { image: '🏃', vocabulary: 'help', question: 'Complete: "Please help me. - ______."', choices: ["Sure.", "I can see a flower.", "There are ants.", "I like monkeys."], correctAnswer: "Sure." },
+          { image: '🏃', vocabulary: 'help', question: 'Complete: "Can you help me? - Yes, I ______."', choices: ["can", "can't", "do", "don't"], correctAnswer: "can" },
+          { image: '🏃', vocabulary: 'help', question: 'When you cannot ride a bike and need help, you say:', choices: ["Please help me.", "Look at me!", "I can do it.", "Can you see a turtle?"], correctAnswer: "Please help me." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏃', promptText: 'run', targetPhrase: 'run' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏃', promptText: 'Look at me!', targetPhrase: 'Look at me!' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you do it?', promptText: 'Yes, I can do it.', targetPhrase: 'Yes, I can do it.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏃‍♀️', promptText: 'She can run.', targetPhrase: 'She can run.' },
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏃', promptText: 'help', targetPhrase: 'help' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏃', promptText: 'Please help me.', targetPhrase: 'Please help me.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you help me?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏃', promptText: 'Please help me run.', targetPhrase: 'Please help me run.' },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚴', teacherQuestion: 'Can you ride a bike?', promptText: 'Yes, I can. Look at me!', targetPhrase: 'Yes, I can. Look at me!' }
         ]
       },
@@ -713,6 +744,13 @@ export const CURRICULUM_UNITS: Unit[] = [
       description: 'Review Nature, Activities, Animals, Abilities, Locations and Conversations.',
       phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
       project: 'Tangram Animals',
+      practiceQuestions: [
+        { image: '🌸', vocabulary: 'flower', question: "What can you see?", choices: ["I can see a flower.", "I can see a river.", "I can play soccer.", "This is a zebra."], correctAnswer: "I can see a flower." },
+        { image: '🚴', vocabulary: 'ride a bike', question: "Can you ride a bike?", choices: ["Yes, I can.", "No, I can't.", "The bear is on the rock.", "Zebras can run."], correctAnswer: "Yes, I can." },
+        { image: '🐒', vocabulary: 'monkey', question: "Where is the monkey?", choices: ["It's in the tree.", "It's on the rock.", "I see a frog.", "They're snakes."], correctAnswer: "It's in the tree." },
+        { image: '🦓', vocabulary: 'zebra', question: "What is this?", choices: ["This is a zebra.", "That is a snake.", "I like tigers.", "There is a turtle."], correctAnswer: "This is a zebra." },
+        { image: '🏊', vocabulary: 'swim', question: "Can penguins swim?", choices: ["Yes, they can.", "No, they can't.", "They can hop.", "They can walk."], correctAnswer: "Yes, they can." }
+      ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
         { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏊', promptText: 'I can swim.', targetPhrase: 'I can swim.' },
@@ -799,10 +837,17 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be safe.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🐸', vocabulary: 'sorry', question: 'What does the student say when they make a mistake?', choices: ["I'm sorry.", "That's OK.", "Where is the frog?", "It's on the rock."], correctAnswer: "I'm sorry." },
+          { image: '🐸', vocabulary: 'sorry', question: 'What does the friend say to forgive the student?', choices: ["That's OK.", "I'm sorry.", "Where is the snake?", "It's under the rock."], correctAnswer: "That's OK." },
+          { image: '🐸', vocabulary: 'sorry', question: 'Complete: "I\'m sorry. - ______."', choices: ["That's OK.", "I'm sorry.", "Can you walk?", "Yes, I can."], correctAnswer: "That's OK." },
+          { image: '🐸', vocabulary: 'sorry', question: 'Complete: "I\'m sorry for that. - That\'s ______."', choices: ["OK", "sorry", "not", "bad"], correctAnswer: "OK" },
+          { image: '🐸', vocabulary: 'sorry', question: 'When you step on someone\'s foot by accident, you say:', choices: ["I'm sorry.", "That's OK.", "Can you hop?", "That is a snake."], correctAnswer: "I'm sorry." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '😊', promptText: 'sorry', targetPhrase: 'sorry' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '😊', promptText: "I'm sorry.", targetPhrase: "I'm sorry." },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '😊', teacherQuestion: "I'm sorry.", promptText: "That's OK.", targetPhrase: "That's OK." },
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐸', promptText: 'sorry', targetPhrase: 'sorry' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐸', promptText: "I'm sorry.", targetPhrase: "I'm sorry." },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐸', teacherQuestion: "I'm sorry.", promptText: "That's OK.", targetPhrase: "That's OK." },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐸', promptText: 'Where is the frog?', targetPhrase: 'Where is the frog?' },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐍', teacherQuestion: 'Where is the snake?', promptText: "It's under the rock.", targetPhrase: "It's under the rock." }
         ]
@@ -832,20 +877,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 3 (Units 5–6)',
-      description: 'Review Nature, Activities, Animals, Abilities, Locations and Conversations.',
-      phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
-      project: 'Tangram Animals',
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏊', promptText: 'I can swim.', targetPhrase: 'I can swim.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐻', promptText: 'I like bears.', targetPhrase: 'I like bears.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐢', teacherQuestion: 'What is this?', promptText: 'It is a turtle.', targetPhrase: 'It is a turtle.' }
-      ]
-    }
+    ]
   },
   {
     id: 'unit-7',
@@ -927,12 +959,19 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be polite.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🌅', vocabulary: 'excuse', question: 'What does the student say to get the friend\'s attention politely?', choices: ["Excuse me.", "Good morning, teacher.", "I can brush my teeth.", "What is this?"], correctAnswer: "Excuse me." },
+          { image: '🌅', vocabulary: 'excuse', question: 'What does the friend reply to show they are listening?', choices: ["Sure.", "Excuse me.", "Thank you.", "Good morning."], correctAnswer: "Sure." },
+          { image: '🌅', vocabulary: 'excuse', question: 'Complete: "Excuse me. - ______."', choices: ["Sure.", "Thank you.", "Good morning.", "I can wash my face."], correctAnswer: "Sure." },
+          { image: '🌅', vocabulary: 'excuse', question: 'Complete: "Excuse me. - Sure. - ______."', choices: ["Thank you.", "Excuse me.", "Good morning.", "Yes, it is."], correctAnswer: "Thank you." },
+          { image: '🌅', vocabulary: 'excuse', question: 'When you want to pass through a crowd politely, you say:', choices: ["Excuse me.", "Thank you.", "Good morning.", "Sure."], correctAnswer: "Excuse me." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌅', promptText: 'morning', targetPhrase: 'morning' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏫', promptText: 'Good morning, teacher.', targetPhrase: 'Good morning, teacher.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '😊', teacherQuestion: 'How are you this morning?', promptText: 'I\'m fine, thank you.', targetPhrase: 'I\'m fine, thank you.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🌅', promptText: 'It\'s morning time.', targetPhrase: 'It\'s morning time.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🏫', teacherQuestion: 'Good morning, class.', promptText: 'Good morning, teacher.', targetPhrase: 'Good morning, teacher.' }
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌅', promptText: 'excuse', targetPhrase: 'excuse' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🌅', promptText: 'Excuse me.', targetPhrase: 'Excuse me.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🌅', teacherQuestion: 'Excuse me.', promptText: 'Yes, how can I help you?', targetPhrase: 'Yes, how can I help you?' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏫', promptText: 'Good morning, teacher.', targetPhrase: 'Good morning, teacher.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🌅', teacherQuestion: 'Excuse me.', promptText: 'Sure, go ahead.', targetPhrase: 'Sure, go ahead.' }
         ]
       },
       {
@@ -965,7 +1004,21 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 4 (Units 7–8)',
       description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
       phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
-      project: 'My Robot'
+      project: 'My Robot',
+      practiceQuestions: [
+        { image: '💪', vocabulary: 'arm', question: "What is this?", choices: ["This is my arm.", "These are my hands.", "That's a new toy.", "The train is slow."], correctAnswer: "This is my arm." },
+        { image: '👄', vocabulary: 'mouth', question: "Is this my mouth?", choices: ["Yes, it is.", "No, it isn't.", "These are my eyes.", "I can wash my face."], correctAnswer: "Yes, it is." },
+        { image: '🪥', vocabulary: 'brush my teeth', question: "What can you do?", choices: ["I can brush my teeth.", "I can brush my hair.", "This is my foot.", "Those are new trucks."], correctAnswer: "I can brush my teeth." },
+        { image: '🐘', vocabulary: 'big', question: "Is it a big elephant?", choices: ["Yes, it is big.", "No, it is small.", "It is a fast train.", "These are my ears."], correctAnswer: "Yes, it is big." },
+        { image: '🚌', vocabulary: 'bus', question: "What's this?", choices: ["It's a bus.", "It's a truck.", "They're boats.", "Are these my eyes?"], correctAnswer: "It's a bus." }
+      ],
+      speakingTasks: [
+        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
+        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
+        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '💪', teacherQuestion: 'What is this?', promptText: 'This is my arm.', targetPhrase: 'This is my arm.' },
+        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚌', promptText: 'It is a bus.', targetPhrase: 'It is a bus.' },
+        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'Is it a fast train?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
+      ]
     }
   },
   {
@@ -1046,11 +1099,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           socialSkill: 'Be nice.'
         },
         suggestedGames: ['sentenceBuilder'],
+        practiceQuestions: [
+          { image: '🚪', vocabulary: 'please', question: 'What does the teacher say to the noisy classroom?', choices: ["Please be quiet.", "Close the door, please.", "Open the window, please.", "Please sit down."], correctAnswer: "Please be quiet." },
+          { image: '🚪', vocabulary: 'please', question: 'What does the student say when the teacher asks for quiet?', choices: ["OK. I'm sorry.", "Please be quiet.", "Thank you.", "You're welcome."], correctAnswer: "OK. I'm sorry." },
+          { image: '🚪', vocabulary: 'please', question: 'Complete: "Please be quiet. - ______."', choices: ["OK. I'm sorry.", "Please be quiet.", "Close the door.", "Thank you."], correctAnswer: "OK. I'm sorry." },
+          { image: '🚪', vocabulary: 'please', question: 'Complete: "Close the door, ______."', choices: ["please", "sorry", "quiet", "welcome"], correctAnswer: "please" },
+          { image: '🚪', vocabulary: 'please', question: 'When a library is very noisy, the librarian says:', choices: ["Please be quiet.", "OK. I'm sorry.", "Close the door, please.", "Open the window, please."], correctAnswer: "Please be quiet." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🙏', promptText: 'please', targetPhrase: 'please' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🚪', promptText: 'Close the door, please.', targetPhrase: 'Close the door, please.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚪', teacherQuestion: 'Here you are.', promptText: 'Thank you.', targetPhrase: 'Thank you.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚪', promptText: 'Open the window, please.', targetPhrase: 'Open the window, please.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚪', teacherQuestion: 'Please be quiet.', promptText: "OK. I'm sorry.", targetPhrase: "OK. I'm sorry." },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚪', promptText: 'Close the door, please.', targetPhrase: 'Close the door, please.' },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🪑', teacherQuestion: 'Please sit down.', promptText: 'Thank you, teacher.', targetPhrase: 'Thank you, teacher.' }
         ]
       },
@@ -1079,20 +1139,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'What are those?', promptText: "They're trains.", targetPhrase: "They're trains." }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 4 (Units 7–8)',
-      description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
-      phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
-      project: 'My Robot',
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '💪', teacherQuestion: 'What is this?', promptText: 'This is my arm.', targetPhrase: 'This is my arm.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚌', promptText: 'It is a bus.', targetPhrase: 'It is a bus.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'Is it a fast train?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
-      ]
-    }
+    ]
   }
 ];
 
