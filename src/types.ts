@@ -32,6 +32,24 @@ export interface SentencePattern {
   translationVi?: string;
 }
 
+export interface PracticeQuestion {
+  image: string;
+  vocabulary: string;
+  question: string;
+  choices: string[];
+  correctAnswer: string;
+}
+
+export interface SpeakingTask {
+  number: number;
+  type: 'repeat_word' | 'read_sentence' | 'answer_question' | 'describe_picture' | 'conversation';
+  instruction: string;
+  emoji?: string;
+  promptText: string;
+  targetPhrase: string;
+  teacherQuestion?: string;
+}
+
 export interface Lesson {
   id: string;
   number: number;
@@ -46,6 +64,8 @@ export interface Lesson {
     socialSkill?: string;
   };
   forbiddenVocab?: string[];
+  practiceQuestions?: PracticeQuestion[];
+  speakingTasks?: SpeakingTask[];
 }
 
 export interface PhonicsSet {
@@ -64,6 +84,8 @@ export interface Unit {
     description: string;
     phonics: string[];
     project: string;
+    practiceQuestions?: PracticeQuestion[];
+    speakingTasks?: SpeakingTask[];
   };
 }
 
