@@ -393,6 +393,66 @@ export default function App() {
 
   const checkUpSource = checkUpUnitA?.checkUp || checkUpUnitB?.checkUp;
 
+  // Dynamic Selector for Check-Up Practice Questions (8 questions: 4 from Unit A, 4 from Unit B)
+  const dynamicCheckUpQuestions = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
+    ? (() => {
+        const selected: PracticeQuestion[] = [];
+        const num = currentCheckUpNum;
+        
+        // Helper to select 4 questions from a unit deterministically
+        const selectFromUnit = (unit: Unit, seed: number) => {
+          unit.lessons.forEach((lesson, lIdx) => {
+            const qs = lesson.practiceQuestions || [];
+            if (qs.length > 0) {
+              const qSeed = seed + lIdx * 17;
+              const index = Math.abs(qSeed) % qs.length;
+              selected.push(qs[index]);
+            }
+          });
+        };
+
+        selectFromUnit(checkUpUnitA, num * 13);
+        selectFromUnit(checkUpUnitB, num * 17);
+
+        return selected.slice(0, 8);
+      })()
+    : undefined;
+
+  // Dynamic Selector for Check-Up Speaking Tasks (5 tasks)
+  const dynamicCheckUpSpeaking = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
+    ? (() => {
+        const tasks: SpeakingTask[] = [];
+        
+        // Task 1: repeat_word from Unit A Lesson 1
+        const t1 = checkUpUnitA.lessons[0]?.speakingTasks?.find(t => t.type === 'repeat_word') 
+                   || checkUpUnitA.lessons[0]?.speakingTasks?.[0];
+        if (t1) tasks.push({ ...t1, number: 1 });
+
+        // Task 2: read_sentence from Unit A Lesson 2
+        const t2 = checkUpUnitA.lessons[1]?.speakingTasks?.find(t => t.type === 'read_sentence') 
+                   || checkUpUnitA.lessons[1]?.speakingTasks?.[1];
+        if (t2) tasks.push({ ...t2, number: 2 });
+
+        // Task 3: answer_question from Unit B Lesson 1
+        const t3 = checkUpUnitB.lessons[0]?.speakingTasks?.find(t => t.type === 'answer_question') 
+                   || checkUpUnitB.lessons[0]?.speakingTasks?.[2];
+        if (t3) tasks.push({ ...t3, number: 3 });
+
+        // Task 4: describe_picture from Unit B Lesson 2
+        const t4 = checkUpUnitB.lessons[1]?.speakingTasks?.find(t => t.type === 'describe_picture') 
+                   || checkUpUnitB.lessons[1]?.speakingTasks?.[3];
+        if (t4) tasks.push({ ...t4, number: 4 });
+
+        // Task 5: conversation from Unit B Lesson 3 (or Unit A Lesson 3)
+        const t5 = checkUpUnitB.lessons[2]?.speakingTasks?.find(t => t.type === 'conversation')
+                   || checkUpUnitA.lessons[2]?.speakingTasks?.find(t => t.type === 'conversation')
+                   || checkUpUnitB.lessons[2]?.speakingTasks?.[4];
+        if (t5) tasks.push({ ...t5, number: 5 });
+
+        return tasks;
+      })()
+    : undefined;
+
   const checkUpLessonVirtual: Lesson = currentCheckUpNum !== null ? {
     id: `checkup-l-${currentCheckUpNum}`,
     number: currentCheckUpNum,
@@ -401,8 +461,8 @@ export default function App() {
     vocabulary: checkUpVocab,
     sentencePatterns: checkUpPatterns,
     suggestedGames: ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'],
-    practiceQuestions: checkUpSource?.practiceQuestions,
-    speakingTasks: checkUpSource?.speakingTasks
+    practiceQuestions: dynamicCheckUpQuestions,
+    speakingTasks: dynamicCheckUpSpeaking
   } : currentLesson;
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : currentLesson;
