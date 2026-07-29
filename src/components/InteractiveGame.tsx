@@ -47,8 +47,9 @@ function createSeededRandom(seed: string) {
 }
 
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
+  const isCommunicationLesson = lesson.number === 3 || lesson.id.includes('checkup');
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQIndex, setCurrentQIndex] = useState(0); // 0 to 9
+  const [currentQIndex, setCurrentQIndex] = useState(0); // 0 to questions.length - 1
   const [selectedGame, setSelectedGame] = useState<MiniGameType>('pictureQuiz');
   const [game1, setGame1] = useState<MiniGameType>('pictureQuiz');
   const [game2, setGame2] = useState<MiniGameType>('wordPuzzle');
@@ -99,6 +100,18 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
       const predefined = lesson.practiceQuestions.map((q) => {
+        if (lesson.number === 3 || lesson.id.includes('checkup')) {
+          return {
+            targetWord: q.correctAnswer,
+            meaningVi: q.correctAnswer,
+            emoji: '',
+            choices: q.choices,
+            sentencePattern: q.question,
+            unscrambledLetters: [],
+            oddChoices: []
+          };
+        }
+
         const oddBase = [
           q.vocabulary,
           ...vocabList.filter(v => v.word.toLowerCase() !== q.vocabulary.toLowerCase()).map(v => v.word).slice(0, 2)
@@ -247,6 +260,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
 
     setQuestions(generatedQs);
+    setCurrentQIndex(0);
   };
 
   useEffect(() => {
@@ -278,10 +292,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   // Synchronize stage transitions (Deterministic)
   useEffect(() => {
     if (questions.length === 0) return;
+    if (isCommunicationLesson) {
+      resetGameState('chooseCorrect', questions[currentQIndex]);
+      return;
+    }
     const activeGame = currentQIndex < 5 ? game1 : game2;
     setSelectedGame(activeGame);
     resetGameState(activeGame, questions[currentQIndex]);
-  }, [currentQIndex, game1, game2, questions]);
+  }, [currentQIndex, game1, game2, questions, isCommunicationLesson]);
 
   const resetGameState = (gameType: MiniGameType, q: Question) => {
     setSelectedOption(null);
@@ -330,14 +348,16 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     let correctAnswer = customCorrectAns || currentQ.targetWord;
     let explanation = `Đáp án đúng là "${correctAnswer}" vì từ này có nghĩa là "${currentQ.meaningVi}".`;
 
-    if (selectedGame === 'chooseCorrect' && currentQ.sentencePattern) {
+    if (isCommunicationLesson) {
+      explanation = `Câu trả lời đúng là "${correctAnswer}".`;
+    } else if (selectedGame === 'chooseCorrect' && currentQ.sentencePattern) {
       correctAnswer = currentQ.sentencePattern.replace('______', currentQ.targetWord);
       explanation = `Mẫu câu đúng là "${correctAnswer}" (Nghĩa: "${currentQ.meaningVi}").`;
     }
 
     const newAnswer: UserAnswer = {
       questionNumber: currentQIndex + 1,
-      questionType: selectedGame,
+      questionType: isCommunicationLesson ? 'Choose Correct' : selectedGame,
       targetWord: currentQ.targetWord,
       studentAnswer: studentAns,
       correctAnswer: correctAnswer,
@@ -480,6 +500,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
   const isReadyToSubmit = (() => {
     if (!currentQuestion) return false;
+    if (isCommunicationLesson) return selectedOption !== null;
     if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
       return selectedOption !== null;
     }
@@ -499,6 +520,19 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
   const handleSubmitAnswer = () => {
     if (isAnswerCorrect !== null || !isReadyToSubmit) return;
+
+    if (isCommunicationLesson) {
+      const isCorrect = selectedOption === currentQuestion.targetWord;
+      setIsAnswerCorrect(isCorrect);
+      recordAnswer(selectedOption || '', isCorrect, currentQuestion.targetWord);
+      if (isCorrect) {
+        soundFX.playCorrect();
+        onCorrectAnswer();
+      } else {
+        soundFX.playClick();
+      }
+      return;
+    }
 
     if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
       let target = currentQuestion.targetWord;
@@ -599,7 +633,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setTempPairs({});
     setIsCheckingMemory(false);
 
-    if (currentQIndex < 9) {
+    if (currentQIndex < questions.length - 1) {
       setCurrentQIndex(currentQIndex + 1);
     } else {
       soundFX.playFanfare();
@@ -637,7 +671,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const handleContinueToSpeaking = () => {
     soundFX.playClick();
     const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
-    const scorePercentage = Math.round((correctCount / 10) * 100);
+    const scorePercentage = questions.length > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
     onGameCompleted(scorePercentage);
   };
 
@@ -646,7 +680,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   // RENDER RESULTS SUMMARY
   if (showSummary) {
     const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
-    const scorePercentage = Math.round((correctCount / 10) * 100);
+    const scorePercentage = questions.length > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
     const incorrectAnswers = userAnswers.filter(ans => !ans.isCorrect);
 
     return (
@@ -667,7 +701,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           <div className="flex items-center gap-4 bg-gradient-to-r from-red-500 to-rose-600 text-white px-8 py-4 rounded-3xl shadow-md w-full max-w-md justify-around">
             <div className="text-center">
               <span className="text-[10px] font-black text-amber-300 block uppercase">SCORE</span>
-              <span className="text-3xl font-black">{correctCount} / 10</span>
+              <span className="text-3xl font-black">{correctCount} / {questions.length}</span>
             </div>
             <div className="w-px bg-white/20 h-10"></div>
             <div className="text-center">
@@ -699,7 +733,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               ) : (
                 <div className="text-center py-6 text-emerald-600 font-black flex flex-col items-center gap-1.5">
                   <Star className="w-8 h-8 fill-amber-300 text-amber-400 animate-spin" />
-                  <span>Excellent! Perfect 10/10 Score! 🌟</span>
+                  <span>Excellent! Perfect {correctCount}/{questions.length} Score! 🌟</span>
                 </div>
               )}
             </div>
@@ -732,17 +766,58 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
           <span className="font-black text-slate-800 text-sm md:text-base capitalize">
-            Game Mode: {selectedGame.replace(/([A-Z])/g, ' $1')}
+            Game Mode: {isCommunicationLesson ? 'Communication' : selectedGame.replace(/([A-Z])/g, ' $1')}
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-black bg-red-50 text-red-600 px-3.5 py-1.5 rounded-full border border-red-200 shadow-2xs">
-          <span>Question {currentQIndex + 1} / 10</span>
+          <span>Question {currentQIndex + 1} / {questions.length}</span>
         </div>
       </div>
 
       <div className="flex-1 flex flex-col justify-center py-2">
-        {/* PICTURE QUIZ */}
-        {selectedGame === 'pictureQuiz' && (
+        {isCommunicationLesson ? (
+          <div className="flex flex-col items-center gap-5">
+            <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
+              Complete the conversation.
+            </span>
+            <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full my-4">
+              <h4 className="text-xl font-black text-slate-800 leading-relaxed whitespace-pre-line text-left">
+                {currentQuestion?.sentencePattern || ''}
+              </h4>
+            </div>
+            <div className="grid grid-cols-2 gap-4 w-full mt-2">
+              {(currentQuestion?.choices || []).map((choice, idx) => {
+                const isSelected = selectedOption === choice;
+                const isTarget = choice === currentQuestion?.targetWord;
+                
+                let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
+                if (isAnswerCorrect !== null) {
+                  if (isSelected) {
+                    btnStyle = isAnswerCorrect ? 'bg-emerald-600 border-emerald-600 text-white shadow-md' : 'bg-rose-600 border-rose-600 text-white shadow-md';
+                  } else if (isTarget) {
+                    btnStyle = 'bg-emerald-100 border-emerald-500 text-emerald-800 font-extrabold';
+                  }
+                } else if (isSelected) {
+                  btnStyle = 'bg-red-50 border-red-500 text-red-900 font-black shadow-xs scale-102';
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    disabled={isAnswerCorrect !== null}
+                    onClick={() => handleSelectOption(choice)}
+                    className={`p-4 rounded-2xl border-2 text-base font-extrabold transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
+                  >
+                    {choice}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* PICTURE QUIZ */}
+            {selectedGame === 'pictureQuiz' && (
           <div className="flex flex-col items-center gap-5">
             <div className="text-8xl select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
               {currentQuestion?.emoji || '🔤'}
@@ -1156,6 +1231,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               </button>
             </div>
           )
+        )}
+          </>
         )}
       </div>
     </div>
