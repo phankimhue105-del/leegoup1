@@ -97,6 +97,32 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return copy;
     }
 
+    if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
+      const predefined = lesson.practiceQuestions.map((q) => {
+        const oddBase = [
+          q.vocabulary,
+          ...vocabList.filter(v => v.word.toLowerCase() !== q.vocabulary.toLowerCase()).map(v => v.word).slice(0, 2)
+        ];
+        while (oddBase.length < 3) {
+          oddBase.push(vocabList[0]?.word || 'book');
+        }
+        const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
+        const oddChoices = seededShuffle([...oddBase, oddDistractor]);
+
+        return {
+          targetWord: q.vocabulary,
+          meaningVi: vocabList.find(v => v.word.toLowerCase() === q.vocabulary.toLowerCase())?.meaningVi || q.vocabulary,
+          emoji: q.image,
+          choices: q.choices,
+          sentencePattern: q.question,
+          unscrambledLetters: q.correctAnswer.toLowerCase().replace(/\s+/g, '').split(''),
+          oddChoices
+        };
+      });
+      setQuestions(predefined);
+      return;
+    }
+
     const generatedQs: Question[] = [];
     for (let i = 0; i < 10; i++) {
       const vocab = vocabList[i % vocabList.length];
