@@ -391,6 +391,8 @@ export default function App() {
     lessons: []
   } : currentUnit;
 
+  const checkUpSource = checkUpUnitA?.checkUp || checkUpUnitB?.checkUp;
+
   const checkUpLessonVirtual: Lesson = currentCheckUpNum !== null ? {
     id: `checkup-l-${currentCheckUpNum}`,
     number: currentCheckUpNum,
@@ -399,8 +401,8 @@ export default function App() {
     vocabulary: checkUpVocab,
     sentencePatterns: checkUpPatterns,
     suggestedGames: ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'],
-    practiceQuestions: checkUpUnitB?.checkUp?.practiceQuestions,
-    speakingTasks: checkUpUnitB?.checkUp?.speakingTasks
+    practiceQuestions: checkUpSource?.practiceQuestions,
+    speakingTasks: checkUpSource?.speakingTasks
   } : currentLesson;
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : currentLesson;
