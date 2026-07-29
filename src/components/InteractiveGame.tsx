@@ -52,6 +52,7 @@ function createSeededRandom(seed: string) {
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
   const isCommunicationLesson = lesson.number === 3 || lesson.id.includes('checkup');
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentQIndex, setCurrentQIndex] = useState(0); // 0 to questions.length - 1
   const [selectedGame, setSelectedGame] = useState<MiniGameType>('pictureQuiz');
   const [game1, setGame1] = useState<MiniGameType>('pictureQuiz');
@@ -106,9 +107,12 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const wordLower = q.targetWord.toLowerCase();
       const inVocab = vocabList.some(v => v.word.toLowerCase() === wordLower);
       if (!inVocab && !isCommunicationLesson) return false;
+
+      const normalizeEmoji = (str: string) => str.replace(/[\uFE00-\uFE0F]/g, '');
+
       if (q.emoji) {
         const expectedEmoji = EMOJI_MAP[wordLower];
-        if (expectedEmoji && q.emoji !== expectedEmoji) {
+        if (expectedEmoji && normalizeEmoji(q.emoji) !== normalizeEmoji(expectedEmoji)) {
           return false;
         }
       }
@@ -118,15 +122,150 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return true;
     };
 
+    const generateDynamicQuestions = () => {
+      const generatedQs: Question[] = [];
+      for (let i = 0; i < 10; i++) {
+        const vocab = vocabList[i % vocabList.length];
+        const wordLower = vocab.word.toLowerCase();
+        const emoji = EMOJI_MAP[wordLower] || '🔤';
+
+        const distractors = vocabList
+          .filter((v) => v.word.toLowerCase() !== vocab.word.toLowerCase())
+          .map((v) => v.word);
+
+        const extraWords = ['pencil', 'eraser', 'ruler', 'book', 'notebook', 'desk', 'chair', 'paper', 'paint', 'blue', 'red', 'yellow', 'green', 'purple', 'orange', 'pink'];
+        const shuffledExtra = seededShuffle(extraWords);
+        for (const w of shuffledExtra) {
+          if (distractors.length >= 3) break;
+          if (w.toLowerCase() !== vocab.word.toLowerCase() && !distractors.some(d => d.toLowerCase() === w.toLowerCase())) {
+            distractors.push(w);
+          }
+        }
+
+        let questionPrompt = '';
+        let isConversational = false;
+
+        if (lesson.id.includes('u3-l1') || lesson.id.includes('checkup-l-2')) {
+          isConversational = true;
+          questionPrompt = 'How old are you?';
+        } else if (lesson.id.includes('u2-l2') || lesson.id.includes('checkup-l-1')) {
+          isConversational = true;
+          questionPrompt = 'What color is it?';
+        } else if (lesson.id.includes('u2-l1')) {
+          isConversational = true;
+          questionPrompt = "What's this?";
+        } else if (lesson.id.includes('u1-l1')) {
+          isConversational = true;
+          questionPrompt = 'What is it?';
+        } else if (lesson.id.includes('u3-l2')) {
+          isConversational = true;
+          questionPrompt = `How many ${vocab.word}?`;
+        } else if (lesson.id.includes('u4-l1')) {
+          isConversational = true;
+          questionPrompt = "Who's this?";
+        }
+
+        const makeFullSentence = (word: string) => {
+          const wordLower = word.toLowerCase();
+          if (questionPrompt.includes('How old are you')) {
+            return `I'm ${wordLower}.`;
+          }
+          if (questionPrompt.includes('What color is it')) {
+            return `It's ${wordLower}.`;
+          }
+          if (questionPrompt.includes("What's this")) {
+            return `This is ${wordLower}.`;
+          }
+          if (questionPrompt.includes('What is it')) {
+            const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
+            return `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
+          }
+          if (questionPrompt.includes('How many')) {
+            return `${word.charAt(0).toUpperCase() + word.slice(1)}.`;
+          }
+          if (questionPrompt.includes("Who's this")) {
+            return `This is my ${wordLower}.`;
+          }
+          return word;
+        };
+
+        let sentencePattern = 'It is a/an ______.';
+        let choices: string[] = [];
+
+        if (isConversational) {
+          sentencePattern = questionPrompt;
+          const correctChoice = makeFullSentence(vocab.word);
+          const distractorOptions = distractors.map(d => makeFullSentence(d));
+          choices = seededShuffle([correctChoice, distractorOptions[0], distractorOptions[1], distractorOptions[2]]);
+        } else {
+          if (vocab.exampleSentence) {
+            const regex = new RegExp(`\\b${vocab.word}\\b`, 'gi');
+            if (regex.test(vocab.exampleSentence)) {
+              sentencePattern = vocab.exampleSentence.replace(regex, '______');
+            } else {
+              sentencePattern = vocab.exampleSentence + ' (______)';
+            }
+          } else if (lesson.sentencePatterns && lesson.sentencePatterns.length > 0) {
+            const selectedPattern = lesson.sentencePatterns[i % lesson.sentencePatterns.length].pattern;
+            const currentVocabWords = vocabList.map((v) => v.word.toLowerCase());
+            let replaced = selectedPattern;
+            for (const w of currentVocabWords) {
+              const regex = new RegExp(`\\b${w}\\b`, 'gi');
+              if (regex.test(replaced)) {
+                replaced = replaced.replace(regex, '______');
+                break;
+              }
+            }
+            sentencePattern = replaced;
+          }
+          choices = seededShuffle([vocab.word, distractors[0], distractors[1], distractors[2]]);
+        }
+
+        const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
+        const oddList = [vocab.word];
+        vocabList.filter((v) => v.word.toLowerCase() !== vocab.word.toLowerCase()).slice(0, 2).forEach((v) => oddList.push(v.word));
+        while (oddList.length < 3) {
+          const fallbackWord = vocabList[0].word;
+          oddList.push(fallbackWord);
+        }
+        const oddChoices = seededShuffle([...oddList, oddDistractor]);
+
+        const correctAnswer = isConversational ? makeFullSentence(vocab.word) : vocab.word;
+
+        const questionObj: Question = {
+          targetWord: vocab.word,
+          meaningVi: vocab.meaningVi || vocab.word,
+          emoji,
+          choices,
+          sentencePattern,
+          unscrambledLetters: seededShuffle((vocab.word || '').replace(/\s+/g, '').split('')),
+          oddChoices,
+          correctAnswer: correctAnswer,
+          explanation: `Đáp án đúng là "${correctAnswer}" (Nghĩa: "${vocab.meaningVi || vocab.word}").`,
+          vietnameseMeaning: vocab.meaningVi || vocab.word
+        };
+
+        if (validateQuestion(questionObj)) {
+          generatedQs.push(questionObj);
+        }
+      }
+
+      setQuestions(generatedQs);
+      setIsLoading(false);
+    };
+
+    setIsLoading(true);
+
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
       const predefined: Question[] = [];
       lesson.practiceQuestions.forEach((q, qIdx) => {
-        const vocabItem = vocabList.find(v => v.word.toLowerCase() === q.vocabulary.toLowerCase());
-        const meaningVi = vocabItem ? vocabItem.meaningVi : q.vocabulary;
+        const qVocab = q.vocabulary || '';
+        const vocabItem = vocabList.find(v => v.word.toLowerCase() === qVocab.toLowerCase());
+        const meaningVi = vocabItem ? vocabItem.meaningVi : qVocab;
 
         const oddBase = [
-          q.vocabulary,
-          ...vocabList.filter(v => v.word.toLowerCase() !== q.vocabulary.toLowerCase()).map(v => v.word).slice(0, 2)
+          qVocab,
+          ...vocabList.filter(v => v.word.toLowerCase() !== qVocab.toLowerCase()).map(v => v.word).slice(0, 2)
         ];
         while (oddBase.length < 3) {
           oddBase.push(vocabList[0]?.word || 'book');
@@ -134,7 +273,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
         const oddChoices = seededShuffle([...oddBase, oddDistractor]);
 
-        const unscrambledLetters = (q.vocabulary || '').toLowerCase().replace(/\s+/g, '').split('');
+        const unscrambledLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
 
         let explanation = `Đáp án đúng là "${q.correctAnswer}".`;
         if (meaningVi) {
@@ -142,8 +281,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         }
 
         const questionObj: Question = {
-          targetWord: q.vocabulary,
-          meaningVi: meaningVi || q.vocabulary,
+          targetWord: qVocab,
+          meaningVi: meaningVi || qVocab,
           emoji: q.image,
           choices: q.choices,
           sentencePattern: q.question,
@@ -158,139 +297,18 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           predefined.push(questionObj);
         }
       });
-      setQuestions(predefined);
+
+      if (predefined.length === 0) {
+        console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
+        generateDynamicQuestions();
+      } else {
+        setQuestions(predefined);
+        setIsLoading(false);
+      }
       return;
     }
 
-    const generatedQs: Question[] = [];
-    for (let i = 0; i < 10; i++) {
-      const vocab = vocabList[i % vocabList.length];
-      const wordLower = vocab.word.toLowerCase();
-      const emoji = EMOJI_MAP[wordLower] || '🔤';
-
-      const distractors = vocabList
-        .filter((v) => v.word.toLowerCase() !== vocab.word.toLowerCase())
-        .map((v) => v.word);
-
-      const extraWords = ['pencil', 'eraser', 'ruler', 'book', 'notebook', 'desk', 'chair', 'paper', 'paint', 'blue', 'red', 'yellow', 'green', 'purple', 'orange', 'pink'];
-      const shuffledExtra = seededShuffle(extraWords);
-      for (const w of shuffledExtra) {
-        if (distractors.length >= 3) break;
-        if (w.toLowerCase() !== vocab.word.toLowerCase() && !distractors.some(d => d.toLowerCase() === w.toLowerCase())) {
-          distractors.push(w);
-        }
-      }
-
-      let questionPrompt = '';
-      let isConversational = false;
-
-      if (lesson.id.includes('u3-l1') || lesson.id.includes('checkup-l-2')) {
-        isConversational = true;
-        questionPrompt = 'How old are you?';
-      } else if (lesson.id.includes('u2-l2') || lesson.id.includes('checkup-l-1')) {
-        isConversational = true;
-        questionPrompt = 'What color is it?';
-      } else if (lesson.id.includes('u2-l1')) {
-        isConversational = true;
-        questionPrompt = "What's this?";
-      } else if (lesson.id.includes('u1-l1')) {
-        isConversational = true;
-        questionPrompt = 'What is it?';
-      } else if (lesson.id.includes('u3-l2')) {
-        isConversational = true;
-        questionPrompt = `How many ${vocab.word}?`;
-      } else if (lesson.id.includes('u4-l1')) {
-        isConversational = true;
-        questionPrompt = "Who's this?";
-      }
-
-      const makeFullSentence = (word: string) => {
-        const wordLower = word.toLowerCase();
-        if (questionPrompt.includes('How old are you')) {
-          return `I'm ${wordLower}.`;
-        }
-        if (questionPrompt.includes('What color is it')) {
-          return `It's ${wordLower}.`;
-        }
-        if (questionPrompt.includes("What's this")) {
-          return `This is ${wordLower}.`;
-        }
-        if (questionPrompt.includes('What is it')) {
-          const vowel = ['a', 'e', 'i', 'o', 'u'].includes(wordLower.charAt(0));
-          return `It's ${vowel ? 'an' : 'a'} ${wordLower}.`;
-        }
-        if (questionPrompt.includes('How many')) {
-          return `${word.charAt(0).toUpperCase() + word.slice(1)}.`;
-        }
-        if (questionPrompt.includes("Who's this")) {
-          return `This is my ${wordLower}.`;
-        }
-        return word;
-      };
-
-      let sentencePattern = 'It is a/an ______.';
-      let choices: string[] = [];
-
-      if (isConversational) {
-        sentencePattern = questionPrompt;
-        const correctChoice = makeFullSentence(vocab.word);
-        const distractorOptions = distractors.map(d => makeFullSentence(d));
-        choices = seededShuffle([correctChoice, distractorOptions[0], distractorOptions[1], distractorOptions[2]]);
-      } else {
-        if (vocab.exampleSentence) {
-          const regex = new RegExp(`\\b${vocab.word}\\b`, 'gi');
-          if (regex.test(vocab.exampleSentence)) {
-            sentencePattern = vocab.exampleSentence.replace(regex, '______');
-          } else {
-            sentencePattern = vocab.exampleSentence + ' (______)';
-          }
-        } else if (lesson.sentencePatterns && lesson.sentencePatterns.length > 0) {
-          const selectedPattern = lesson.sentencePatterns[i % lesson.sentencePatterns.length].pattern;
-          const currentVocabWords = vocabList.map((v) => v.word.toLowerCase());
-          let replaced = selectedPattern;
-          for (const w of currentVocabWords) {
-            const regex = new RegExp(`\\b${w}\\b`, 'gi');
-            if (regex.test(replaced)) {
-              replaced = replaced.replace(regex, '______');
-              break;
-            }
-          }
-          sentencePattern = replaced;
-        }
-        choices = seededShuffle([vocab.word, distractors[0], distractors[1], distractors[2]]);
-      }
-
-      const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
-      const oddList = [vocab.word];
-      vocabList.filter((v) => v.word.toLowerCase() !== vocab.word.toLowerCase()).slice(0, 2).forEach((v) => oddList.push(v.word));
-      while (oddList.length < 3) {
-        const fallbackWord = vocabList[0].word;
-        oddList.push(fallbackWord);
-      }
-      const oddChoices = seededShuffle([...oddList, oddDistractor]);
-
-      const correctAnswer = isConversational ? makeFullSentence(vocab.word) : vocab.word;
-
-      const questionObj: Question = {
-        targetWord: vocab.word,
-        meaningVi: vocab.meaningVi || vocab.word,
-        emoji,
-        choices,
-        sentencePattern,
-        unscrambledLetters: seededShuffle((vocab.word || '').replace(/\s+/g, '').split('')),
-        oddChoices,
-        correctAnswer: correctAnswer,
-        explanation: `Đáp án đúng là "${correctAnswer}" (Nghĩa: "${vocab.meaningVi || vocab.word}").`,
-        vietnameseMeaning: vocab.meaningVi || vocab.word
-      };
-
-      if (validateQuestion(questionObj)) {
-        generatedQs.push(questionObj);
-      }
-    }
-
-    setQuestions(generatedQs);
-    setCurrentQIndex(0);
+    generateDynamicQuestions();
   };
 
   useEffect(() => {
@@ -504,6 +522,15 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   };
 
   // Safe fail for stability checks (placed before state dependencies to prevent crashes on initial render)
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md text-center max-w-lg mx-auto my-6 animate-fadeIn">
+        <p className="text-slate-500 font-extrabold text-sm mb-2">⏳ Đang tải bài tập...</p>
+        <p className="text-xs text-slate-400 font-semibold mb-4">Đang chuẩn bị câu hỏi luyện tập cho bài học...</p>
+      </div>
+    );
+  }
+
   if (!questions || questions.length === 0 || !questions[currentQIndex]) {
     return (
       <div className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md text-center max-w-lg mx-auto my-6 animate-fadeIn">
@@ -1193,4 +1220,3 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     </div>
   );
 };
-
