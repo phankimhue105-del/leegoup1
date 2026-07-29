@@ -82,7 +82,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '📓', promptText: "It's a book.", targetPhrase: "It's a book." },
           { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🪑', teacherQuestion: 'What is it?', promptText: "It's a chair.", targetPhrase: "It's a chair." },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '✍️', promptText: "It's a desk.", targetPhrase: "It's a desk." },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '📓', teacherQuestion: 'Is it a notebook?', promptText: "No, it isn't. It's a book.", targetPhrase: "No, it isn't. It's a book." }
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '📓', teacherQuestion: 'Is it a notebook?', promptText: "No, it isn't. It's a notebook.", targetPhrase: "No, it isn't. It's a notebook." }
         ]
       },
       {
@@ -136,12 +136,24 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: "Yes, it is. / No, it isn't.", example: 'Yes, it is.', translationVi: 'Đúng rồi. / Không phải.' }
         ],
         suggestedGames: ['choosePicture', 'pictureMatch', 'mysteryBox'],
+        practiceQuestions: [
+          { image: '🔴', vocabulary: 'circle', question: 'What shape is it?', choices: ["It's a circle.", "It's a square.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a circle." },
+          { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a circle.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a square." },
+          { image: '🔺', vocabulary: 'triangle', question: 'What shape is it?', choices: ["It's a triangle.", "It's a circle.", "It's a square.", "It's a rectangle."], correctAnswer: "It's a triangle." },
+          { image: '▮', vocabulary: 'rectangle', question: 'What shape is it?', choices: ["It's a rectangle.", "It's a circle.", "It's a square.", "It's a triangle."], correctAnswer: "It's a rectangle." },
+          { image: '🔴', vocabulary: 'circle', question: 'Is it a circle?', choices: ["Yes, it is.", "No, it isn't.", "It is a square.", "It is a triangle."], correctAnswer: "Yes, it is." },
+          { image: '🟩', vocabulary: 'square', question: 'Is it a circle?', choices: ["No, it isn't.", "Yes, it is.", "It is a rectangle.", "It is a triangle."], correctAnswer: "No, it isn't." },
+          { image: '🔺', vocabulary: 'triangle', question: 'Is it a triangle?', choices: ["Yes, it is.", "No, it isn't.", "It is a square.", "It is a circle."], correctAnswer: "Yes, it is." },
+          { image: '▮', vocabulary: 'rectangle', question: 'Is it a square?', choices: ["No, it isn't.", "Yes, it is.", "It is a circle.", "It is a triangle."], correctAnswer: "No, it isn't." },
+          { image: '🔴', vocabulary: 'circle', question: 'What shape is it?', choices: ["It's a circle.", "It's a notebook.", "It's a desk.", "It's a book."], correctAnswer: "It's a circle." },
+          { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a chair.", "It's a backpack.", "It's a pencil case."], correctAnswer: "It's a square." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🔴', promptText: 'circle', targetPhrase: 'circle' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🔴', promptText: 'It is a square.', targetPhrase: 'It is a square.' },
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🟩', promptText: 'square', targetPhrase: 'square' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🔴', promptText: 'Is it a circle?', targetPhrase: 'Is it a circle?' },
           { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🔴', teacherQuestion: 'Is it a circle?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🔺', promptText: "It's a triangle.", targetPhrase: "It's a triangle." },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🔴', teacherQuestion: 'Is it a rectangle?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '▮', teacherQuestion: 'Is it a rectangle?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
         ]
       }
     ],
@@ -302,6 +314,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Blue and yellow make green.', example: 'Blue and yellow make green.', translationVi: 'Xanh dương và vàng tạo thành xanh lá.' }
         ],
         suggestedGames: ['pictureMatch', 'choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '🟢', vocabulary: 'green', question: 'What color is it?', choices: ["It's green.", "It's purple.", "It's orange.", "It's pink."], correctAnswer: "It's green." },
+          { image: '🟣', vocabulary: 'purple', question: 'What color is it?', choices: ["It's purple.", "It's green.", "It's orange.", "It's pink."], correctAnswer: "It's purple." },
+          { image: '🟠', vocabulary: 'orange', question: 'What color is it?', choices: ["It's orange.", "It's green.", "It's purple.", "It's pink."], correctAnswer: "It's orange." },
+          { image: '🌸', vocabulary: 'pink', question: 'What color is it?', choices: ["It's pink.", "It's green.", "It's purple.", "It's orange."], correctAnswer: "It's pink." },
+          { image: '🔘', vocabulary: 'gray', question: 'What color is it?', choices: ["It's gray.", "It's brown.", "It's green.", "It's purple."], correctAnswer: "It's gray." },
+          { image: '🟤', vocabulary: 'brown', question: 'What color is it?', choices: ["It's brown.", "It's gray.", "It's green.", "It's purple."], correctAnswer: "It's brown." },
+          { image: '🟢', vocabulary: 'green', question: 'Is it green?', choices: ["Yes, it is.", "No, it isn't.", "It's blue.", "It's yellow."], correctAnswer: "Yes, it is." },
+          { image: '🟣', vocabulary: 'purple', question: 'Is it green?', choices: ["No, it isn't.", "Yes, it is.", "It's blue.", "It's yellow."], correctAnswer: "No, it isn't." },
+          { image: '🟠', vocabulary: 'orange', question: 'What color is it?', choices: ["It's orange.", "It's white.", "It's black.", "It's red."], correctAnswer: "It's orange." },
+          { image: '🌸', vocabulary: 'pink', question: 'Is it pink?', choices: ["Yes, it is.", "No, it isn't.", "It's gray.", "It's brown."], correctAnswer: "Yes, it is." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🟢', promptText: 'green', targetPhrase: 'green' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🟣', promptText: "It's purple.", targetPhrase: "It's purple." },
@@ -434,7 +458,7 @@ export const CURRICULUM_UNITS: Unit[] = [
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎮', promptText: 'play', targetPhrase: 'play' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🎮', promptText: "Let's play!", targetPhrase: "Let's play!" },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '⚽⚽', teacherQuestion: 'It\'s your turn.', promptText: 'Thank you.', targetPhrase: 'Thank you.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🎮', teacherQuestion: 'It\'s your turn.', promptText: 'Thank you.', targetPhrase: 'Thank you.' },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🎮', promptText: "Let's play a game.", targetPhrase: "Let's play a game." },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '⚽🏃', teacherQuestion: "Let's play soccer.", promptText: "Okay, let's play.", targetPhrase: "Okay, let's play." }
         ]
@@ -456,6 +480,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'I have two games.', example: 'I have two games.', translationVi: 'Tớ có hai trò chơi.' }
         ],
         suggestedGames: ['choosePicture', 'pictureMatch'],
+        practiceQuestions: [
+          { image: '🎮', vocabulary: 'game', question: 'What do you have?', choices: ["I have one game.", "I have a puzzle.", "I have cards.", "I have marbles."], correctAnswer: "I have one game." },
+          { image: '🔮', vocabulary: 'marble', question: 'What do you have?', choices: ["I have marbles.", "I have one game.", "I have a puzzle.", "I have cards."], correctAnswer: "I have marbles." },
+          { image: '🧩', vocabulary: 'puzzle', question: 'What do you have?', choices: ["I have a puzzle.", "I have one game.", "I have cards.", "I have marbles."], correctAnswer: "I have a puzzle." },
+          { image: '🃏', vocabulary: 'card', question: 'What do you have?', choices: ["I have cards.", "I have one game.", "I have a puzzle.", "I have marbles."], correctAnswer: "I have cards." },
+          { image: '🎮', vocabulary: 'game', question: 'Do you have a game?', choices: ["Yes, I do.", "No, I don't.", "I have two cars.", "One doll."], correctAnswer: "Yes, I do." },
+          { image: '🔮', vocabulary: 'marble', question: 'How many marbles?', choices: ["I have five marbles.", "I have one game.", "I have two cards.", "I have a puzzle."], correctAnswer: "I have five marbles." },
+          { image: '🧩', vocabulary: 'puzzle', question: 'Do you have a puzzle?', choices: ["Yes, I do.", "No, I don't.", "I have a game.", "I have cards."], correctAnswer: "Yes, I do." },
+          { image: '🃏', vocabulary: 'card', question: 'How many cards?', choices: ["I have two cards.", "I have one game.", "I have a puzzle.", "I have marbles."], correctAnswer: "I have two cards." },
+          { image: '🎮', vocabulary: 'game', question: 'What is it?', choices: ["It's a game.", "It's a doll.", "It's a car.", "It's a kite."], correctAnswer: "It's a game." },
+          { image: '🧩', vocabulary: 'puzzle', question: 'What is it?', choices: ["It's a puzzle.", "It's a ball.", "It's a doll.", "It's a car."], correctAnswer: "It's a puzzle." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🧩', promptText: 'puzzle', targetPhrase: 'puzzle' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🧩', promptText: 'I have two puzzles.', targetPhrase: 'I have two puzzles.' },
@@ -549,8 +585,20 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: "I don't like juice.", example: "I don't like juice.", translationVi: 'Tớ không thích nước ép.' }
         ],
         suggestedGames: ['choosePicture', 'trueOrFalse', 'mysteryBox'],
+        practiceQuestions: [
+          { image: '🧃', vocabulary: 'juice', question: 'Do you like juice?', choices: ["I like juice.", "I don't like juice.", "I like chicken.", "I don't like fish."], correctAnswer: "I like juice." },
+          { image: '🍗', vocabulary: 'chicken', question: 'Do you like chicken?', choices: ["I don't like chicken.", "I like chicken.", "I like juice.", "I like ice cream."], correctAnswer: "I don't like chicken." },
+          { image: '🐟', vocabulary: 'fish', question: 'Do you like fish?', choices: ["I like fish.", "I don't like fish.", "I like juice.", "I like ice cream."], correctAnswer: "I like fish." },
+          { image: '🍦', vocabulary: 'ice cream', question: 'Do you like ice cream?', choices: ["I like ice cream.", "I don't like ice cream.", "I like chicken.", "I don't like fish."], correctAnswer: "I like ice cream." },
+          { image: '🧃', vocabulary: 'juice', question: 'Do you like juice?', choices: ["No, I don't like juice.", "Yes, I do.", "I like chicken.", "I like fish."], correctAnswer: "No, I don't like juice." },
+          { image: '🍗', vocabulary: 'chicken', question: 'Do you like chicken?', choices: ["Yes, I like chicken.", "No, I don't.", "I like juice.", "I don't like fish."], correctAnswer: "Yes, I like chicken." },
+          { image: '🐟', vocabulary: 'fish', question: 'Do you like fish?', choices: ["Yes, I like fish.", "No, I don't.", "I like juice.", "I don't like chicken."], correctAnswer: "Yes, I like fish." },
+          { image: '🍦', vocabulary: 'ice cream', question: 'Do you like ice cream?', choices: ["Yes, I like ice cream.", "No, I don't.", "I like chicken.", "I don't like fish."], correctAnswer: "Yes, I like ice cream." },
+          { image: '🧃', vocabulary: 'juice', question: 'What is it?', choices: ["It's juice.", "It's chicken.", "It's fish.", "It's ice cream."], correctAnswer: "It's juice." },
+          { image: '🍗', vocabulary: 'chicken', question: 'What is it?', choices: ["It's chicken.", "It's juice.", "It's fish.", "It's ice cream."], correctAnswer: "It's chicken." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍕', promptText: 'pizza', targetPhrase: 'pizza' },
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍗', promptText: 'chicken', targetPhrase: 'chicken' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🍦', promptText: 'I like ice cream.', targetPhrase: 'I like ice cream.' },
           { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🍗', teacherQuestion: 'Do you like chicken?', promptText: 'Yes, I do.', targetPhrase: 'Yes, I do.' },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🧃', promptText: "I don't like juice.", targetPhrase: "I don't like juice." },
@@ -610,15 +658,47 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'This is pizza. I like pizza.', example: 'This is pizza.', translationVi: 'Đây là pizza. Tớ thích pizza.' }
         ],
         suggestedGames: ['choosePicture', 'pictureMatch'],
+        practiceQuestions: [
+          { image: '🍕', vocabulary: 'pizza', question: "What's this?", choices: ["This is pizza.", "This is rice.", "This is a cookie.", "This is bread."], correctAnswer: "This is pizza." },
+          { image: '🍚', vocabulary: 'rice', question: "What's this?", choices: ["This is rice.", "This is pizza.", "This is a cookie.", "This is bread."], correctAnswer: "This is rice." },
+          { image: '🍪', vocabulary: 'cookie', question: "What's this?", choices: ["This is a cookie.", "This is pizza.", "This is rice.", "This is bread."], correctAnswer: "This is a cookie." },
+          { image: '🍞', vocabulary: 'bread', question: "What's this?", choices: ["This is bread.", "This is pizza.", "This is rice.", "This is a cookie."], correctAnswer: "This is bread." },
+          { image: '🍕', vocabulary: 'pizza', question: "Do you like pizza?", choices: ["Yes, I like pizza.", "No, I don't.", "This is rice.", "This is bread."], correctAnswer: "Yes, I like pizza." },
+          { image: '🍚', vocabulary: 'rice', question: "Is this rice?", choices: ["Yes, this is rice.", "No, it isn't.", "This is pizza.", "This is bread."], correctAnswer: "Yes, this is rice." },
+          { image: '🍪', vocabulary: 'cookie', question: "Is this bread?", choices: ["No, it isn't. It's a cookie.", "Yes, it is.", "This is rice.", "This is pizza."], correctAnswer: "No, it isn't. It's a cookie." },
+          { image: '🍞', vocabulary: 'bread', question: "Do you like bread?", choices: ["Yes, I like bread.", "No, I don't.", "This is pizza.", "This is rice."], correctAnswer: "Yes, I like bread." },
+          { image: '🍕', vocabulary: 'pizza', question: "What's this?", choices: ["This is pizza.", "This is mother.", "This is father.", "This is brother."], correctAnswer: "This is pizza." },
+          { image: '🍪', vocabulary: 'cookie', question: "What's this?", choices: ["This is a cookie.", "This is sister.", "This is grandmother.", "This is grandfather."], correctAnswer: "This is a cookie." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏞️', promptText: 'river', targetPhrase: 'river' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '⛰️', promptText: 'I can see a hill.', targetPhrase: 'I can see a hill.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🌸', teacherQuestion: 'What can you see?', promptText: 'I can see a flower.', targetPhrase: 'I can see a flower.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🌳', promptText: 'I can see a tree.', targetPhrase: 'I can see a tree.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🌅', teacherQuestion: 'What can you see?', promptText: 'I can see a lake.', targetPhrase: 'I can see a lake.' }
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍞', promptText: 'bread', targetPhrase: 'bread' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🍕', promptText: 'This is pizza. I like pizza.', targetPhrase: 'This is pizza. I like pizza.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🍚', teacherQuestion: "What's this?", promptText: 'This is rice.', targetPhrase: 'This is rice.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🍪', promptText: 'I like cookies.', targetPhrase: 'I like cookies.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🍞', teacherQuestion: "What's this?", promptText: 'This is bread.', targetPhrase: 'This is bread.' }
         ]
       }
-    ]
+    ],
+    checkUp: {
+      title: 'CHECK UP 2 (Units 3–4)',
+      description: 'Review vocabulary and sentence patterns from Units 3 and 4.',
+      phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
+      project: 'All About Me Book',
+      practiceQuestions: [
+        { image: '7️⃣', vocabulary: 'seven', question: "How old are you?", choices: ["I'm seven.", "I'm eight.", "This is my father.", "I like pizza."], correctAnswer: "I'm seven." },
+        { image: '🚗🚗', vocabulary: 'cars', question: "How many cars?", choices: ["Two cars.", "One car.", "This is my mother.", "I don't like juice."], correctAnswer: "Two cars." },
+        { image: '👩', vocabulary: 'mother', question: "Who's this?", choices: ["This is my mother.", "This is my brother.", "Two cars.", "I like ice cream."], correctAnswer: "This is my mother." },
+        { image: '🍕', vocabulary: 'pizza', question: "Do you like pizza?", choices: ["Yes, I do.", "No, it don't.", "This is my father.", "One doll."], correctAnswer: "Yes, I do." },
+        { image: '🍪', vocabulary: 'cookie', question: "What is it?", choices: ["It's a cookie.", "It's bread.", "This is my sister.", "Three balls."], correctAnswer: "It's a cookie." }
+      ],
+      speakingTasks: [
+        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
+        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '8️⃣', promptText: "I'm eight years old.", targetPhrase: "I'm eight years old." },
+        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚗🚗', teacherQuestion: 'How many cars?', promptText: 'Two cars.', targetPhrase: 'Two cars.' },
+        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '👨', promptText: 'This is my father.', targetPhrase: 'This is my father.' },
+        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '👩', teacherQuestion: "Who's this?", promptText: 'This is my mother.', targetPhrase: 'This is my mother.' }
+      ]
+    }
   },
   {
     id: 'unit-5',
@@ -646,12 +726,24 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'I can see a flower.', example: 'I can see a flower.', translationVi: 'Tớ có thể nhìn thấy một bông hoa.' }
         ],
         suggestedGames: ['flashcard', 'pictureMatch', 'choosePicture'],
+        practiceQuestions: [
+          { image: '🌸', vocabulary: 'flower', question: 'What can you see?', choices: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a river."], correctAnswer: "I can see a flower." },
+          { image: '🌳', vocabulary: 'tree', question: 'What can you see?', choices: ["I can see a tree.", "I can see a flower.", "I can see a rock.", "I can see a river."], correctAnswer: "I can see a tree." },
+          { image: '🪨', vocabulary: 'rock', question: 'What can you see?', choices: ["I can see a rock.", "I can see a flower.", "I can see a tree.", "I can see a river."], correctAnswer: "I can see a rock." },
+          { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a river." },
+          { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a lake.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a hill." },
+          { image: '🌅', vocabulary: 'lake', question: 'What can you see?', choices: ["I can see a lake.", "I can see a hill.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a lake." },
+          { image: '🌸', vocabulary: 'flower', question: 'Can you see a flower?', choices: ["Yes, I can.", "No, I can't.", "I can see a river.", "I can see a rock."], correctAnswer: "Yes, I can." },
+          { image: '🪨', vocabulary: 'rock', question: 'Can you see a tree?', choices: ["No, I can't. I can see a rock.", "Yes, I can.", "I can see a flower.", "I can see a river."], correctAnswer: "No, I can't. I can see a rock." },
+          { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a notebook.", "I can see a desk.", "I can see a chair."], correctAnswer: "I can see a river." },
+          { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a book.", "I can see a pencil.", "I can see a backpack."], correctAnswer: "I can see a hill." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌸', promptText: 'flower', targetPhrase: 'flower' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🌸', promptText: 'What can you see?', targetPhrase: 'What can you see?' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🌳', teacherQuestion: 'What can you see?', promptText: 'I can see a tree.', targetPhrase: 'I can see a tree.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🪨', promptText: 'I can see rocks.', targetPhrase: 'I can see rocks.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🌸', teacherQuestion: 'What can you see?', promptText: 'I can see a flower.', targetPhrase: 'I can see a flower.' }
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🌳', promptText: 'I can see a tree.', targetPhrase: 'I can see a tree.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏞️', teacherQuestion: 'What can you see?', promptText: 'I can see a river.', targetPhrase: 'I can see a river.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '⛰️', promptText: 'I can see a hill.', targetPhrase: 'I can see a hill.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🌅', teacherQuestion: 'What can you see?', promptText: 'I can see a lake.', targetPhrase: 'I can see a lake.' }
         ]
       },
       {
@@ -671,6 +763,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: "I can't play soccer.", example: "I can't play soccer.", translationVi: 'Tớ không biết đá bóng.' }
         ],
         suggestedGames: ['choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '⚽🏃', vocabulary: 'play soccer', question: 'What can you do?', choices: ["I can play soccer.", "I can jump rope.", "I can fly a kite.", "I can ride a bike."], correctAnswer: "I can play soccer." },
+          { image: '🏃‍♀️', vocabulary: 'jump rope', question: 'What can you do?', choices: ["I can jump rope.", "I can play soccer.", "I can fly a kite.", "I can ride a bike."], correctAnswer: "I can jump rope." },
+          { image: '🪁🏃', vocabulary: 'fly a kite', question: 'What can you do?', choices: ["I can fly a kite.", "I can play soccer.", "I can jump rope.", "I can ride a bike."], correctAnswer: "I can fly a kite." },
+          { image: '🚴', vocabulary: 'ride a bike', question: 'What can you do?', choices: ["I can't ride a bike.", "I can ride a bike.", "I can play soccer.", "I can jump rope."], correctAnswer: "I can't ride a bike." },
+          { image: '⚽🏃', vocabulary: 'play soccer', question: 'Can you play soccer?', choices: ["Yes, I can.", "No, I can't.", "I can jump rope.", "I can fly a kite."], correctAnswer: "Yes, I can." },
+          { image: '🚴', vocabulary: 'ride a bike', question: 'Can you ride a bike?', choices: ["No, I can't.", "Yes, I can.", "I can play soccer.", "I can jump rope."], correctAnswer: "No, I can't." },
+          { image: '🏃‍♀️', vocabulary: 'jump rope', question: 'Can you jump rope?', choices: ["Yes, I can.", "No, I can't.", "I can fly a kite.", "I can ride a bike."], correctAnswer: "Yes, I can." },
+          { image: '🪁🏃', vocabulary: 'fly a kite', question: 'Can you fly a kite?', choices: ["Yes, I can.", "No, I can't.", "I can play soccer.", "I can ride a bike."], correctAnswer: "Yes, I can." },
+          { image: '⚽🏃', vocabulary: 'play soccer', question: 'What can you do?', choices: ["I can play soccer.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can play soccer." },
+          { image: '🚴', vocabulary: 'ride a bike', question: 'What can you do?', choices: ["I can't ride a bike.", "I can see a river.", "I can see a hill.", "I can see a lake."], correctAnswer: "I can't ride a bike." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '⚽🏃', promptText: 'soccer', targetPhrase: 'soccer' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🚴', promptText: 'I can ride a bike.', targetPhrase: 'I can ride a bike.' },
@@ -730,12 +834,24 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Yes, I can. / No, I can\'t.', example: 'Yes, I can.', translationVi: 'Có, tớ thấy. / Không, tớ không thấy.' }
         ],
         suggestedGames: ['choosePicture', 'mysteryBox'],
+        practiceQuestions: [
+          { image: '🐢', vocabulary: 'turtle', question: 'What can you see?', choices: ["I can see a turtle.", "I can see a frog.", "I can see a spider.", "I can see an ant."], correctAnswer: "I can see a turtle." },
+          { image: '🐸', vocabulary: 'frog', question: 'What can you see?', choices: ["I can see a frog.", "I can see a turtle.", "I can see a spider.", "I can see an ant."], correctAnswer: "I can see a frog." },
+          { image: '🕷️', vocabulary: 'spider', question: 'What can you see?', choices: ["I can see a spider.", "I can see a turtle.", "I can see a frog.", "I can see an ant."], correctAnswer: "I can see a spider." },
+          { image: '🐜', vocabulary: 'ant', question: 'What can you see?', choices: ["I can see an ant.", "I can see a turtle.", "I can see a frog.", "I can see a spider."], correctAnswer: "I can see an ant." },
+          { image: '🐢', vocabulary: 'turtle', question: 'Can you see a turtle?', choices: ["Yes, I can.", "No, I can't.", "I see a frog.", "I see an ant."], correctAnswer: "Yes, I can." },
+          { image: '🐸', vocabulary: 'frog', question: 'Can you see a turtle?', choices: ["No, I can't. I see a frog.", "Yes, I can.", "I see a spider.", "I see an ant."], correctAnswer: "No, I can't. I see a frog." },
+          { image: '🕷️', vocabulary: 'spider', question: 'Can you see a spider?', choices: ["Yes, I can.", "No, I can't.", "I see a turtle.", "I see a frog."], correctAnswer: "Yes, I can." },
+          { image: '🐜', vocabulary: 'ant', question: 'Can you see a frog?', choices: ["No, I can't. I see an ant.", "Yes, I can.", "I see a spider.", "I see a turtle."], correctAnswer: "No, I can't. I see an ant." },
+          { image: '🐢', vocabulary: 'turtle', question: 'What can you see?', choices: ["I can see a turtle.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a turtle." },
+          { image: '🐸', vocabulary: 'frog', question: 'What can you see?', choices: ["I can see a frog.", "I can see a river.", "I can see a hill.", "I can see a lake."], correctAnswer: "I can see a frog." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🕷️', promptText: 'spider', targetPhrase: 'spider' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🕷️', promptText: 'There is a turtle.', targetPhrase: 'There is a turtle.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐜', teacherQuestion: 'What are they?', promptText: 'There are ants.', targetPhrase: 'There are ants.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐸', promptText: 'I see a frog.', targetPhrase: 'I see a frog.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🕷️', teacherQuestion: 'What is this?', promptText: "It's a spider.", targetPhrase: "It's a spider." }
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐢', promptText: 'turtle', targetPhrase: 'turtle' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐸', promptText: 'I can see a frog.', targetPhrase: 'I can see a frog.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🕷️', teacherQuestion: 'Can you see a spider?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐜', promptText: 'I see an ant.', targetPhrase: 'I see an ant.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐢', teacherQuestion: 'Can you see a turtle?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' }
         ]
       }
     ],
@@ -786,12 +902,24 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: "It's in the tree.", example: "It's in the tree.", translationVi: 'Nó ở trên cây.' }
         ],
         suggestedGames: ['flashcard', 'pictureMatch', 'choosePicture'],
+        practiceQuestions: [
+          { image: '🐘', vocabulary: 'elephant', question: 'What is this?', choices: ["It's an elephant.", "It's a monkey.", "It's a tiger.", "It's a bear."], correctAnswer: "It's an elephant." },
+          { image: '🐒', vocabulary: 'monkey', question: 'What is this?', choices: ["It's a monkey.", "It's an elephant.", "It's a tiger.", "It's a bear."], correctAnswer: "It's a monkey." },
+          { image: '🐅', vocabulary: 'tiger', question: 'What is this?', choices: ["It's a tiger.", "It's an elephant.", "It's a monkey.", "It's a bear."], correctAnswer: "It's a tiger." },
+          { image: '🐻', vocabulary: 'bear', question: 'What is this?', choices: ["It's a bear.", "It's an elephant.", "It's a monkey.", "It's a tiger."], correctAnswer: "It's a bear." },
+          { image: '🦘', vocabulary: 'kangaroo', question: 'What is this?', choices: ["It's a kangaroo.", "It's a penguin.", "It's an elephant.", "It's a monkey."], correctAnswer: "It's a kangaroo." },
+          { image: '🐧', vocabulary: 'penguin', question: 'What is this?', choices: ["It's a penguin.", "It's a kangaroo.", "It's an elephant.", "It's a monkey."], correctAnswer: "It's a penguin." },
+          { image: '🐒', vocabulary: 'monkey', question: 'Where is the monkey?', choices: ["It's in the tree.", "It's on the rock.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's in the tree." },
+          { image: '🐻', vocabulary: 'bear', question: 'Where is the bear?', choices: ["It's on the rock.", "It's in the tree.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's on the rock." },
+          { image: '🐘', vocabulary: 'elephant', question: 'Is the elephant big?', choices: ["Yes, it is big.", "No, it isn't.", "It is in the tree.", "It is under the chair."], correctAnswer: "Yes, it is big." },
+          { image: '🐧', vocabulary: 'penguin', question: 'Where is the penguin?', choices: ["It's in the water.", "It's in the tree.", "It's on the rock.", "It's by the chair."], correctAnswer: "It's in the water." }
+        ],
         speakingTasks: [
-          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐘', promptText: 'elephant', targetPhrase: 'elephant' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐘', promptText: 'The monkey is in the tree.', targetPhrase: 'The monkey is in the tree.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐅', teacherQuestion: 'Where is the tiger?', promptText: 'It is on the rock.', targetPhrase: 'It is on the rock.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐒', promptText: 'The monkey is in the tree.', targetPhrase: 'The monkey is in the tree.' },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐻', teacherQuestion: 'Where is the bear?', promptText: 'It is under the tree.', targetPhrase: 'It is under the tree.' }
+          { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐘', promptText: 'The elephant is big.', targetPhrase: 'The elephant is big.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐒', teacherQuestion: 'Where is the monkey?', promptText: "It's in the tree.", targetPhrase: "It's in the tree." },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐻', promptText: 'The bear is on the rock.', targetPhrase: 'The bear is on the rock.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐅', teacherQuestion: 'Where is the tiger?', promptText: 'It is under the tree.', targetPhrase: 'It is under the tree.' }
         ]
       },
       {
@@ -810,10 +938,22 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: "They're on the rock.", example: "They're on the rock.", translationVi: 'Chúng ở trên hòn đá.' }
         ],
         suggestedGames: ['choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '🐍', vocabulary: 'snake', question: 'What are they?', choices: ["They're snakes.", "They're giraffes.", "They're zebras.", "They're elephants."], correctAnswer: "They're snakes." },
+          { image: '🦒', vocabulary: 'giraffe', question: 'What are they?', choices: ["They're giraffes.", "They're snakes.", "They're zebras.", "They're elephants."], correctAnswer: "They're giraffes." },
+          { image: '🦓', vocabulary: 'zebra', question: 'What are they?', choices: ["They're zebras.", "They're snakes.", "They're giraffes.", "They're elephants."], correctAnswer: "They're zebras." },
+          { image: '🐍', vocabulary: 'snake', question: 'Where are the snakes?', choices: ["They're on the rock.", "They're in the tree.", "They're under the rock.", "They're by the chair."], correctAnswer: "They're on the rock." },
+          { image: '🦒', vocabulary: 'giraffe', question: 'Are the giraffes tall?', choices: ["Yes, they are tall.", "No, they aren't.", "They are on the rock.", "They are in the water."], correctAnswer: "Yes, they are tall." },
+          { image: '🦓', vocabulary: 'zebra', question: 'What is this?', choices: ["This is a zebra.", "This is a snake.", "This is a giraffe.", "This is an elephant."], correctAnswer: "This is a zebra." },
+          { image: '🐍', vocabulary: 'snake', question: 'Where are the snakes?', choices: ["They're on the rock.", "They're in the water.", "They're in the tree.", "They're under the tree."], correctAnswer: "They're on the rock." },
+          { image: '🦒', vocabulary: 'giraffe', question: 'What are these?', choices: ["They're giraffes.", "They're snakes.", "They're zebras.", "They're monkeys."], correctAnswer: "They're giraffes." },
+          { image: '🦓', vocabulary: 'zebra', question: 'Are these zebras?', choices: ["Yes, they are.", "No, they aren't.", "This is a tiger.", "This is a bear."], correctAnswer: "Yes, they are." },
+          { image: '🐍', vocabulary: 'snake', question: 'What\'s that?', choices: ["That is a snake.", "That is a zebra.", "That is a giraffe.", "That is a monkey."], correctAnswer: "That is a snake." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🦓', promptText: 'zebra', targetPhrase: 'zebra' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🦒', promptText: 'That is a giraffe.', targetPhrase: 'That is a giraffe.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐍', teacherQuestion: "What's that?", promptText: 'That is a snake.', targetPhrase: 'That is a snake.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🐍', teacherQuestion: 'Where are the snakes?', promptText: "They're on the rock.", targetPhrase: "They're on the rock." },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🦓', promptText: 'This is a zebra.', targetPhrase: 'This is a zebra.' },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🦒', teacherQuestion: 'What is this?', promptText: 'This is a giraffe.', targetPhrase: 'This is a giraffe.' }
         ]
@@ -869,15 +1009,47 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Yes, they can. / No, they can\'t.', example: 'Yes, they can.', translationVi: 'Có, chúng có thể.' }
         ],
         suggestedGames: ['choosePicture', 'mysteryBox'],
+        practiceQuestions: [
+          { image: '🏃', vocabulary: 'run', question: 'What can zebras do?', choices: ["Zebras can run.", "Zebras can hop.", "Zebras can swim.", "Zebras can walk."], correctAnswer: "Zebras can run." },
+          { image: '🐇', vocabulary: 'hop', question: 'What can kangaroos do?', choices: ["Kangaroos can hop.", "Kangaroos can run.", "Kangaroos can swim.", "Kangaroos can walk."], correctAnswer: "Kangaroos can hop." },
+          { image: '🏊', vocabulary: 'swim', question: 'What can penguins do?', choices: ["Penguins can swim.", "Penguins can run.", "Penguins can hop.", "Penguins can walk."], correctAnswer: "Penguins can swim." },
+          { image: '🚶', vocabulary: 'walk', question: 'What can bears do?', choices: ["Bears can walk.", "Bears can run.", "Bears can hop.", "Bears can swim."], correctAnswer: "Bears can walk." },
+          { image: '🏃', vocabulary: 'run', question: 'Can zebras run?', choices: ["Yes, they can.", "No, they can't.", "They can hop.", "They can swim."], correctAnswer: "Yes, they can." },
+          { image: '🏊', vocabulary: 'swim', question: 'Can kangaroos swim?', choices: ["No, they can't.", "Yes, they can.", "They can run.", "They can hop."], correctAnswer: "No, they can't." },
+          { image: '🐇', vocabulary: 'hop', question: 'Can kangaroos hop?', choices: ["Yes, they can.", "No, they can't.", "They can swim.", "They can walk."], correctAnswer: "Yes, they can." },
+          { image: '🚶', vocabulary: 'walk', question: 'Can bears walk?', choices: ["Yes, they can.", "No, they can't.", "They can fly.", "They can hop."], correctAnswer: "Yes, they can." },
+          { image: '🏃', vocabulary: 'run', question: 'What can zebras do?', choices: ["Zebras can run.", "Zebras can see a flower.", "Zebras can see a tree.", "Zebras can see a rock."], correctAnswer: "Zebras can run." },
+          { image: '🏊', vocabulary: 'swim', question: 'What can penguins do?', choices: ["Penguins can swim.", "Penguins can fly a kite.", "Penguins can play soccer.", "Penguins can ride a bike."], correctAnswer: "Penguins can swim." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏊', promptText: 'swim', targetPhrase: 'swim' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐇', promptText: 'I can hop.', targetPhrase: 'I can hop.' },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚶', teacherQuestion: 'Can you walk?', promptText: 'Yes, I can walk.', targetPhrase: 'Yes, I can walk.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏊', promptText: "I can't swim.", targetPhrase: "I can't swim." },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' }
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐇', promptText: 'Kangaroos can hop.', targetPhrase: 'Kangaroos can hop.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can zebras run?', promptText: 'Yes, they can.', targetPhrase: 'Yes, they can.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏊', promptText: 'Penguins can swim.', targetPhrase: 'Penguins can swim.' },
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚶', teacherQuestion: 'Can bears walk?', promptText: 'Yes, they can.', targetPhrase: 'Yes, they can.' }
         ]
       }
-    ]
+    ],
+    checkUp: {
+      title: 'CHECK UP 3 (Units 5–6)',
+      description: 'Review Nature, Activities, Animals, Abilities, Locations and Conversations.',
+      phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
+      project: 'Tangram Animals',
+      practiceQuestions: [
+        { image: '🌸', vocabulary: 'flower', question: "What can you see?", choices: ["I can see a flower.", "I can see a river.", "I can play soccer.", "This is a zebra."], correctAnswer: "I can see a flower." },
+        { image: '🚴', vocabulary: 'ride a bike', question: "Can you ride a bike?", choices: ["Yes, I can.", "No, I can't.", "The bear is on the rock.", "Zebras can run."], correctAnswer: "Yes, I can." },
+        { image: '🐒', vocabulary: 'monkey', question: "Where is the monkey?", choices: ["It's in the tree.", "It's on the rock.", "I see a frog.", "They're snakes."], correctAnswer: "It's in the tree." },
+        { image: '🦓', vocabulary: 'zebra', question: "What is this?", choices: ["This is a zebra.", "That is a snake.", "I like tigers.", "There is a turtle."], correctAnswer: "This is a zebra." },
+        { image: '🏊', vocabulary: 'swim', question: "Can penguins swim?", choices: ["Yes, they can.", "No, they can't.", "They can hop.", "They can walk."], correctAnswer: "Yes, they can." }
+      ],
+      speakingTasks: [
+        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
+        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏊', promptText: 'I can swim.', targetPhrase: 'I can swim.' },
+        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
+        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐻', promptText: 'I like bears.', targetPhrase: 'I like bears.' },
+        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐢', teacherQuestion: 'What is this?', promptText: 'It is a turtle.', targetPhrase: 'It is a turtle.' }
+      ]
+    }
   },
   {
     id: 'unit-7',
@@ -905,6 +1077,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'This is my arm. / These are my arms.', example: 'This is my arm.', translationVi: 'Đây là cánh tay của tớ.' }
         ],
         suggestedGames: ['flashcard', 'pictureMatch', 'choosePicture'],
+        practiceQuestions: [
+          { image: '💪', vocabulary: 'arm', question: 'What is this?', choices: ["This is my arm.", "This is my leg.", "This is my foot.", "These are my hands."], correctAnswer: "This is my arm." },
+          { image: '✋', vocabulary: 'hand', question: 'What are these?', choices: ["These are my hands.", "These are my fingers.", "These are my toes.", "This is my arm."], correctAnswer: "These are my hands." },
+          { image: '☝️', vocabulary: 'finger', question: 'What are these?', choices: ["These are my fingers.", "These are my hands.", "These are my toes.", "This is my arm."], correctAnswer: "These are my fingers." },
+          { image: '🦵', vocabulary: 'leg', question: 'What is this?', choices: ["This is my leg.", "This is my arm.", "This is my foot.", "These are my hands."], correctAnswer: "This is my leg." },
+          { image: '🦶', vocabulary: 'foot', question: 'What is this?', choices: ["This is my foot.", "This is my leg.", "This is my arm.", "These are my hands."], correctAnswer: "This is my foot." },
+          { image: '🦶', vocabulary: 'toe', question: 'What are these?', choices: ["These are my toes.", "These are my fingers.", "These are my hands.", "This is my arm."], correctAnswer: "These are my toes." },
+          { image: '💪', vocabulary: 'arm', question: 'Is this my arm?', choices: ["Yes, it is.", "No, it isn't.", "These are my legs.", "These are my hands."], correctAnswer: "Yes, it is." },
+          { image: '🦵', vocabulary: 'leg', question: 'Is this my arm?', choices: ["No, it isn't. It's my leg.", "Yes, it is.", "These are my hands.", "These are my toes."], correctAnswer: "No, it isn't. It's my leg." },
+          { image: '✋', vocabulary: 'hand', question: 'Are these my hands?', choices: ["Yes, they are.", "No, they aren't.", "This is my foot.", "This is my leg."], correctAnswer: "Yes, they are." },
+          { image: '☝️', vocabulary: 'finger', question: 'Are these my fingers?', choices: ["Yes, they are.", "No, they aren't.", "These are my toes.", "This is my arm."], correctAnswer: "Yes, they are." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '💪', promptText: 'arm', targetPhrase: 'arm' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '✋', promptText: 'These are my hands.', targetPhrase: 'These are my hands.' },
@@ -926,10 +1110,22 @@ export const CURRICULUM_UNITS: Unit[] = [
           { id: 'v105', word: 'ear', meaningVi: 'tai', exampleSentence: 'These are my ears.' }
         ],
         sentencePatterns: [
-          { pattern: 'Is this my eye?', example: 'Is this my eye?', translationVi: 'Đây có phải mắt tớ không?' },
-          { pattern: 'Are these my eyes?', example: 'Are these my eyes?', translationVi: 'Đây có phải đôi mắt của tớ không?' }
+          { pattern: 'Is this my eye?', example: 'Is this my eye?', translationVi: 'Đó có phải mắt tớ không?' },
+          { pattern: 'Are these my eyes?', example: 'Are these my eyes?', translationVi: 'Đó có phải đôi mắt của tớ không?' }
         ],
         suggestedGames: ['choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '👁️', vocabulary: 'eye', question: 'What are these?', choices: ["These are my eyes.", "These are my ears.", "This is my nose.", "This is my mouth."], correctAnswer: "These are my eyes." },
+          { image: '👃', vocabulary: 'nose', question: 'What is this?', choices: ["This is my nose.", "This is my mouth.", "These are my eyes.", "These are my ears."], correctAnswer: "This is my nose." },
+          { image: '👄', vocabulary: 'mouth', question: 'What is this?', choices: ["This is my mouth.", "This is my nose.", "These are my eyes.", "These are my ears."], correctAnswer: "This is my mouth." },
+          { image: '👂', vocabulary: 'ear', question: 'What are these?', choices: ["These are my ears.", "These are my eyes.", "This is my nose.", "This is my mouth."], correctAnswer: "These are my ears." },
+          { image: '👃', vocabulary: 'nose', question: 'Is this my nose?', choices: ["Yes, it is.", "No, it isn't.", "These are my eyes.", "These are my ears."], correctAnswer: "Yes, it is." },
+          { image: '👄', vocabulary: 'mouth', question: 'Is this my nose?', choices: ["No, it isn't. It's my mouth.", "Yes, it is.", "These are my eyes.", "These are my ears."], correctAnswer: "No, it isn't. It's my mouth." },
+          { image: '👁️', vocabulary: 'eye', question: 'Are these my eyes?', choices: ["Yes, they are.", "No, they aren't.", "This is my nose.", "This is my mouth."], correctAnswer: "Yes, they are." },
+          { image: '👂', vocabulary: 'ear', question: 'Are these my eyes?', choices: ["No, they aren't. They're my ears.", "Yes, they are.", "This is my nose.", "This is my mouth."], correctAnswer: "No, they aren't. They're my ears." },
+          { image: '👁️', vocabulary: 'eye', question: 'What are these?', choices: ["These are my eyes.", "These are my hands.", "These are my fingers.", "These are my toes."], correctAnswer: "These are my eyes." },
+          { image: '👃', vocabulary: 'nose', question: 'What is this?', choices: ["This is my nose.", "This is my arm.", "This is my leg.", "This is my foot."], correctAnswer: "This is my nose." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👃', promptText: 'nose', targetPhrase: 'nose' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '👁️', promptText: 'Are these my eyes?', targetPhrase: 'Are these my eyes?' },
@@ -991,6 +1187,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'I can wash my hands.', example: 'I can wash my hands.', translationVi: 'Tớ có thể tự rửa tay.' }
         ],
         suggestedGames: ['choosePicture', 'pictureMatch'],
+        practiceQuestions: [
+          { image: '🧼', vocabulary: 'wash my face', question: 'What can you do?', choices: ["I can wash my face.", "I can wash my hands.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "I can wash my face." },
+          { image: '👐🧼', vocabulary: 'wash my hands', question: 'What can you do?', choices: ["I can wash my hands.", "I can wash my face.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "I can wash my hands." },
+          { image: '🪮', vocabulary: 'brush my hair', question: 'What can you do?', choices: ["I can brush my hair.", "I can wash my face.", "I can wash my hands.", "I can brush my teeth."], correctAnswer: "I can brush my hair." },
+          { image: '🪥', vocabulary: 'brush my teeth', question: 'What can you do?', choices: ["I can brush my teeth.", "I can wash my face.", "I can wash my hands.", "I can brush my hair."], correctAnswer: "I can brush my teeth." },
+          { image: '🧼', vocabulary: 'wash my face', question: 'Can you wash your face?', choices: ["Yes, I can.", "No, I can't.", "I can brush my teeth.", "I can brush my hair."], correctAnswer: "Yes, I can." },
+          { image: '🪥', vocabulary: 'brush my teeth', question: 'Can you brush your teeth?', choices: ["Yes, I can.", "No, I can't.", "I can wash my hands.", "I can wash my face."], correctAnswer: "Yes, I can." },
+          { image: '👐🧼', vocabulary: 'wash my hands', question: 'Can you wash your hands?', choices: ["Yes, I can.", "No, I can't.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "Yes, I can." },
+          { image: '🪮', vocabulary: 'brush my hair', question: 'Can you brush your hair?', choices: ["Yes, I can.", "No, I can't.", "I can wash my face.", "I can wash my hands."], correctAnswer: "Yes, I can." },
+          { image: '🧼', vocabulary: 'wash my face', question: 'What can you do?', choices: ["I can wash my face.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can wash my face." },
+          { image: '🪥', vocabulary: 'brush my teeth', question: 'What can you do?', choices: ["I can brush my teeth.", "I can play soccer.", "I can ride a bike.", "I can fly a kite."], correctAnswer: "I can brush my teeth." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🧼', promptText: 'wash', targetPhrase: 'wash' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
@@ -1047,6 +1255,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'What are these? Those are new bikes.', example: 'Those are new bikes.', translationVi: 'Kìa là những chiếc xe đạp mới.' }
         ],
         suggestedGames: ['flashcard', 'pictureMatch', 'choosePicture'],
+        practiceQuestions: [
+          { image: '🧓', vocabulary: 'old', question: 'Is that bus old?', choices: ["That's an old bus.", "That's a new truck.", "It is big.", "It is small."], correctAnswer: "That's an old bus." },
+          { image: '✨', vocabulary: 'new', question: 'Are those trucks new?', choices: ["Those are new trucks.", "That's an old bus.", "It is long.", "It is short."], correctAnswer: "Those are new trucks." },
+          { image: '🐘', vocabulary: 'big', question: 'Is it big?', choices: ["It is big.", "It is small.", "It is long.", "It is short."], correctAnswer: "It is big." },
+          { image: '🐭', vocabulary: 'small', question: 'Is it small?', choices: ["It is small.", "It is big.", "It is long.", "It is short."], correctAnswer: "It is small." },
+          { image: '📏', vocabulary: 'long', question: 'Is it long?', choices: ["It is long.", "It is short.", "It is big.", "It is small."], correctAnswer: "It is long." },
+          { image: '📐', vocabulary: 'short', question: 'Is it short?', choices: ["It is short.", "It is long.", "It is big.", "It is small."], correctAnswer: "It is short." },
+          { image: '🧓', vocabulary: 'old', question: 'Is that bus new?', choices: ["No, it isn't. It's an old bus.", "Yes, it is.", "Those are new trucks.", "It is long."], correctAnswer: "No, it isn't. It's an old bus." },
+          { image: '✨', vocabulary: 'new', question: 'Are those trucks old?', choices: ["No, they aren't. They're new trucks.", "Yes, they are.", "That's an old bus.", "It is small."], correctAnswer: "No, they aren't. They're new trucks." },
+          { image: '🐘', vocabulary: 'big', question: 'Is that elephant big?', choices: ["Yes, it is big.", "No, it is small.", "It is long.", "It is short."], correctAnswer: "Yes, it is big." },
+          { image: '🐭', vocabulary: 'small', question: 'Is that mouse big?', choices: ["No, it is a small mouse.", "Yes, it is big.", "It is long.", "It is short."], correctAnswer: "No, it is a small mouse." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🧓', promptText: 'old', targetPhrase: 'old' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '✨', promptText: "That's a new toy.", targetPhrase: "That's a new toy." },
@@ -1072,6 +1292,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Yes, it is. / No, it isn\'t.', example: 'Yes, it is.', translationVi: 'Đúng vậy. / Không phải.' }
         ],
         suggestedGames: ['choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '⚡', vocabulary: 'fast', question: 'Is that train fast?', choices: ["It is a fast train.", "The train is slow.", "It is noisy.", "It is quiet."], correctAnswer: "It is a fast train." },
+          { image: '🐢', vocabulary: 'slow', question: 'Is the train slow?', choices: ["The train is slow.", "It is a fast train.", "It is noisy.", "It is quiet."], correctAnswer: "The train is slow." },
+          { image: '📢', vocabulary: 'noisy', question: 'Is it noisy?', choices: ["It is noisy.", "It is quiet.", "It is a fast train.", "The train is slow."], correctAnswer: "It is noisy." },
+          { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["It is quiet.", "It is noisy.", "It is a fast train.", "The train is slow."], correctAnswer: "It is quiet." },
+          { image: '⚡', vocabulary: 'fast', question: 'Is that a fast train?', choices: ["Yes, it is.", "No, it isn't.", "It is slow.", "It is noisy."], correctAnswer: "Yes, it is." },
+          { image: '🐢', vocabulary: 'slow', question: 'Is that a fast train?', choices: ["No, it isn't. It is slow.", "Yes, it is.", "It is fast.", "It is quiet."], correctAnswer: "No, it isn't. It is slow." },
+          { image: '📢', vocabulary: 'noisy', question: 'Is it quiet?', choices: ["No, it isn't. It is noisy.", "Yes, it is.", "It is fast.", "It is slow."], correctAnswer: "No, it isn't. It is noisy." },
+          { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["Yes, it is quiet.", "No, it is noisy.", "It is fast.", "It is slow."], correctAnswer: "Yes, it is quiet." },
+          { image: '⚡', vocabulary: 'fast', question: 'Is that train fast?', choices: ["It is a fast train.", "It is a circle.", "It is a square.", "It is a triangle."], correctAnswer: "It is a fast train." },
+          { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["It is quiet.", "It is white.", "It is black.", "It is red."], correctAnswer: "It is quiet." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '⚡', promptText: 'fast', targetPhrase: 'fast' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐢', promptText: 'The train is slow.', targetPhrase: 'The train is slow.' },
@@ -1131,6 +1363,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'What are these? They\'re new buses.', example: "They're new buses.", translationVi: 'Đây là những chiếc xe buýt mới.' }
         ],
         suggestedGames: ['choosePicture', 'mysteryBox'],
+        practiceQuestions: [
+          { image: '🚌', vocabulary: 'bus', question: 'What\'s this?', choices: ["It's a bus.", "It's a truck.", "It's a train.", "It's a boat."], correctAnswer: "It's a bus." },
+          { image: '🚚', vocabulary: 'truck', question: 'What\'s this?', choices: ["It's a truck.", "It's a bus.", "It's a train.", "It's a boat."], correctAnswer: "It's a truck." },
+          { image: '🚆', vocabulary: 'train', question: 'What\'s this?', choices: ["It's a train.", "It's a bus.", "It's a truck.", "It's a boat."], correctAnswer: "It's a train." },
+          { image: '⛵', vocabulary: 'boat', question: 'What\'s this?', choices: ["It's a boat.", "It's a bus.", "It's a truck.", "It's a train."], correctAnswer: "It's a boat." },
+          { image: '🚌', vocabulary: 'bus', question: 'Is this a bus?', choices: ["Yes, it is.", "No, it isn't.", "It's a truck.", "It's a train."], correctAnswer: "Yes, it is." },
+          { image: '🚚', vocabulary: 'truck', question: 'Is this a bus?', choices: ["No, it isn't. It's a truck.", "Yes, it is.", "It's a train.", "It's a boat."], correctAnswer: "No, it isn't. It's a truck." },
+          { image: '🚆', vocabulary: 'train', question: 'Is this a train?', choices: ["Yes, it is.", "No, it isn't.", "It's a bus.", "It's a boat."], correctAnswer: "Yes, it is." },
+          { image: '⛵', vocabulary: 'boat', question: 'What are these?', choices: ["They're boats.", "They're buses.", "They're trucks.", "They're trains."], correctAnswer: "They're boats." },
+          { image: '🚌', vocabulary: 'bus', question: 'What\'s this?', choices: ["It's a bus.", "It's a nose.", "It's an eye.", "It's an ear."], correctAnswer: "It's a bus." },
+          { image: '🚆', vocabulary: 'train', question: 'What\'s this?', choices: ["It's a train.", "It's a hand.", "It's a finger.", "It's an arm."], correctAnswer: "It's a train." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🚆', promptText: 'train', targetPhrase: 'train' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🚚', promptText: "They're new trucks.", targetPhrase: "They're new trucks." },
@@ -1139,7 +1383,27 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'What are those?', promptText: "They're trains.", targetPhrase: "They're trains." }
         ]
       }
-    ]
+    ],
+    checkUp: {
+      title: 'CHECK UP 4 (Units 7–8)',
+      description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
+      phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
+      project: 'My Robot',
+      practiceQuestions: [
+        { image: '💪', vocabulary: 'arm', question: "What is this?", choices: ["This is my arm.", "These are my hands.", "That's a new toy.", "The train is slow."], correctAnswer: "This is my arm." },
+        { image: '👄', vocabulary: 'mouth', question: "Is this my mouth?", choices: ["Yes, it is.", "No, it isn't.", "These are my eyes.", "I can wash my face."], correctAnswer: "Yes, it is." },
+        { image: '🪥', vocabulary: 'brush my teeth', question: "What can you do?", choices: ["I can brush my teeth.", "I can brush my hair.", "This is my foot.", "Those are new trucks."], correctAnswer: "I can brush my teeth." },
+        { image: '🐘', vocabulary: 'big', question: "Is it a big elephant?", choices: ["Yes, it is big.", "No, it is small.", "It is a fast train.", "These are my ears."], correctAnswer: "Yes, it is big." },
+        { image: '🚌', vocabulary: 'bus', question: "What's this?", choices: ["It's a bus.", "It's a truck.", "They're boats.", "Are these my eyes?"], correctAnswer: "It's a bus." }
+      ],
+      speakingTasks: [
+        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
+        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
+        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '💪', teacherQuestion: 'What is this?', promptText: 'This is my arm.', targetPhrase: 'This is my arm.' },
+        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚌', promptText: 'It is a bus.', targetPhrase: 'It is a bus.' },
+        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'Is it a fast train?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
+      ]
+    }
   }
 ];
 
