@@ -937,24 +937,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚶', teacherQuestion: 'Can bears walk?', promptText: 'Yes, they can.', targetPhrase: 'Yes, they can.' }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 3 (Units 5–6)',
-      description: 'Review Nature, Activities, Animals, Abilities, Locations and Conversations.',
-      phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
-      project: 'Tangram Animals',
-      practiceQuestions: [
-        { image: '', vocabulary: 'help', question: "A: Please help me with the kite.\nB: __________", choices: ["Sure.", "There are ants.", "Zebras can run.", "I can hop."], correctAnswer: "Sure." },
-        { image: '', vocabulary: 'sorry', question: "A: I'm sorry.\nB: __________", choices: ["That's OK.", "No, I can't.", "Can you see a turtle?", "They're snakes."], correctAnswer: "That's OK." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏊', promptText: 'I can swim.', targetPhrase: 'I can swim.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐻', promptText: 'I like bears.', targetPhrase: 'I like bears.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐢', teacherQuestion: 'What is this?', promptText: 'It is a turtle.', targetPhrase: 'It is a turtle.' }
-      ]
-    }
+    ]
   },
   {
     id: 'unit-7',
