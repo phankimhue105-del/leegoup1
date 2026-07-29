@@ -142,8 +142,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🟩', vocabulary: 'square', question: 'Is it a circle?', choices: ["No, it isn't.", "Yes, it is.", "It is a rectangle.", "It is a triangle."], correctAnswer: "No, it isn't." },
           { image: '🔺', vocabulary: 'triangle', question: 'Is it a triangle?', choices: ["Yes, it is.", "No, it isn't.", "It is a square.", "It is a circle."], correctAnswer: "Yes, it is." },
           { image: '▮', vocabulary: 'rectangle', question: 'Is it a square?', choices: ["No, it isn't.", "Yes, it is.", "It is a circle.", "It is a triangle."], correctAnswer: "No, it isn't." },
-          { image: '🔴', vocabulary: 'circle', question: 'What shape is it?', choices: ["It's a circle.", "It's a notebook.", "It's a desk.", "It's a book."], correctAnswer: "It's a circle." },
-          { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a chair.", "It's a backpack.", "It's a pencil case."], correctAnswer: "It's a square." }
+          { image: '🔴', vocabulary: 'circle', question: 'What shape is it?', choices: ["It's a circle.", "It's a square.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a circle." },
+          { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a circle.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a square." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🟩', promptText: 'square', targetPhrase: 'square' },
@@ -294,6 +294,18 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Blue and yellow make green.', example: 'Blue and yellow make green.', translationVi: 'Xanh dương và vàng tạo thành xanh lá.' }
         ],
         suggestedGames: ['pictureMatch', 'choosePicture', 'trueOrFalse'],
+        practiceQuestions: [
+          { image: '🟢', vocabulary: 'green', question: 'Blue and yellow make ______.', choices: ["green", "purple", "orange", "pink"], correctAnswer: "green" },
+          { image: '🟣', vocabulary: 'purple', question: 'Red and blue make ______.', choices: ["purple", "green", "orange", "gray"], correctAnswer: "purple" },
+          { image: '🟠', vocabulary: 'orange', question: 'Red and yellow make ______.', choices: ["orange", "pink", "purple", "brown"], correctAnswer: "orange" },
+          { image: '🌸', vocabulary: 'pink', question: 'Red and white make ______.', choices: ["pink", "orange", "purple", "gray"], correctAnswer: "pink" },
+          { image: '🔘', vocabulary: 'gray', question: 'Black and white make ______.', choices: ["gray", "brown", "pink", "orange"], correctAnswer: "gray" },
+          { image: '🟢', vocabulary: 'green', question: 'What color is it?', choices: ["It's green.", "It's purple.", "It's orange.", "It's pink."], correctAnswer: "It's green." },
+          { image: '🟣', vocabulary: 'purple', question: 'What color is it?', choices: ["It's purple.", "It's green.", "It's orange.", "It's pink."], correctAnswer: "It's purple." },
+          { image: '🟠', vocabulary: 'orange', question: 'What color is it?', choices: ["It's orange.", "It's purple.", "It's green.", "It's pink."], correctAnswer: "It's orange." },
+          { image: '🌸', vocabulary: 'pink', question: 'What color is it?', choices: ["It's pink.", "It's gray.", "It's brown.", "It's green."], correctAnswer: "It's pink." },
+          { image: '🟤', vocabulary: 'brown', question: 'What color is it?', choices: ["It's brown.", "It's gray.", "It's pink.", "It's orange."], correctAnswer: "It's brown." }
+        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🟢', promptText: 'green', targetPhrase: 'green' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🟣', promptText: "It's purple.", targetPhrase: "It's purple." },
@@ -615,8 +627,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🍚', vocabulary: 'rice', question: "Is this rice?", choices: ["Yes, this is rice.", "No, it isn't.", "This is pizza.", "This is bread."], correctAnswer: "Yes, this is rice." },
           { image: '🍪', vocabulary: 'cookie', question: "Is this bread?", choices: ["No, it isn't. It's a cookie.", "Yes, it is.", "This is rice.", "This is pizza."], correctAnswer: "No, it isn't. It's a cookie." },
           { image: '🍞', vocabulary: 'bread', question: "Do you like bread?", choices: ["Yes, I like bread.", "No, I don't.", "This is pizza.", "This is rice."], correctAnswer: "Yes, I like bread." },
-          { image: '🍕', vocabulary: 'pizza', question: "What's this?", choices: ["This is pizza.", "This is mother.", "This is father.", "This is brother."], correctAnswer: "This is pizza." },
-          { image: '🍪', vocabulary: 'cookie', question: "What's this?", choices: ["This is a cookie.", "This is sister.", "This is grandmother.", "This is grandfather."], correctAnswer: "This is a cookie." }
+          { image: '🍕', vocabulary: 'pizza', question: "What's this?", choices: ["This is pizza.", "This is rice.", "This is a cookie.", "This is bread."], correctAnswer: "This is pizza." },
+          { image: '🍪', vocabulary: 'cookie', question: "What's this?", choices: ["This is a cookie.", "This is pizza.", "This is rice.", "This is bread."], correctAnswer: "This is a cookie." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍞', promptText: 'bread', targetPhrase: 'bread' },
@@ -663,8 +675,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🌅', vocabulary: 'lake', question: 'What can you see?', choices: ["I can see a lake.", "I can see a hill.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a lake." },
           { image: '🌸', vocabulary: 'flower', question: 'Can you see a flower?', choices: ["Yes, I can.", "No, I can't.", "I can see a river.", "I can see a rock."], correctAnswer: "Yes, I can." },
           { image: '🪨', vocabulary: 'rock', question: 'Can you see a tree?', choices: ["No, I can't. I can see a rock.", "Yes, I can.", "I can see a flower.", "I can see a river."], correctAnswer: "No, I can't. I can see a rock." },
-          { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a notebook.", "I can see a desk.", "I can see a chair."], correctAnswer: "I can see a river." },
-          { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a book.", "I can see a pencil.", "I can see a backpack."], correctAnswer: "I can see a hill." }
+          { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a river." },
+          { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a lake.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a hill." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌸', promptText: 'flower', targetPhrase: 'flower' },
@@ -700,8 +712,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🚴', vocabulary: 'ride a bike', question: 'Can you ride a bike?', choices: ["No, I can't.", "Yes, I can.", "I can play soccer.", "I can jump rope."], correctAnswer: "No, I can't." },
           { image: '🏃‍♀️', vocabulary: 'jump rope', question: 'Can you jump rope?', choices: ["Yes, I can.", "No, I can't.", "I can fly a kite.", "I can ride a bike."], correctAnswer: "Yes, I can." },
           { image: '🪁🏃', vocabulary: 'fly a kite', question: 'Can you fly a kite?', choices: ["Yes, I can.", "No, I can't.", "I can play soccer.", "I can ride a bike."], correctAnswer: "Yes, I can." },
-          { image: '⚽🏃', vocabulary: 'play soccer', question: 'What can you do?', choices: ["I can play soccer.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can play soccer." },
-          { image: '🚴', vocabulary: 'ride a bike', question: 'What can you do?', choices: ["I can't ride a bike.", "I can see a river.", "I can see a hill.", "I can see a lake."], correctAnswer: "I can't ride a bike." }
+          { image: '⚽🏃', vocabulary: 'play soccer', question: 'What can you do?', choices: ["I can play soccer.", "I can jump rope.", "I can fly a kite.", "I can ride a bike."], correctAnswer: "I can play soccer." },
+          { image: '🚴', vocabulary: 'ride a bike', question: 'What can you do?', choices: ["I can't ride a bike.", "I can ride a bike.", "I can play soccer.", "I can jump rope."], correctAnswer: "I can't ride a bike." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '⚽🏃', promptText: 'soccer', targetPhrase: 'soccer' },
@@ -768,8 +780,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🐸', vocabulary: 'frog', question: 'Can you see a turtle?', choices: ["No, I can't. I see a frog.", "Yes, I can.", "I see a spider.", "I see an ant."], correctAnswer: "No, I can't. I see a frog." },
           { image: '🕷️', vocabulary: 'spider', question: 'Can you see a spider?', choices: ["Yes, I can.", "No, I can't.", "I see a turtle.", "I see a frog."], correctAnswer: "Yes, I can." },
           { image: '🐜', vocabulary: 'ant', question: 'Can you see a frog?', choices: ["No, I can't. I see an ant.", "Yes, I can.", "I see a spider.", "I see a turtle."], correctAnswer: "No, I can't. I see an ant." },
-          { image: '🐢', vocabulary: 'turtle', question: 'What can you see?', choices: ["I can see a turtle.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a turtle." },
-          { image: '🐸', vocabulary: 'frog', question: 'What can you see?', choices: ["I can see a frog.", "I can see a river.", "I can see a hill.", "I can see a lake."], correctAnswer: "I can see a frog." }
+          { image: '🐢', vocabulary: 'turtle', question: 'What can you see?', choices: ["I can see a turtle.", "I can see a frog.", "I can see a spider.", "I can see an ant."], correctAnswer: "I can see a turtle." },
+          { image: '🐸', vocabulary: 'frog', question: 'What can you see?', choices: ["I can see a frog.", "I can see a turtle.", "I can see a spider.", "I can see an ant."], correctAnswer: "I can see a frog." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐢', promptText: 'turtle', targetPhrase: 'turtle' },
@@ -822,7 +834,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🐧', vocabulary: 'penguin', question: 'What is this?', choices: ["It's a penguin.", "It's a kangaroo.", "It's an elephant.", "It's a monkey."], correctAnswer: "It's a penguin." },
           { image: '🐒', vocabulary: 'monkey', question: 'Where is the monkey?', choices: ["It's in the tree.", "It's on the rock.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's in the tree." },
           { image: '🐻', vocabulary: 'bear', question: 'Where is the bear?', choices: ["It's on the rock.", "It's in the tree.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's on the rock." },
-          { image: '🐘', vocabulary: 'elephant', question: 'Is the elephant big?', choices: ["Yes, it is big.", "No, it isn't.", "It is in the tree.", "It is under the chair."], correctAnswer: "Yes, it is big." },
+          { image: '🐘', vocabulary: 'elephant', question: 'Is the elephant big?', choices: ["Yes, it is big.", "No, it isn't.", "It is small.", "It is short."], correctAnswer: "Yes, it is big." },
           { image: '🐧', vocabulary: 'penguin', question: 'Where is the penguin?', choices: ["It's in the water.", "It's in the tree.", "It's on the rock.", "It's by the chair."], correctAnswer: "It's in the water." }
         ],
         speakingTasks: [
@@ -926,8 +938,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🏊', vocabulary: 'swim', question: 'Can kangaroos swim?', choices: ["No, they can't.", "Yes, they can.", "They can run.", "They can hop."], correctAnswer: "No, they can't." },
           { image: '🐇', vocabulary: 'hop', question: 'Can kangaroos hop?', choices: ["Yes, they can.", "No, they can't.", "They can swim.", "They can walk."], correctAnswer: "Yes, they can." },
           { image: '🚶', vocabulary: 'walk', question: 'Can bears walk?', choices: ["Yes, they can.", "No, they can't.", "They can fly.", "They can hop."], correctAnswer: "Yes, they can." },
-          { image: '🏃', vocabulary: 'run', question: 'What can zebras do?', choices: ["Zebras can run.", "Zebras can see a flower.", "Zebras can see a tree.", "Zebras can see a rock."], correctAnswer: "Zebras can run." },
-          { image: '🏊', vocabulary: 'swim', question: 'What can penguins do?', choices: ["Penguins can swim.", "Penguins can fly a kite.", "Penguins can play soccer.", "Penguins can ride a bike."], correctAnswer: "Penguins can swim." }
+          { image: '🏃', vocabulary: 'run', question: 'What can zebras do?', choices: ["Zebras can run.", "Zebras can hop.", "Zebras can swim.", "Zebras can walk."], correctAnswer: "Zebras can run." },
+          { image: '🏊', vocabulary: 'swim', question: 'What can penguins do?', choices: ["Penguins can swim.", "Penguins can run.", "Penguins can hop.", "Penguins can walk."], correctAnswer: "Penguins can swim." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏊', promptText: 'swim', targetPhrase: 'swim' },
@@ -1081,8 +1093,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🪥', vocabulary: 'brush my teeth', question: 'Can you brush your teeth?', choices: ["Yes, I can.", "No, it is slow.", "I can wash my hands.", "I can wash my face."], correctAnswer: "Yes, I can." },
           { image: '👐🧼', vocabulary: 'wash my hands', question: 'Can you wash your hands?', choices: ["Yes, I can.", "No, I can't.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "Yes, I can." },
           { image: '🪮', vocabulary: 'brush my hair', question: 'Can you brush your hair?', choices: ["Yes, I can.", "No, I can't.", "I can wash my face.", "I can wash my hands."], correctAnswer: "Yes, I can." },
-          { image: '🧼', vocabulary: 'wash my face', question: 'What can you do?', choices: ["I can wash my face.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can wash my face." },
-          { image: '🪥', vocabulary: 'brush my teeth', question: 'What can you do?', choices: ["I can brush my teeth.", "I can play soccer.", "I can ride a bike.", "I can fly a kite."], correctAnswer: "I can brush my teeth." }
+          { image: '🧼', vocabulary: 'wash my face', question: 'What can you do?', choices: ["I can wash my face.", "I can wash my hands.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "I can wash my face." },
+          { image: '🪥', vocabulary: 'brush my teeth', question: 'What can you do?', choices: ["I can brush my teeth.", "I can wash my face.", "I can wash my hands.", "I can brush my hair."], correctAnswer: "I can brush my teeth." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🧼', promptText: 'wash', targetPhrase: 'wash' },
@@ -1172,8 +1184,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🐢', vocabulary: 'slow', question: 'Is that a fast train?', choices: ["No, it isn't. It is slow.", "Yes, it is.", "It is fast.", "It is quiet."], correctAnswer: "No, it isn't. It is slow." },
           { image: '📢', vocabulary: 'noisy', question: 'Is it quiet?', choices: ["No, it isn't. It is noisy.", "Yes, it is.", "It is fast.", "It is slow."], correctAnswer: "No, it isn't. It is noisy." },
           { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["Yes, it is quiet.", "No, it is noisy.", "It is fast.", "It is slow."], correctAnswer: "Yes, it is quiet." },
-          { image: '⚡', vocabulary: 'fast', question: 'Is that train fast?', choices: ["It is a fast train.", "It is a circle.", "It is a square.", "It is a triangle."], correctAnswer: "It is a fast train." },
-          { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["It is quiet.", "It is white.", "It is black.", "It is red."], correctAnswer: "It is quiet." }
+          { image: '⚡', vocabulary: 'fast', question: 'Is that train fast?', choices: ["It is a fast train.", "The train is slow.", "It is noisy.", "It is quiet."], correctAnswer: "It is a fast train." },
+          { image: '🤫', vocabulary: 'quiet', question: 'Is it quiet?', choices: ["It is quiet.", "It is noisy.", "It is a fast train.", "The train is slow."], correctAnswer: "It is quiet." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '⚡', promptText: 'fast', targetPhrase: 'fast' },
@@ -1240,8 +1252,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🚚', vocabulary: 'truck', question: 'Is this a bus?', choices: ["No, it isn't. It's a truck.", "Yes, it is.", "It's a train.", "It's a boat."], correctAnswer: "No, it isn't. It's a truck." },
           { image: '🚆', vocabulary: 'train', question: 'Is this a train?', choices: ["Yes, it is.", "No, it isn't.", "It's a bus.", "It's a boat."], correctAnswer: "Yes, it is." },
           { image: '⛵', vocabulary: 'boat', question: 'What are these?', choices: ["They're boats.", "They're buses.", "They're trucks.", "They're trains."], correctAnswer: "They're boats." },
-          { image: '🚌', vocabulary: 'bus', question: 'What\'s this?', choices: ["It's a bus.", "It's a nose.", "It's an eye.", "It's an ear."], correctAnswer: "It's a bus." },
-          { image: '🚆', vocabulary: 'train', question: 'What\'s this?', choices: ["It's a train.", "It's a hand.", "It's a finger.", "It's an arm."], correctAnswer: "It's a train." }
+          { image: '🚌', vocabulary: 'bus', question: 'What\'s this?', choices: ["It's a bus.", "It's a truck.", "It's a train.", "It's a boat."], correctAnswer: "It's a bus." },
+          { image: '🚆', vocabulary: 'train', question: 'What\'s this?', choices: ["It's a train.", "It's a bus.", "It's a truck.", "It's a boat."], correctAnswer: "It's a train." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🚆', promptText: 'train', targetPhrase: 'train' },
