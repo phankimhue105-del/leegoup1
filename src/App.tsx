@@ -15,7 +15,7 @@ import {
   Heart,
 } from 'lucide-react';
 
-import { Stage, StudentProgress, Unit, Lesson, AITeacherResponse } from './types';
+import { Stage, StudentProgress, Unit, Lesson, AITeacherResponse, PracticeQuestion, SpeakingTask } from './types';
 import { CURRICULUM_UNITS, LEEGO_BRAND } from './data/curriculum';
 import { LeeGoTeacherAvatar } from './components/LeeGoTeacherAvatar';
 import { LessonFlowHeader } from './components/LessonFlowHeader';
