@@ -57,6 +57,15 @@ export const SpeakingPractice: React.FC<Props> = ({
 
   // Generate 5 speaking tasks when lesson changes
   useEffect(() => {
+    if (lesson.speakingTasks && lesson.speakingTasks.length > 0) {
+      setTasks(lesson.speakingTasks);
+      setCurrentTaskIndex(0);
+      setAssessment(null);
+      setTranscript('');
+      setScores([]);
+      return;
+    }
+
     const vocabList = lesson.vocabulary && lesson.vocabulary.length > 0 ? lesson.vocabulary : [
       { id: 'v-fb-1', word: 'pencil', meaningVi: 'bút chì', exampleSentence: 'It is a pencil.' },
       { id: 'v-fb-2', word: 'book', meaningVi: 'sách', exampleSentence: 'It is a book.' },
