@@ -105,11 +105,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['flashcard', 'sentenceBuilder'],
         practiceQuestions: [
-          { image: '👋', vocabulary: 'fine', question: 'What does the teacher ask?', choices: ["How are you?", "What is it?", "Is it a circle?", "Who's this?"], correctAnswer: "How are you?" },
-          { image: '😊', vocabulary: 'fine', question: 'How does the student feel?', choices: ["I'm fine. Thank you.", "No, it isn't.", "It's a pencil.", "This is paint."], correctAnswer: "I'm fine. Thank you." },
-          { image: '👋', vocabulary: 'fine', question: 'Complete the dialogue: "How are you? - I\'m ______, thank you."', choices: ["fine", "pencil", "ruler", "blue"], correctAnswer: "fine" },
-          { image: '😊', vocabulary: 'great', question: 'Complete the dialogue: "How are you? - I\'m great! ______."', choices: ["Thank you.", "No, it isn't.", "It is a circle.", "This is paint."], correctAnswer: "Thank you." },
-          { image: '👋', vocabulary: 'fine', question: 'When you meet your teacher, you say:', choices: ["How are you?", "It is a desk.", "What color is it?", "What's this?"], correctAnswer: "How are you?" }
+          { image: '', vocabulary: 'fine', question: "A: How are you?\nB: __________", choices: ["I'm fine, thank you.", "Goodbye.", "Hello.", "Thank you."], correctAnswer: "I'm fine, thank you." },
+          { image: '', vocabulary: 'great', question: "A: How are you?\nB: __________", choices: ["I'm great! Thank you.", "Good morning.", "Nice to meet you.", "See you later."], correctAnswer: "I'm great! Thank you." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '😊', promptText: 'great', targetPhrase: 'great' },
@@ -163,11 +160,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['dog', 'bug', 'pop', 'pig', 'fog', 'top', 'dad', 'dig', 'mat', 'mud', 'nap', 'nod'],
       project: 'Color Poster',
       practiceQuestions: [
-        { image: '✏️', vocabulary: 'pencil', question: "What is it?", choices: ["It's a pencil.", "It's a backpack.", "This is paint.", "It's red."], correctAnswer: "It's a pencil." },
-        { image: '📓', vocabulary: 'notebook', question: "What is it?", choices: ["It's a notebook.", "It's a desk.", "This is paper.", "It's white."], correctAnswer: "It's a notebook." },
-        { image: '🪑', vocabulary: 'chair', question: "What is it?", choices: ["It's a chair.", "It's a book.", "This is chalk.", "It's blue."], correctAnswer: "It's a chair." },
-        { image: '🎨', vocabulary: 'paint', question: "What's this?", choices: ["This is paint.", "This is yarn.", "It's a notebook.", "It's red."], correctAnswer: "This is paint." },
-        { image: '🧴', vocabulary: 'glue', question: "What's this?", choices: ["This is glue.", "This is tape.", "It's a pencil case.", "It's yellow."], correctAnswer: "This is glue." }
+        { image: '', vocabulary: 'fine', question: "A: How are you?\nB: __________", choices: ["I'm fine, thank you.", "See you.", "Red paint.", "Yes, it is."], correctAnswer: "I'm fine, thank you." },
+        { image: '', vocabulary: 'share', question: "A: Let's share the blue paint.\nB: __________", choices: ["OK.", "I'm seven.", "No, it isn't.", "A book."], correctAnswer: "OK." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎒', promptText: 'backpack', targetPhrase: 'backpack' },
@@ -282,11 +276,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🤝', vocabulary: 'share', question: 'What does the friend want to do?', choices: ["Let's share.", "What color is it?", "This is glue.", "Is it a notebook?"], correctAnswer: "Let's share." },
-          { image: '🎨', vocabulary: 'paint', question: 'What do they share?', choices: ["blue paint", "a notebook", "a pencil case", "a backpack"], correctAnswer: "blue paint" },
-          { image: '🤝', vocabulary: 'share', question: 'Complete: "Let\'s share. - ______."', choices: ["OK.", "No, it isn't.", "This is chalk.", "It's yellow."], correctAnswer: "OK." },
-          { image: '🤝', vocabulary: 'share', question: 'Complete: "Can we share? - Yes, let\'s ______."', choices: ["share", "paint", "blue", "glue"], correctAnswer: "share" },
-          { image: '🤝', vocabulary: 'share', question: 'When you want to share your toys, you say:', choices: ["Let's share.", "What is it?", "Is this paint?", "What's this?"], correctAnswer: "Let's share." }
+          { image: '', vocabulary: 'share', question: "A: Let's share the blue paint.\nB: __________", choices: ["OK.", "No, it isn't.", "Thank you.", "You're welcome."], correctAnswer: "OK." },
+          { image: '', vocabulary: 'share', question: "A: Can we share?\nB: __________", choices: ["Yes, let's share.", "I'm fine, thank you.", "See you.", "Great!"], correctAnswer: "Yes, let's share." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🤝', promptText: 'share', targetPhrase: 'share' },
@@ -314,18 +305,6 @@ export const CURRICULUM_UNITS: Unit[] = [
           { pattern: 'Blue and yellow make green.', example: 'Blue and yellow make green.', translationVi: 'Xanh dương và vàng tạo thành xanh lá.' }
         ],
         suggestedGames: ['pictureMatch', 'choosePicture', 'trueOrFalse'],
-        practiceQuestions: [
-          { image: '🟢', vocabulary: 'green', question: 'What color is it?', choices: ["It's green.", "It's purple.", "It's orange.", "It's pink."], correctAnswer: "It's green." },
-          { image: '🟣', vocabulary: 'purple', question: 'What color is it?', choices: ["It's purple.", "It's green.", "It's orange.", "It's pink."], correctAnswer: "It's purple." },
-          { image: '🟠', vocabulary: 'orange', question: 'What color is it?', choices: ["It's orange.", "It's green.", "It's purple.", "It's pink."], correctAnswer: "It's orange." },
-          { image: '🌸', vocabulary: 'pink', question: 'What color is it?', choices: ["It's pink.", "It's green.", "It's purple.", "It's orange."], correctAnswer: "It's pink." },
-          { image: '🔘', vocabulary: 'gray', question: 'What color is it?', choices: ["It's gray.", "It's brown.", "It's green.", "It's purple."], correctAnswer: "It's gray." },
-          { image: '🟤', vocabulary: 'brown', question: 'What color is it?', choices: ["It's brown.", "It's gray.", "It's green.", "It's purple."], correctAnswer: "It's brown." },
-          { image: '🟢', vocabulary: 'green', question: 'Is it green?', choices: ["Yes, it is.", "No, it isn't.", "It's blue.", "It's yellow."], correctAnswer: "Yes, it is." },
-          { image: '🟣', vocabulary: 'purple', question: 'Is it green?', choices: ["No, it isn't.", "Yes, it is.", "It's blue.", "It's yellow."], correctAnswer: "No, it isn't." },
-          { image: '🟠', vocabulary: 'orange', question: 'What color is it?', choices: ["It's orange.", "It's white.", "It's black.", "It's red."], correctAnswer: "It's orange." },
-          { image: '🌸', vocabulary: 'pink', question: 'Is it pink?', choices: ["Yes, it is.", "No, it isn't.", "It's gray.", "It's brown."], correctAnswer: "Yes, it is." }
-        ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🟢', promptText: 'green', targetPhrase: 'green' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🟣', promptText: "It's purple.", targetPhrase: "It's purple." },
@@ -449,16 +428,13 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🎮', vocabulary: 'play', question: 'What does the friend say when it is the student\'s turn?', choices: ["It's your turn.", "How many?", "I have one game.", "Let's play!"], correctAnswer: "It's your turn." },
-          { image: '🎮', vocabulary: 'play', question: 'What does the student say to show politeness?', choices: ["Thank you.", "It's your turn.", "I have a puzzle.", "Two cars."], correctAnswer: "Thank you." },
-          { image: '🎮', vocabulary: 'play', question: 'Complete: "It\'s your turn. - ______."', choices: ["Thank you.", "No, it isn't.", "One doll.", "I'm seven."], correctAnswer: "Thank you." },
-          { image: '🎮', vocabulary: 'play', question: 'Complete: "Let\'s play! - Okay, let\'s ______."', choices: ["play", "turn", "game", "puzzle"], correctAnswer: "play" },
-          { image: '🎮', vocabulary: 'play', question: 'When your friend gives you a toy to play, you say:', choices: ["Thank you.", "How many?", "Is it a car?", "No, it isn't."], correctAnswer: "Thank you." }
+          { image: '', vocabulary: 'play', question: "A: It's your turn.\nB: __________", choices: ["Thank you.", "Let's play!", "It's my turn.", "No, it isn't."], correctAnswer: "Thank you." },
+          { image: '', vocabulary: 'play', question: "A: Let's play a game!\nB: __________", choices: ["Okay, let's play.", "Nice to meet you.", "How are you?", "You're welcome."], correctAnswer: "Okay, let's play." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎮', promptText: 'play', targetPhrase: 'play' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🎮', promptText: "Let's play!", targetPhrase: "Let's play!" },
-          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🎮', teacherQuestion: 'It\'s your turn.', promptText: 'Thank you.', targetPhrase: 'Thank you.' },
+          { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🎮', teacherQuestion: "It's your turn.", promptText: 'Thank you.', targetPhrase: 'Thank you.' },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🎮', promptText: "Let's play a game.", targetPhrase: "Let's play a game." },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '⚽🏃', teacherQuestion: "Let's play soccer.", promptText: "Okay, let's play.", targetPhrase: "Okay, let's play." }
         ]
@@ -507,11 +483,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
       project: 'All About Me Book',
       practiceQuestions: [
-        { image: '7️⃣', vocabulary: 'seven', question: "How old are you?", choices: ["I'm seven.", "I'm eight.", "This is my father.", "I like pizza."], correctAnswer: "I'm seven." },
-        { image: '🚗🚗', vocabulary: 'cars', question: "How many cars?", choices: ["Two cars.", "One car.", "This is my mother.", "I don't like juice."], correctAnswer: "Two cars." },
-        { image: '👩', vocabulary: 'mother', question: "Who's this?", choices: ["This is my mother.", "This is my brother.", "Two cars.", "I like ice cream."], correctAnswer: "This is my mother." },
-        { image: '🍕', vocabulary: 'pizza', question: "Do you like pizza?", choices: ["Yes, I do.", "No, it don't.", "This is my father.", "One doll."], correctAnswer: "Yes, I do." },
-        { image: '🍪', vocabulary: 'cookie', question: "What is it?", choices: ["It's a cookie.", "It's bread.", "This is my sister.", "Three balls."], correctAnswer: "It's a cookie." }
+        { image: '', vocabulary: 'play', question: "A: It's your turn.\nB: __________", choices: ["Thank you.", "One doll.", "I'm eight.", "This is my mother."], correctAnswer: "Thank you." },
+        { image: '', vocabulary: 'cookie', question: "A: Thank you for the cookies!\nB: __________", choices: ["You're welcome.", "Here you are.", "I like pizza.", "Two cars."], correctAnswer: "You're welcome." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
@@ -627,11 +600,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🍪', vocabulary: 'cookie', question: 'What does the friend say when giving a cookie?', choices: ["Here you are.", "Who's this?", "Do you like chicken?", "I like pizza."], correctAnswer: "Here you are." },
-          { image: '🍪', vocabulary: 'cookie', question: 'What does the friend say after the student says "Thank you"?', choices: ["You're welcome.", "Here you are.", "I like cookies.", "This is bread."], correctAnswer: "You're welcome." },
-          { image: '🍪', vocabulary: 'cookie', question: 'Complete: "Here you are. - ______."', choices: ["Thank you.", "You're welcome.", "I don't like juice.", "This is my mother."], correctAnswer: "Thank you." },
-          { image: '🍪', vocabulary: 'cookie', question: 'Complete: "Thank you. - You\'re ______."', choices: ["welcome", "here", "welcome you", "cookies"], correctAnswer: "welcome" },
-          { image: '🍪', vocabulary: 'cookie', question: 'When someone says "Thank you", you reply:', choices: ["You're welcome.", "Here you are.", "I like pizza.", "No, I don't."], correctAnswer: "You're welcome." }
+          { image: '', vocabulary: 'cookie', question: "A: Here you are.\nB: __________", choices: ["Thank you.", "You're welcome.", "No, it isn't.", "Goodbye."], correctAnswer: "Thank you." },
+          { image: '', vocabulary: 'welcome', question: "A: Thank you!\nB: __________", choices: ["You're welcome.", "Here you are.", "I'm fine.", "OK."], correctAnswer: "You're welcome." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🍪', promptText: 'cookie', targetPhrase: 'cookie' },
@@ -685,11 +655,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
       project: 'All About Me Book',
       practiceQuestions: [
-        { image: '7️⃣', vocabulary: 'seven', question: "How old are you?", choices: ["I'm seven.", "I'm eight.", "This is my father.", "I like pizza."], correctAnswer: "I'm seven." },
-        { image: '🚗🚗', vocabulary: 'cars', question: "How many cars?", choices: ["Two cars.", "One car.", "This is my mother.", "I don't like juice."], correctAnswer: "Two cars." },
-        { image: '👩', vocabulary: 'mother', question: "Who's this?", choices: ["This is my mother.", "This is my brother.", "Two cars.", "I like ice cream."], correctAnswer: "This is my mother." },
-        { image: '🍕', vocabulary: 'pizza', question: "Do you like pizza?", choices: ["Yes, I do.", "No, it don't.", "This is my father.", "One doll."], correctAnswer: "Yes, I do." },
-        { image: '🍪', vocabulary: 'cookie', question: "What is it?", choices: ["It's a cookie.", "It's bread.", "This is my sister.", "Three balls."], correctAnswer: "It's a cookie." }
+        { image: '', vocabulary: 'play', question: "A: It's your turn.\nB: __________", choices: ["Thank you.", "One doll.", "I'm eight.", "This is my mother."], correctAnswer: "Thank you." },
+        { image: '', vocabulary: 'cookie', question: "A: Thank you for the cookies!\nB: __________", choices: ["You're welcome.", "Here you are.", "I like pizza.", "Two cars."], correctAnswer: "You're welcome." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
@@ -803,11 +770,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🏃', vocabulary: 'help', question: 'What does the friend say when they need help?', choices: ["Please help me.", "Look at me!", "Can you do it?", "I can run."], correctAnswer: "Please help me." },
-          { image: '🏃', vocabulary: 'help', question: 'What does the student reply to show they will help?', choices: ["Sure.", "Please help me.", "No, I can't.", "Look at me!"], correctAnswer: "Sure." },
-          { image: '🏃', vocabulary: 'help', question: 'Complete: "Please help me. - ______."', choices: ["Sure.", "I can see a flower.", "There are ants.", "I like monkeys."], correctAnswer: "Sure." },
-          { image: '🏃', vocabulary: 'help', question: 'Complete: "Can you help me? - Yes, I ______."', choices: ["can", "can't", "do", "don't"], correctAnswer: "can" },
-          { image: '🏃', vocabulary: 'help', question: 'When you cannot ride a bike and need help, you say:', choices: ["Please help me.", "Look at me!", "I can do it.", "Can you see a turtle?"], correctAnswer: "Please help me." }
+          { image: '', vocabulary: 'help', question: "A: Please help me with the kite.\nB: __________", choices: ["Sure.", "No, thank you.", "You're welcome.", "I'm seven."], correctAnswer: "Sure." },
+          { image: '', vocabulary: 'help', question: "A: Can you help me?\nB: __________", choices: ["Yes, I can.", "No, it isn't.", "Goodbye.", "Thank you."], correctAnswer: "Yes, I can." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏃', promptText: 'help', targetPhrase: 'help' },
@@ -861,11 +825,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
       project: 'Tangram Animals',
       practiceQuestions: [
-        { image: '🌸', vocabulary: 'flower', question: "What can you see?", choices: ["I can see a flower.", "I can see a river.", "I can play soccer.", "This is a zebra."], correctAnswer: "I can see a flower." },
-        { image: '🚴', vocabulary: 'ride a bike', question: "Can you ride a bike?", choices: ["Yes, I can.", "No, I can't.", "The bear is on the rock.", "Zebras can run."], correctAnswer: "Yes, I can." },
-        { image: '🐒', vocabulary: 'monkey', question: "Where is the monkey?", choices: ["It's in the tree.", "It's on the rock.", "I see a frog.", "They're snakes."], correctAnswer: "It's in the tree." },
-        { image: '🦓', vocabulary: 'zebra', question: "What is this?", choices: ["This is a zebra.", "That is a snake.", "I like tigers.", "There is a turtle."], correctAnswer: "This is a zebra." },
-        { image: '🏊', vocabulary: 'swim', question: "Can penguins swim?", choices: ["Yes, they can.", "No, they can't.", "They can hop.", "They can walk."], correctAnswer: "Yes, they can." }
+        { image: '', vocabulary: 'help', question: "A: Please help me with the kite.\nB: __________", choices: ["Sure.", "There are ants.", "Zebras can run.", "I can hop."], correctAnswer: "Sure." },
+        { image: '', vocabulary: 'sorry', question: "A: I'm sorry.\nB: __________", choices: ["That's OK.", "No, I can't.", "Can you see a turtle?", "They're snakes."], correctAnswer: "That's OK." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
@@ -978,11 +939,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🐸', vocabulary: 'sorry', question: 'What does the student say when they make a mistake?', choices: ["I'm sorry.", "That's OK.", "Where is the frog?", "It's on the rock."], correctAnswer: "I'm sorry." },
-          { image: '🐸', vocabulary: 'sorry', question: 'What does the friend say to forgive the student?', choices: ["That's OK.", "I'm sorry.", "Where is the snake?", "It's under the rock."], correctAnswer: "That's OK." },
-          { image: '🐸', vocabulary: 'sorry', question: 'Complete: "I\'m sorry. - ______."', choices: ["That's OK.", "I'm sorry.", "Can you walk?", "Yes, I can."], correctAnswer: "That's OK." },
-          { image: '🐸', vocabulary: 'sorry', question: 'Complete: "I\'m sorry for that. - That\'s ______."', choices: ["OK", "sorry", "not", "bad"], correctAnswer: "OK" },
-          { image: '🐸', vocabulary: 'sorry', question: 'When you step on someone\'s foot by accident, you say:', choices: ["I'm sorry.", "That's OK.", "Can you hop?", "That is a snake."], correctAnswer: "I'm sorry." }
+          { image: '', vocabulary: 'sorry', question: "A: I'm sorry.\nB: __________", choices: ["That's OK.", "You're welcome.", "Yes, I can.", "Sure."], correctAnswer: "That's OK." },
+          { image: '', vocabulary: 'sorry', question: "A: I'm sorry for being late.\nB: __________", choices: ["That's OK.", "No, thank you.", "Goodbye.", "OK."], correctAnswer: "That's OK." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐸', promptText: 'sorry', targetPhrase: 'sorry' },
@@ -1036,11 +994,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
       project: 'Tangram Animals',
       practiceQuestions: [
-        { image: '🌸', vocabulary: 'flower', question: "What can you see?", choices: ["I can see a flower.", "I can see a river.", "I can play soccer.", "This is a zebra."], correctAnswer: "I can see a flower." },
-        { image: '🚴', vocabulary: 'ride a bike', question: "Can you ride a bike?", choices: ["Yes, I can.", "No, I can't.", "The bear is on the rock.", "Zebras can run."], correctAnswer: "Yes, I can." },
-        { image: '🐒', vocabulary: 'monkey', question: "Where is the monkey?", choices: ["It's in the tree.", "It's on the rock.", "I see a frog.", "They're snakes."], correctAnswer: "It's in the tree." },
-        { image: '🦓', vocabulary: 'zebra', question: "What is this?", choices: ["This is a zebra.", "That is a snake.", "I like tigers.", "There is a turtle."], correctAnswer: "This is a zebra." },
-        { image: '🏊', vocabulary: 'swim', question: "Can penguins swim?", choices: ["Yes, they can.", "No, they can't.", "They can hop.", "They can walk."], correctAnswer: "Yes, they can." }
+        { image: '', vocabulary: 'help', question: "A: Please help me with the kite.\nB: __________", choices: ["Sure.", "There are ants.", "Zebras can run.", "I can hop."], correctAnswer: "Sure." },
+        { image: '', vocabulary: 'sorry', question: "A: I'm sorry.\nB: __________", choices: ["That's OK.", "No, I can't.", "Can you see a turtle?", "They're snakes."], correctAnswer: "That's OK." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
@@ -1156,11 +1111,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🌅', vocabulary: 'excuse', question: 'What does the student say to get the friend\'s attention politely?', choices: ["Excuse me.", "Good morning, teacher.", "I can brush my teeth.", "What is this?"], correctAnswer: "Excuse me." },
-          { image: '🌅', vocabulary: 'excuse', question: 'What does the friend reply to show they are listening?', choices: ["Sure.", "Excuse me.", "Thank you.", "Good morning."], correctAnswer: "Sure." },
-          { image: '🌅', vocabulary: 'excuse', question: 'Complete: "Excuse me. - ______."', choices: ["Sure.", "Thank you.", "Good morning.", "I can wash my face."], correctAnswer: "Sure." },
-          { image: '🌅', vocabulary: 'excuse', question: 'Complete: "Excuse me. - Sure. - ______."', choices: ["Thank you.", "Excuse me.", "Good morning.", "Yes, it is."], correctAnswer: "Thank you." },
-          { image: '🌅', vocabulary: 'excuse', question: 'When you want to pass through a crowd politely, you say:', choices: ["Excuse me.", "Thank you.", "Good morning.", "Sure."], correctAnswer: "Excuse me." }
+          { image: '', vocabulary: 'excuse', question: "A: Excuse me.\nB: __________", choices: ["Sure.", "Thank you.", "You're welcome.", "I'm sorry."], correctAnswer: "Sure." },
+          { image: '', vocabulary: 'excuse', question: "A: Excuse me. - B: Sure.\nA: __________", choices: ["Thank you.", "Excuse me.", "Good morning.", "That's OK."], correctAnswer: "Thank you." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌅', promptText: 'excuse', targetPhrase: 'excuse' },
@@ -1193,7 +1145,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🪮', vocabulary: 'brush my hair', question: 'What can you do?', choices: ["I can brush my hair.", "I can wash my face.", "I can wash my hands.", "I can brush my teeth."], correctAnswer: "I can brush my hair." },
           { image: '🪥', vocabulary: 'brush my teeth', question: 'What can you do?', choices: ["I can brush my teeth.", "I can wash my face.", "I can wash my hands.", "I can brush my hair."], correctAnswer: "I can brush my teeth." },
           { image: '🧼', vocabulary: 'wash my face', question: 'Can you wash your face?', choices: ["Yes, I can.", "No, I can't.", "I can brush my teeth.", "I can brush my hair."], correctAnswer: "Yes, I can." },
-          { image: '🪥', vocabulary: 'brush my teeth', question: 'Can you brush your teeth?', choices: ["Yes, I can.", "No, I can't.", "I can wash my hands.", "I can wash my face."], correctAnswer: "Yes, I can." },
+          { image: '🪥', vocabulary: 'brush my teeth', question: 'Can you brush your teeth?', choices: ["Yes, I can.", "No, it is slow.", "I can wash my hands.", "I can wash my face."], correctAnswer: "Yes, I can." },
           { image: '👐🧼', vocabulary: 'wash my hands', question: 'Can you wash your hands?', choices: ["Yes, I can.", "No, I can't.", "I can brush my hair.", "I can brush my teeth."], correctAnswer: "Yes, I can." },
           { image: '🪮', vocabulary: 'brush my hair', question: 'Can you brush your hair?', choices: ["Yes, I can.", "No, I can't.", "I can wash my face.", "I can wash my hands."], correctAnswer: "Yes, I can." },
           { image: '🧼', vocabulary: 'wash my face', question: 'What can you do?', choices: ["I can wash my face.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can wash my face." },
@@ -1214,11 +1166,8 @@ export const CURRICULUM_UNITS: Unit[] = [
       phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
       project: 'My Robot',
       practiceQuestions: [
-        { image: '💪', vocabulary: 'arm', question: "What is this?", choices: ["This is my arm.", "These are my hands.", "That's a new toy.", "The train is slow."], correctAnswer: "This is my arm." },
-        { image: '👄', vocabulary: 'mouth', question: "Is this my mouth?", choices: ["Yes, it is.", "No, it isn't.", "These are my eyes.", "I can wash my face."], correctAnswer: "Yes, it is." },
-        { image: '🪥', vocabulary: 'brush my teeth', question: "What can you do?", choices: ["I can brush my teeth.", "I can brush my hair.", "This is my foot.", "Those are new trucks."], correctAnswer: "I can brush my teeth." },
-        { image: '🐘', vocabulary: 'big', question: "Is it a big elephant?", choices: ["Yes, it is big.", "No, it is small.", "It is a fast train.", "These are my ears."], correctAnswer: "Yes, it is big." },
-        { image: '🚌', vocabulary: 'bus', question: "What's this?", choices: ["It's a bus.", "It's a truck.", "They're boats.", "Are these my eyes?"], correctAnswer: "It's a bus." }
+        { image: '', vocabulary: 'excuse', question: "A: Excuse me.\nB: __________", choices: ["Sure.", "I can wash my hands.", "Is that a fast train?", "OK. I'm sorry."], correctAnswer: "Sure." },
+        { image: '', vocabulary: 'please', question: "A: Please be quiet.\nB: __________", choices: ["OK. I'm sorry.", "Excuse me.", "Yes, it is.", "This is my arm."], correctAnswer: "OK. I'm sorry." }
       ],
       speakingTasks: [
         { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
@@ -1332,11 +1281,8 @@ export const CURRICULUM_UNITS: Unit[] = [
         },
         suggestedGames: ['sentenceBuilder'],
         practiceQuestions: [
-          { image: '🚪', vocabulary: 'please', question: 'What does the teacher say to the noisy classroom?', choices: ["Please be quiet.", "Close the door, please.", "Open the window, please.", "Please sit down."], correctAnswer: "Please be quiet." },
-          { image: '🚪', vocabulary: 'please', question: 'What does the student say when the teacher asks for quiet?', choices: ["OK. I'm sorry.", "Please be quiet.", "Thank you.", "You're welcome."], correctAnswer: "OK. I'm sorry." },
-          { image: '🚪', vocabulary: 'please', question: 'Complete: "Please be quiet. - ______."', choices: ["OK. I'm sorry.", "Please be quiet.", "Close the door.", "Thank you."], correctAnswer: "OK. I'm sorry." },
-          { image: '🚪', vocabulary: 'please', question: 'Complete: "Close the door, ______."', choices: ["please", "sorry", "quiet", "welcome"], correctAnswer: "please" },
-          { image: '🚪', vocabulary: 'please', question: 'When a library is very noisy, the librarian says:', choices: ["Please be quiet.", "OK. I'm sorry.", "Close the door, please.", "Open the window, please."], correctAnswer: "Please be quiet." }
+          { image: '', vocabulary: 'please', question: "A: Please be quiet.\nB: __________", choices: ["OK. I'm sorry.", "You're welcome.", "Thank you.", "Sure."], correctAnswer: "OK. I'm sorry." },
+          { image: '', vocabulary: 'please', question: "A: Please be quiet in the library.\nB: __________", choices: ["OK. I'm sorry.", "That's OK.", "Here you are.", "OK!"], correctAnswer: "OK. I'm sorry." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🙏', promptText: 'please', targetPhrase: 'please' },
@@ -1383,27 +1329,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'What are those?', promptText: "They're trains.", targetPhrase: "They're trains." }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 4 (Units 7–8)',
-      description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
-      phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
-      project: 'My Robot',
-      practiceQuestions: [
-        { image: '💪', vocabulary: 'arm', question: "What is this?", choices: ["This is my arm.", "These are my hands.", "That's a new toy.", "The train is slow."], correctAnswer: "This is my arm." },
-        { image: '👄', vocabulary: 'mouth', question: "Is this my mouth?", choices: ["Yes, it is.", "No, it isn't.", "These are my eyes.", "I can wash my face."], correctAnswer: "Yes, it is." },
-        { image: '🪥', vocabulary: 'brush my teeth', question: "What can you do?", choices: ["I can brush my teeth.", "I can brush my hair.", "This is my foot.", "Those are new trucks."], correctAnswer: "I can brush my teeth." },
-        { image: '🐘', vocabulary: 'big', question: "Is it a big elephant?", choices: ["Yes, it is big.", "No, it is small.", "It is a fast train.", "These are my ears."], correctAnswer: "Yes, it is big." },
-        { image: '🚌', vocabulary: 'bus', question: "What's this?", choices: ["It's a bus.", "It's a truck.", "They're boats.", "Are these my eyes?"], correctAnswer: "It's a bus." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '💪', teacherQuestion: 'What is this?', promptText: 'This is my arm.', targetPhrase: 'This is my arm.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚌', promptText: 'It is a bus.', targetPhrase: 'It is a bus.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'Is it a fast train?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
-      ]
-    }
+    ]
   }
 ];
 
