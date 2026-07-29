@@ -158,18 +158,7 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 1 (Units 1–2)',
       description: 'Review vocabulary and sentence patterns from Units 1 and 2.',
       phonics: ['dog', 'bug', 'pop', 'pig', 'fog', 'top', 'dad', 'dig', 'mat', 'mud', 'nap', 'nod'],
-      project: 'Color Poster',
-      practiceQuestions: [
-        { image: '', vocabulary: 'fine', question: "A: How are you?\nB: __________", choices: ["I'm fine, thank you.", "See you.", "Red paint.", "Yes, it is."], correctAnswer: "I'm fine, thank you." },
-        { image: '', vocabulary: 'share', question: "A: Let's share the blue paint.\nB: __________", choices: ["OK.", "I'm seven.", "No, it isn't.", "A book."], correctAnswer: "OK." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎒', promptText: 'backpack', targetPhrase: 'backpack' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '👝', promptText: 'It is a pencil case.', targetPhrase: 'It is a pencil case.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '📖', teacherQuestion: 'What is it?', promptText: "It's a book.", targetPhrase: "It's a book." },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🟢', promptText: "It's green.", targetPhrase: "It's green." },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🧴', teacherQuestion: "What's this?", promptText: 'This is glue.', targetPhrase: 'This is glue.' }
-      ]
+      project: 'Color Poster'
     }
   },
   {
@@ -481,18 +470,7 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 2 (Units 3–4)',
       description: 'Review vocabulary and sentence patterns from Units 3 and 4.',
       phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
-      project: 'All About Me Book',
-      practiceQuestions: [
-        { image: '', vocabulary: 'play', question: "A: It's your turn.\nB: __________", choices: ["Thank you.", "One doll.", "I'm eight.", "This is my mother."], correctAnswer: "Thank you." },
-        { image: '', vocabulary: 'cookie', question: "A: Thank you for the cookies!\nB: __________", choices: ["You're welcome.", "Here you are.", "I like pizza.", "Two cars."], correctAnswer: "You're welcome." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '8️⃣', promptText: "I'm eight years old.", targetPhrase: "I'm eight years old." },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚗🚗', teacherQuestion: 'How many cars?', promptText: 'Two cars.', targetPhrase: 'Two cars.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '👨', promptText: 'This is my father.', targetPhrase: 'This is my father.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '👩', teacherQuestion: "Who's this?", promptText: 'This is my mother.', targetPhrase: 'This is my mother.' }
-      ]
+      project: 'All About Me Book'
     }
   },
   {
@@ -648,24 +626,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🍞', teacherQuestion: "What's this?", promptText: 'This is bread.', targetPhrase: 'This is bread.' }
         ]
       }
-    ],
-    checkUp: {
-      title: 'CHECK UP 2 (Units 3–4)',
-      description: 'Review vocabulary and sentence patterns from Units 3 and 4.',
-      phonics: ['bat', 'map', 'bed', 'net', 'pin', 'bib', 'mop', 'pot', 'tub', 'nut'],
-      project: 'All About Me Book',
-      practiceQuestions: [
-        { image: '', vocabulary: 'play', question: "A: It's your turn.\nB: __________", choices: ["Thank you.", "One doll.", "I'm eight.", "This is my mother."], correctAnswer: "Thank you." },
-        { image: '', vocabulary: 'cookie', question: "A: Thank you for the cookies!\nB: __________", choices: ["You're welcome.", "Here you are.", "I like pizza.", "Two cars."], correctAnswer: "You're welcome." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👧', promptText: 'sister', targetPhrase: 'sister' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '8️⃣', promptText: "I'm eight years old.", targetPhrase: "I'm eight years old." },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🚗🚗', teacherQuestion: 'How many cars?', promptText: 'Two cars.', targetPhrase: 'Two cars.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '👨', promptText: 'This is my father.', targetPhrase: 'This is my father.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '👩', teacherQuestion: "Who's this?", promptText: 'This is my mother.', targetPhrase: 'This is my mother.' }
-      ]
-    }
+    ]
   },
   {
     id: 'unit-5',
@@ -823,18 +784,7 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 3 (Units 5–6)',
       description: 'Review Nature, Activities, Animals, Abilities, Locations and Conversations.',
       phonics: ['fan', 'fox', 'van', 'vet', 'six', 'sun', 'zap', 'zip', 'red', 'rug', 'log', 'lip'],
-      project: 'Tangram Animals',
-      practiceQuestions: [
-        { image: '', vocabulary: 'help', question: "A: Please help me with the kite.\nB: __________", choices: ["Sure.", "There are ants.", "Zebras can run.", "I can hop."], correctAnswer: "Sure." },
-        { image: '', vocabulary: 'sorry', question: "A: I'm sorry.\nB: __________", choices: ["That's OK.", "No, I can't.", "Can you see a turtle?", "They're snakes."], correctAnswer: "That's OK." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🐒', promptText: 'monkey', targetPhrase: 'monkey' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🏊', promptText: 'I can swim.', targetPhrase: 'I can swim.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can you run?', promptText: 'Yes, I can.', targetPhrase: 'Yes, I can.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐻', promptText: 'I like bears.', targetPhrase: 'I like bears.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🐢', teacherQuestion: 'What is this?', promptText: 'It is a turtle.', targetPhrase: 'It is a turtle.' }
-      ]
+      project: 'Tangram Animals'
     }
   },
   {
@@ -1164,18 +1114,7 @@ export const CURRICULUM_UNITS: Unit[] = [
       title: 'CHECK UP 4 (Units 7–8)',
       description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
       phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
-      project: 'My Robot',
-      practiceQuestions: [
-        { image: '', vocabulary: 'excuse', question: "A: Excuse me.\nB: __________", choices: ["Sure.", "I can wash my hands.", "Is that a fast train?", "OK. I'm sorry."], correctAnswer: "Sure." },
-        { image: '', vocabulary: 'please', question: "A: Please be quiet.\nB: __________", choices: ["OK. I'm sorry.", "Excuse me.", "Yes, it is.", "This is my arm."], correctAnswer: "OK. I'm sorry." }
-      ],
-      speakingTasks: [
-        { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👄', promptText: 'mouth', targetPhrase: 'mouth' },
-        { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🪥', promptText: 'I can brush my teeth.', targetPhrase: 'I can brush my teeth.' },
-        { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '💪', teacherQuestion: 'What is this?', promptText: 'This is my arm.', targetPhrase: 'This is my arm.' },
-        { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🚌', promptText: 'It is a bus.', targetPhrase: 'It is a bus.' },
-        { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚆', teacherQuestion: 'Is it a fast train?', promptText: 'Yes, it is.', targetPhrase: 'Yes, it is.' }
-      ]
+      project: 'My Robot'
     }
   },
   {
