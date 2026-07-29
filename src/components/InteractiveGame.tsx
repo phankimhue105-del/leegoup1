@@ -1161,6 +1161,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </div>
           </div>
         )}
+          </>
+        )}
       </div>
 
       {/* Footer Feedback & Navigation */}
@@ -1231,8 +1233,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               </button>
             </div>
           )
-        )}
-          </>
         )}
       </div>
     </div>
