@@ -398,7 +398,9 @@ export default function App() {
     learningObjective: `Review vocabulary, key patterns, listening, and speaking from Units ${checkUpUnitA?.number} and ${checkUpUnitB?.number}.`,
     vocabulary: checkUpVocab,
     sentencePatterns: checkUpPatterns,
-    suggestedGames: ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut']
+    suggestedGames: ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'],
+    practiceQuestions: checkUpUnitB?.checkUp?.practiceQuestions,
+    speakingTasks: checkUpUnitB?.checkUp?.speakingTasks
   } : currentLesson;
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : currentLesson;
