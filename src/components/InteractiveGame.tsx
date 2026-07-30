@@ -102,6 +102,33 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return copy;
     }
 
+    function scrambleWord(word: string): string[] {
+      const cleanWord = word.toLowerCase().replace(/\s+/g, '');
+      const letters = cleanWord.split('');
+      if (letters.length <= 1) return letters;
+
+      let scrambled = [...letters];
+      let attempts = 0;
+      while (attempts < 100) {
+        scrambled = seededShuffle(scrambled);
+        if (scrambled.join('') !== cleanWord) {
+          return scrambled;
+        }
+        attempts++;
+      }
+
+      // Failsafe: swap first two distinct characters
+      for (let i = 1; i < scrambled.length; i++) {
+        if (scrambled[i] !== scrambled[0]) {
+          const temp = scrambled[0];
+          scrambled[0] = scrambled[i];
+          scrambled[i] = temp;
+          break;
+        }
+      }
+      return scrambled;
+    }
+
     const validateQuestion = (q: Question): boolean => {
       if (!q.sentencePattern) {
         console.error(`[Practice QA Engine] Question prompt (sentencePattern) is empty!`, q);
@@ -258,7 +285,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           emoji,
           choices,
           sentencePattern,
-          unscrambledLetters: seededShuffle((vocab.word || '').replace(/\s+/g, '').split('')),
+          unscrambledLetters: scrambleWord(vocab.word),
           oddChoices,
           correctAnswer: correctAnswer,
           explanation: `Đáp án đúng là "${correctAnswer}" (Nghĩa: "${vocab.meaningVi || vocab.word}").`,
@@ -293,7 +320,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
         const oddChoices = seededShuffle([...oddBase, oddDistractor]);
 
-        const unscrambledLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
+        const unscrambledLetters = scrambleWord(qVocab);
 
         let explanation = `Đáp án đúng là "${q.correctAnswer}".`;
         if (meaningVi) {
