@@ -25,7 +25,9 @@ interface Question {
   correctAnswer: string;
   explanation: string;
   vietnameseMeaning: string;
+  hintImage?: string;
 }
+
 
 interface UserAnswer {
   questionNumber: number;
@@ -104,40 +106,24 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
 
     const validateQuestion = (q: Question): boolean => {
-      if (!q.sentencePattern) {
-        console.error(`[Practice QA Engine] Question prompt (sentencePattern) is empty!`, q);
+      if (!q.emoji) {
+        console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, q);
         return false;
-      }
-      if (!q.targetWord) {
-        console.error(`[Practice QA Engine] Target vocabulary word is empty!`, q);
-        return false;
-      }
-      const wordLower = q.targetWord.toLowerCase();
-      const inVocab = vocabList.some(v => v.word.toLowerCase() === wordLower);
-      if (!inVocab && !isCommunicationLesson) {
-        console.error(`[Practice QA Engine] Target word "${q.targetWord}" is NOT in vocabulary list of this lesson!`, { vocabList, q });
-        return false;
-      }
-
-      const normalizeEmoji = (str: string) => str.replace(/[\uFE00-\uFE0F]/g, '');
-
-      if (q.emoji) {
-        const expectedEmoji = EMOJI_MAP[wordLower];
-        if (expectedEmoji && normalizeEmoji(q.emoji) !== normalizeEmoji(expectedEmoji)) {
-          console.error(`[Practice QA Engine] Emoji mismatch! Expected "${expectedEmoji}", found "${q.emoji}" for targetWord "${q.targetWord}"`, q);
-          return false;
-        }
       }
       if (!q.choices || q.choices.length !== 4) {
-        console.error(`[Practice QA Engine] Choices count is not exactly 4!`, q);
+        console.error(`[Practice QA Engine] Validation error: choices count is not exactly 4!`, q);
         return false;
       }
       if (!q.choices.includes(q.correctAnswer)) {
-        console.error(`[Practice QA Engine] Choices list does not contain correct answer "${q.correctAnswer}"! Choices:`, q.choices);
+        console.error(`[Practice QA Engine] Validation error: correctAnswer "${q.correctAnswer}" is not in choices!`, q.choices);
         return false;
       }
-      if (!q.explanation || !q.explanation.includes(q.correctAnswer)) {
-        console.error(`[Practice QA Engine] Explanation does not mention correct answer "${q.correctAnswer}"! Explanation: "${q.explanation}"`);
+      if (!q.sentencePattern) {
+        console.error(`[Practice QA Engine] Validation error: question text is empty!`, q);
+        return false;
+      }
+      if (!q.explanation) {
+        console.error(`[Practice QA Engine] Validation error: explanation is missing!`, q);
         return false;
       }
       return true;
@@ -281,49 +267,19 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
       const predefined: Question[] = [];
-      lesson.practiceQuestions.forEach((q, qIdx) => {
-        const qVocab = q.vocabulary || '';
-        const vocabItem = vocabList.find(v => v.word.toLowerCase() === qVocab.toLowerCase());
-        const meaningVi = vocabItem ? vocabItem.meaningVi : qVocab;
-
-        const oddBase = [
-          qVocab,
-          ...vocabList.filter(v => v.word.toLowerCase() !== qVocab.toLowerCase()).map(v => v.word).slice(0, 2)
-        ];
-        while (oddBase.length < 3) {
-          oddBase.push(vocabList[0]?.word || 'book');
-        }
-        const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
-        const oddChoices = seededShuffle([...oddBase, oddDistractor]);
-
-        const originalLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
-        let unscrambledLetters = [...originalLetters];
-        if (originalLetters.length > 1) {
-          let scrambled = seededShuffle(originalLetters);
-          let attempts = 0;
-          while (scrambled.join('') === originalLetters.join('') && attempts < 100) {
-            scrambled = seededShuffle(originalLetters);
-            attempts++;
-          }
-          unscrambledLetters = scrambled;
-        }
-
-        let explanation = `Đáp án đúng là "${q.correctAnswer}".`;
-        if (meaningVi) {
-          explanation = `Đáp án đúng là "${q.correctAnswer}" (Nghĩa: "${meaningVi}").`;
-        }
-
+      lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
-          targetWord: qVocab,
-          meaningVi: meaningVi || qVocab,
+          targetWord: q.vocabulary || '',
+          meaningVi: q.explanation || '',
           emoji: q.image,
-          choices: q.choices,
+          choices: q.options || q.choices || [],
           sentencePattern: q.question,
-          unscrambledLetters: unscrambledLetters,
-          oddChoices,
+          unscrambledLetters: q.unscrambledLetters || [],
+          oddChoices: q.oddChoices || [],
           correctAnswer: q.correctAnswer,
-          explanation: explanation,
-          vietnameseMeaning: meaningVi || ''
+          explanation: q.explanation || '',
+          vietnameseMeaning: q.explanation || '',
+          hintImage: q.hintImage
         };
 
         if (validateQuestion(questionObj)) {
@@ -924,7 +880,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </span>
             <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
               <p className="text-2xl font-black text-amber-800">{currentQuestion?.emoji || '🔤'}</p>
-              <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {currentQuestion?.meaningVi || ''}</p>
+              {currentQuestion?.hintImage ? (
+                <div className="flex items-center justify-center mt-1.5 text-2xl" title="Hint">
+                  {currentQuestion.hintImage}
+                </div>
+              ) : (
+                currentQuestion?.meaningVi && <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {currentQuestion.meaningVi}</p>
+              )}
             </div>
 
             <div className="flex gap-2 min-h-[50px] border-b-2 border-dashed border-red-200 px-6 py-2 items-center relative">
@@ -968,7 +930,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </span>
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
               <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
-              <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion?.meaningVi || ''})</p>
+              {currentQuestion?.hintImage ? (
+                <div className="flex items-center justify-center mt-2 text-2xl" title="Hint">
+                  {currentQuestion.hintImage}
+                </div>
+              ) : (
+                currentQuestion?.meaningVi && <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion.meaningVi})</p>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
               {(currentQuestion?.choices || []).map((choice, idx) => {
