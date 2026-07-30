@@ -34,11 +34,11 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '📏', vocabulary: 'ruler', question: 'What is it?', choices: ["It's a ruler.", "It's an eraser.", "It's a pencil.", "It's a backpack."], correctAnswer: "It's a ruler." },
           { image: '👝', vocabulary: 'pencil case', question: 'What is it?', choices: ["It's a pencil case.", "It's an eraser.", "It's a ruler.", "It's a backpack."], correctAnswer: "It's a pencil case." },
           { image: '🎒', vocabulary: 'backpack', question: 'What is it?', choices: ["It's a backpack.", "It's an eraser.", "It's a ruler.", "It's a pencil."], correctAnswer: "It's a backpack." },
-          { image: '✏️', vocabulary: 'pencil', question: 'Is it a pencil?', choices: ["Yes, it is.", "No, it isn't.", "It is a ruler.", "It is a book."], correctAnswer: "Yes, it is." },
-          { image: '🧽', vocabulary: 'eraser', question: 'What is it?', choices: ["It's an eraser.", "It's a ruler.", "It's a desk.", "It's a book."], correctAnswer: "It's an eraser." },
-          { image: '📏', vocabulary: 'ruler', question: 'Is it a ruler?', choices: ["Yes, it is.", "No, it isn't.", "It is an eraser.", "It is a pencil."], correctAnswer: "Yes, it is." },
-          { image: '👝', vocabulary: 'pencil case', question: 'What is it?', choices: ["It's a pencil case.", "It's a book.", "It's a chair.", "It's a desk."], correctAnswer: "It's a pencil case." },
-          { image: '🎒', vocabulary: 'backpack', question: 'Is it a backpack?', choices: ["Yes, it is.", "No, it isn't.", "It is a notebook.", "It is a desk."], correctAnswer: "Yes, it is." }
+          { image: '✏️', vocabulary: 'pencil', question: 'Is it a pencil?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🧽', vocabulary: 'eraser', question: 'Is it an eraser?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '📏', vocabulary: 'ruler', question: 'Is it a ruler?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '👝', vocabulary: 'pencil case', question: 'Is it a pencil case?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🎒', vocabulary: 'backpack', question: 'Is it a backpack?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '✏️', promptText: 'pencil', targetPhrase: 'pencil' },
@@ -58,7 +58,8 @@ export const CURRICULUM_UNITS: Unit[] = [
           { id: 'v6', word: 'notebook', meaningVi: 'vở viết', exampleSentence: "It's a notebook." },
           { id: 'v7', word: 'desk', meaningVi: 'bàn học', exampleSentence: "It's a desk." },
           { id: 'v8', word: 'chair', meaningVi: 'ghế', exampleSentence: "It's a chair." },
-          { id: 'v9', word: 'book', meaningVi: 'sách', exampleSentence: "It's a book." }
+          { id: 'v9', word: 'book', meaningVi: 'sách', exampleSentence: "It's a book." },
+          { id: 'v-pencil-temp', word: 'pencil', meaningVi: 'bút chì', exampleSentence: "It's a pencil." }
         ],
         sentencePatterns: [
           { pattern: "It's a book.", example: "It's a book.", translationVi: 'Nó là một quyển sách.' },
@@ -70,12 +71,12 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '✍️', vocabulary: 'desk', question: 'What is it?', choices: ["It's a desk.", "It's a notebook.", "It's a chair.", "It's a book."], correctAnswer: "It's a desk." },
           { image: '🪑', vocabulary: 'chair', question: 'What is it?', choices: ["It's a chair.", "It's a notebook.", "It's a desk.", "It's a book."], correctAnswer: "It's a chair." },
           { image: '📖', vocabulary: 'book', question: 'What is it?', choices: ["It's a book.", "It's a notebook.", "It's a desk.", "It's a chair."], correctAnswer: "It's a book." },
-          { image: '📓', vocabulary: 'notebook', question: 'Is it a notebook?', choices: ["Yes, it is.", "No, it isn't.", "It is a chair.", "It is a desk."], correctAnswer: "Yes, it is." },
-          { image: '✍️', vocabulary: 'desk', question: 'Is it a desk?', choices: ["Yes, it is.", "No, it isn't.", "It is a notebook.", "It is a book."], correctAnswer: "Yes, it is." },
-          { image: '🪑', vocabulary: 'chair', question: 'Is it a chair?', choices: ["Yes, it is.", "No, it isn't.", "It is a notebook.", "It is a book."], correctAnswer: "Yes, it is." },
-          { image: '📖', vocabulary: 'book', question: 'Is it a book?', choices: ["Yes, it is.", "No, it isn't.", "It is a chair.", "It is a desk."], correctAnswer: "Yes, it is." },
-          { image: '📓', vocabulary: 'notebook', question: 'What is it?', choices: ["It's a notebook.", "It's a ruler.", "It's a pencil.", "It's a backpack."], correctAnswer: "It's a notebook." },
-          { image: '🪑', vocabulary: 'chair', question: 'What is it?', choices: ["It's a chair.", "It's a ruler.", "It's a desk.", "It's a pencil."], correctAnswer: "It's a chair." }
+          { image: '📓', vocabulary: 'notebook', question: 'Is it a notebook?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '✍️', vocabulary: 'desk', question: 'Is it a desk?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🪑', vocabulary: 'chair', question: 'Is it a chair?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '📖', vocabulary: 'book', question: 'Is it a book?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '📓', vocabulary: 'notebook', question: 'What is this in English?', choices: ["It's a notebook.", "It's a ruler.", "It's a pencil.", "It's a backpack."], correctAnswer: "It's a notebook." },
+          { image: '✏️', vocabulary: 'pencil', question: 'What is this in English?', choices: ["It's a Backpack.", "It's a Ruler.", "It's a Pencil.", "It's a Notebook."], correctAnswer: "It's a Pencil." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '📓', promptText: 'notebook', targetPhrase: 'notebook' },
@@ -123,10 +124,10 @@ export const CURRICULUM_UNITS: Unit[] = [
         learningObjective: 'Students identify basic shapes.',
         grammarFocus: 'Yes / No Questions',
         vocabulary: [
-          { id: 'v10', word: 'circle', meaningVi: 'hình tròn', exampleSentence: 'Is it a circle?' },
-          { id: 'v11', word: 'square', meaningVi: 'hình vuông', exampleSentence: 'It is a square.' },
-          { id: 'v12', word: 'triangle', meaningVi: "It's a triangle.", exampleSentence: "It's a triangle." },
-          { id: 'v13', word: 'rectangle', meaningVi: "It's a rectangle.", exampleSentence: "It's a rectangle." }
+          { id: 'v10', word: 'circle', meaningVi: '🔴', exampleSentence: 'Is it a circle?' },
+          { id: 'v11', word: 'square', meaningVi: '🟩', exampleSentence: 'It is a square.' },
+          { id: 'v12', word: 'triangle', meaningVi: '🔺', exampleSentence: "It's a triangle." },
+          { id: 'v13', word: 'rectangle', meaningVi: '▮', exampleSentence: "It's a rectangle." }
         ],
         sentencePatterns: [
           { pattern: 'Is it a circle?', example: 'Is it a circle?', translationVi: 'Đó có phải là hình tròn không?' },
@@ -138,10 +139,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a circle.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a square." },
           { image: '🔺', vocabulary: 'triangle', question: 'What shape is it?', choices: ["It's a triangle.", "It's a circle.", "It's a square.", "It's a rectangle."], correctAnswer: "It's a triangle." },
           { image: '▮', vocabulary: 'rectangle', question: 'What shape is it?', choices: ["It's a rectangle.", "It's a circle.", "It's a square.", "It's a triangle."], correctAnswer: "It's a rectangle." },
-          { image: '🔴', vocabulary: 'circle', question: 'Is it a circle?', choices: ["Yes, it is.", "No, it isn't.", "It is a square.", "It is a triangle."], correctAnswer: "Yes, it is." },
-          { image: '🟩', vocabulary: 'square', question: 'Is it a circle?', choices: ["No, it isn't.", "Yes, it is.", "It is a rectangle.", "It is a triangle."], correctAnswer: "No, it isn't." },
-          { image: '🔺', vocabulary: 'triangle', question: 'Is it a triangle?', choices: ["Yes, it is.", "No, it isn't.", "It is a square.", "It is a circle."], correctAnswer: "Yes, it is." },
-          { image: '▮', vocabulary: 'rectangle', question: 'Is it a square?', choices: ["No, it isn't.", "Yes, it is.", "It is a circle.", "It is a triangle."], correctAnswer: "No, it isn't." },
+          { image: '🔴', vocabulary: 'circle', question: 'Is it a circle?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🟩', vocabulary: 'square', question: 'Is it a circle?', choices: ["No, it isn't.", "Yes, it is.", "Yes, they are.", "No, they aren't."], correctAnswer: "No, it isn't." },
+          { image: '🔺', vocabulary: 'triangle', question: 'Is it a triangle?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '▮', vocabulary: 'rectangle', question: 'Is it a square?', choices: ["No, it isn't.", "Yes, it is.", "Yes, they are.", "No, they aren't."], correctAnswer: "No, it isn't." },
           { image: '🔴', vocabulary: 'circle', question: 'What shape is it?', choices: ["It's a circle.", "It's a square.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a circle." },
           { image: '🟩', vocabulary: 'square', question: 'What shape is it?', choices: ["It's a square.", "It's a circle.", "It's a triangle.", "It's a rectangle."], correctAnswer: "It's a square." }
         ],
