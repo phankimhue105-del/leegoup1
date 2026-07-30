@@ -103,8 +103,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
 
     const validateQuestion = (q: Question): boolean => {
-      if (!q.question) {
-        console.error(`[Practice QA Engine] Question prompt is empty!`, q);
+      if (!q.sentencePattern) {
+        console.error(`[Practice QA Engine] Question prompt (sentencePattern) is empty!`, q);
         return false;
       }
       if (!q.targetWord) {
