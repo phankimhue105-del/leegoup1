@@ -91,31 +91,38 @@ export const LessonFlowHeader: React.FC<Props> = ({
       {/* Routine Stepper Flow (10 Stages) */}
       <div className="bg-gradient-to-r from-red-50 via-rose-50 to-amber-50 border-t border-red-100 overflow-x-auto no-scrollbar py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between min-w-max gap-1">
-          {STAGE_ORDER.map((s, index) => {
-            const isActive = s.id === currentStage;
-            const isPassed = index < currentStageIndex;
+          {(() => {
+            const stagesToRender = (currentUnit.id === 'unit-1' && currentLesson.number === 3)
+              ? STAGE_ORDER.filter(s => s.id !== 'vocabulary')
+              : STAGE_ORDER;
+            
+            return stagesToRender.map((s, index) => {
+              const isActive = s.id === currentStage;
+              const renderedStageIndex = STAGE_ORDER.findIndex((x) => x.id === s.id);
+              const isPassed = renderedStageIndex < currentStageIndex;
 
-            return (
-              <React.Fragment key={s.id}>
-                <button
-                  onClick={() => onSelectStage(s.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    isActive
-                      ? 'bg-red-600 text-white shadow-md scale-105 ring-2 ring-red-400'
-                      : isPassed
-                      ? 'bg-red-100 text-red-800 hover:bg-red-200'
-                      : 'bg-white/80 text-slate-600 hover:bg-white border border-slate-200'
-                  }`}
-                >
-                  <span className="text-sm">{s.icon}</span>
-                  <span>{s.label}</span>
-                </button>
-                {index < STAGE_ORDER.length - 1 && (
-                  <ChevronRight className={`w-3.5 h-3.5 shrink-0 ${isPassed ? 'text-red-400' : 'text-slate-300'}`} />
-                )}
-              </React.Fragment>
-            );
-          })}
+              return (
+                <React.Fragment key={s.id}>
+                  <button
+                    onClick={() => onSelectStage(s.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                      isActive
+                        ? 'bg-red-600 text-white shadow-md scale-105 ring-2 ring-red-400'
+                        : isPassed
+                        ? 'bg-red-100 text-red-800 hover:bg-red-200'
+                        : 'bg-white/80 text-slate-600 hover:bg-white border border-slate-200'
+                    }`}
+                  >
+                    <span className="text-sm">{s.icon}</span>
+                    <span>{s.label}</span>
+                  </button>
+                  {index < stagesToRender.length - 1 && (
+                    <ChevronRight className={`w-3.5 h-3.5 shrink-0 ${isPassed ? 'text-red-400' : 'text-slate-300'}`} />
+                  )}
+                </React.Fragment>
+              );
+            });
+          })()}
         </div>
       </div>
     </header>
