@@ -70,10 +70,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '✍️', vocabulary: 'desk', question: 'What is it?', choices: ["It's a desk.", "It's a notebook.", "It's a chair.", "It's a book."], correctAnswer: "It's a desk." },
           { image: '🪑', vocabulary: 'chair', question: 'What is it?', choices: ["It's a chair.", "It's a notebook.", "It's a desk.", "It's a book."], correctAnswer: "It's a chair." },
           { image: '📖', vocabulary: 'book', question: 'What is it?', choices: ["It's a book.", "It's a notebook.", "It's a desk.", "It's a chair."], correctAnswer: "It's a book." },
-          { image: '📓', vocabulary: 'notebook', question: 'Is it a book?', choices: ["No, it isn't. It's a notebook.", "Yes, it is.", "It is a chair.", "It is a desk."], correctAnswer: "No, it isn't. It's a notebook." },
-          { image: '✍️', vocabulary: 'desk', question: 'Is it a chair?', choices: ["No, it isn't. It's a desk.", "Yes, it is.", "It is a notebook.", "It is a book."], correctAnswer: "No, it isn't. It's a desk." },
+          { image: '📓', vocabulary: 'notebook', question: 'Is it a notebook?', choices: ["Yes, it is.", "No, it isn't.", "It is a chair.", "It is a desk."], correctAnswer: "Yes, it is." },
+          { image: '✍️', vocabulary: 'desk', question: 'Is it a desk?', choices: ["Yes, it is.", "No, it isn't.", "It is a notebook.", "It is a book."], correctAnswer: "Yes, it is." },
           { image: '🪑', vocabulary: 'chair', question: 'Is it a chair?', choices: ["Yes, it is.", "No, it isn't.", "It is a notebook.", "It is a book."], correctAnswer: "Yes, it is." },
-          { image: '📖', vocabulary: 'book', question: 'Is it a notebook?', choices: ["No, it isn't. It's a book.", "Yes, it is.", "It is a chair.", "It is a desk."], correctAnswer: "No, it isn't. It's a book." },
+          { image: '📖', vocabulary: 'book', question: 'Is it a book?', choices: ["Yes, it is.", "No, it isn't.", "It is a chair.", "It is a desk."], correctAnswer: "Yes, it is." },
           { image: '📓', vocabulary: 'notebook', question: 'What is it?', choices: ["It's a notebook.", "It's a ruler.", "It's a pencil.", "It's a backpack."], correctAnswer: "It's a notebook." },
           { image: '🪑', vocabulary: 'chair', question: 'What is it?', choices: ["It's a chair.", "It's a ruler.", "It's a desk.", "It's a pencil."], correctAnswer: "It's a chair." }
         ],
