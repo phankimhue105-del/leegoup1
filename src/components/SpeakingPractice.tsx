@@ -180,6 +180,18 @@ export const SpeakingPractice: React.FC<Props> = ({
 
   const activeTask = tasks[currentTaskIndex];
 
+  // Debug logger for QA verification
+  useEffect(() => {
+    if (activeTask) {
+      console.log("Lesson ID:", lesson.id);
+      console.log("Question ID:", activeTask.number);
+      console.log("Image filename:", activeTask.emoji);
+      console.log("Prompt:", activeTask.teacherQuestion || '');
+      console.log("Expected Answer:", activeTask.targetPhrase);
+      console.log("Suggested Answer:", activeTask.promptText);
+    }
+  }, [lesson.id, activeTask]);
+
   const startRecording = async () => {
     setTranscript('');
     setAssessment(null);
