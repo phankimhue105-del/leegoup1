@@ -79,10 +79,10 @@ export const CURRICULUM_UNITS: Unit[] = [
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '📓', promptText: 'notebook', targetPhrase: 'notebook' },
-          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '📓', promptText: "It's a book.", targetPhrase: "It's a book." },
+          { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '📖', promptText: "It's a book.", targetPhrase: "It's a book." },
           { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🪑', teacherQuestion: 'What is it?', promptText: "It's a chair.", targetPhrase: "It's a chair." },
           { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '✍️', promptText: "It's a desk.", targetPhrase: "It's a desk." },
-          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '📓', teacherQuestion: 'Is it a notebook?', promptText: "No, it isn't. It's a notebook.", targetPhrase: "No, it isn't. It's a notebook." }
+          { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '📓', teacherQuestion: 'Is it a book?', promptText: "No, it isn't. It's a notebook.", targetPhrase: "No, it isn't. It's a notebook." }
         ]
       },
       {
