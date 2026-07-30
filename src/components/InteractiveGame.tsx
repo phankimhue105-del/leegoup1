@@ -102,32 +102,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return copy;
     }
 
-    function scrambleWord(word: string): string[] {
-      const cleanWord = word.toLowerCase().replace(/\s+/g, '');
-      const letters = cleanWord.split('');
-      if (letters.length <= 1) return letters;
-
-      let scrambled = [...letters];
-      let attempts = 0;
-      while (attempts < 100) {
-        scrambled = seededShuffle(scrambled);
-        if (scrambled.join('') !== cleanWord) {
-          return scrambled;
-        }
-        attempts++;
-      }
-
-      // Failsafe: swap first two distinct characters
-      for (let i = 1; i < scrambled.length; i++) {
-        if (scrambled[i] !== scrambled[0]) {
-          const temp = scrambled[0];
-          scrambled[0] = scrambled[i];
-          scrambled[i] = temp;
-          break;
-        }
-      }
-      return scrambled;
-    }
 
     const validateQuestion = (q: Question): boolean => {
       if (!q.sentencePattern) {
@@ -285,7 +259,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           emoji,
           choices,
           sentencePattern,
-          unscrambledLetters: scrambleWord(vocab.word),
+          unscrambledLetters: seededShuffle((vocab.word || '').replace(/\s+/g, '').split('')),
           oddChoices,
           correctAnswer: correctAnswer,
           explanation: `Đáp án đúng là "${correctAnswer}" (Nghĩa: "${vocab.meaningVi || vocab.word}").`,
@@ -303,135 +277,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     setIsLoading(true);
 
-    if (lesson.id === 'u1-l1' || lesson.id === 'u1-l2') {
-      const generated: Question[] = [];
-      
-      if (lesson.id === 'u1-l1') {
-        const u1l1Vocab = [
-          { word: 'pencil', meaningVi: 'bút chì', emoji: '✏️' },
-          { word: 'eraser', meaningVi: 'cục tẩy', emoji: '🧽' },
-          { word: 'ruler', meaningVi: 'thước kẻ', emoji: '📏' },
-          { word: 'pencil case', meaningVi: 'hộp bút', emoji: '👝' },
-          { word: 'backpack', meaningVi: 'ba lô', emoji: '🎒' }
-        ];
 
-        u1l1Vocab.forEach((v) => {
-          // Question A
-          const distractorsA = u1l1Vocab.filter(x => x.word !== v.word).map(x => x.word);
-          const choicesA = seededShuffle([v.word, distractorsA[0], distractorsA[1], distractorsA[2]]).map(w => w === 'eraser' ? "It's an eraser." : w === 'backpack' ? "It's a backpack." : w === 'pencil case' ? "It's a pencil case." : w === 'ruler' ? "It's a ruler." : `It's a ${w}.`);
-          const correctAnsA = v.word === 'eraser' ? "It's an eraser." : v.word === 'backpack' ? "It's a backpack." : v.word === 'pencil case' ? "It's a pencil case." : v.word === 'ruler' ? "It's a ruler." : `It's a ${v.word}.`;
-          
-          generated.push({
-            targetWord: v.word,
-            meaningVi: v.meaningVi,
-            emoji: v.emoji,
-            choices: choicesA,
-            sentencePattern: "What is this in English?",
-            unscrambledLetters: scrambleWord(v.word),
-            oddChoices: seededShuffle([v.word, distractorsA[0], distractorsA[1], ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-            correctAnswer: correctAnsA,
-            explanation: `${v.word} = ${v.meaningVi}`,
-            vietnameseMeaning: v.meaningVi
-          });
-
-          // Question B
-          const distractorsB = seededShuffle(distractorsA);
-          const choicesB = seededShuffle([v.word, distractorsB[0], distractorsB[1], distractorsB[2]]).map(w => w === 'eraser' ? "It's an eraser." : w === 'backpack' ? "It's a backpack." : w === 'pencil case' ? "It's a pencil case." : w === 'ruler' ? "It's a ruler." : `It's a ${w}.`);
-          const correctAnsB = v.word === 'eraser' ? "It's an eraser." : v.word === 'backpack' ? "It's a backpack." : v.word === 'pencil case' ? "It's a pencil case." : v.word === 'ruler' ? "It's a ruler." : `It's a ${v.word}.`;
-
-          generated.push({
-            targetWord: v.word,
-            meaningVi: v.meaningVi,
-            emoji: v.emoji,
-            choices: choicesB,
-            sentencePattern: "What is it?",
-            unscrambledLetters: scrambleWord(v.word),
-            oddChoices: seededShuffle([v.word, distractorsB[0], distractorsB[1], ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-            correctAnswer: correctAnsB,
-            explanation: `${v.word} = ${v.meaningVi}`,
-            vietnameseMeaning: v.meaningVi
-          });
-        });
-      } else if (lesson.id === 'u1-l2') {
-        const u1l2Vocab = [
-          { word: 'notebook', meaningVi: 'vở viết', emoji: '📓' },
-          { word: 'desk', meaningVi: 'bàn học', emoji: '✍️' },
-          { word: 'chair', meaningVi: 'ghế', emoji: '🪑' },
-          { word: 'book', meaningVi: 'sách', emoji: '📖' }
-        ];
-
-        u1l2Vocab.forEach((v) => {
-          // Question A
-          const distractorsA = u1l2Vocab.filter(x => x.word !== v.word).map(x => x.word);
-          const choicesA = seededShuffle([v.word, distractorsA[0], distractorsA[1], distractorsA[2]]).map(w => `It's a ${w}.`);
-          
-          generated.push({
-            targetWord: v.word,
-            meaningVi: v.meaningVi,
-            emoji: v.emoji,
-            choices: choicesA,
-            sentencePattern: "What is this in English?",
-            unscrambledLetters: scrambleWord(v.word),
-            oddChoices: seededShuffle([v.word, distractorsA[0], distractorsA[1], ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-            correctAnswer: `It's a ${v.word}.`,
-            explanation: `${v.word} = ${v.meaningVi}`,
-            vietnameseMeaning: v.meaningVi
-          });
-
-          // Question B
-          const distractorsB = seededShuffle(distractorsA);
-          const choicesB = seededShuffle([v.word, distractorsB[0], distractorsB[1], distractorsB[2]]).map(w => `It's a ${w}.`);
-
-          generated.push({
-            targetWord: v.word,
-            meaningVi: v.meaningVi,
-            emoji: v.emoji,
-            choices: choicesB,
-            sentencePattern: "What is it?",
-            unscrambledLetters: scrambleWord(v.word),
-            oddChoices: seededShuffle([v.word, distractorsB[0], distractorsB[1], ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-            correctAnswer: `It's a ${v.word}.`,
-            explanation: `${v.word} = ${v.meaningVi}`,
-            vietnameseMeaning: v.meaningVi
-          });
-        });
-
-        // Add 2 extra questions to reach exactly 10
-        const extra1Distractors = ['ruler', 'pencil', 'backpack'];
-        const extra1Choices = seededShuffle(['notebook', ...extra1Distractors]).map(w => w === 'backpack' ? "It's a backpack." : `It's a ${w}.`);
-        generated.push({
-          targetWord: 'notebook',
-          meaningVi: 'vở viết',
-          emoji: '📓',
-          choices: extra1Choices,
-          sentencePattern: "What is this in English?",
-          unscrambledLetters: scrambleWord('notebook'),
-          oddChoices: seededShuffle(['notebook', 'ruler', 'pencil', ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-          correctAnswer: "It's a notebook.",
-          explanation: "notebook = vở viết",
-          vietnameseMeaning: "vở viết"
-        });
-
-        const extra2Distractors = ['ruler', 'pencil', 'backpack'];
-        const extra2Choices = seededShuffle(['desk', ...extra2Distractors]).map(w => w === 'backpack' ? "It's a backpack." : `It's a ${w}.`);
-        generated.push({
-          targetWord: 'desk',
-          meaningVi: 'bàn học',
-          emoji: '✍️',
-          choices: extra2Choices,
-          sentencePattern: "What is it?",
-          unscrambledLetters: scrambleWord('desk'),
-          oddChoices: seededShuffle(['desk', 'ruler', 'pencil', ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)]]),
-          correctAnswer: "It's a desk.",
-          explanation: "desk = bàn học",
-          vietnameseMeaning: "bàn học"
-        });
-      }
-
-      setQuestions(generated);
-      setIsLoading(false);
-      return;
-    }
 
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
       const predefined: Question[] = [];
@@ -450,7 +296,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
         const oddChoices = seededShuffle([...oddBase, oddDistractor]);
 
-        const unscrambledLetters = scrambleWord(qVocab);
+        const unscrambledLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
 
         let explanation = `Đáp án đúng là "${q.correctAnswer}".`;
         if (meaningVi) {
@@ -1110,16 +956,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
               Fill in the Blank!
             </span>
-            <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full flex flex-col items-center">
-              {lesson.id.includes('u1-l4') && currentQuestion?.emoji ? (
-                <div className="text-7xl select-none p-4 bg-white rounded-3xl border border-red-100 mb-4 animate-bounce">
-                  {currentQuestion.emoji}
-                </div>
-              ) : null}
+            <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
               <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
-              {!(lesson.id.includes('u1-l4')) && currentQuestion?.meaningVi ? (
-                <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion.meaningVi})</p>
-              ) : null}
+              <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion?.meaningVi || ''})</p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
               {(currentQuestion?.choices || []).map((choice, idx) => {
