@@ -103,22 +103,42 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
 
     const validateQuestion = (q: Question): boolean => {
-      if (!q.question || !q.targetWord) return false;
+      if (!q.question) {
+        console.error(`[Practice QA Engine] Question prompt is empty!`, q);
+        return false;
+      }
+      if (!q.targetWord) {
+        console.error(`[Practice QA Engine] Target vocabulary word is empty!`, q);
+        return false;
+      }
       const wordLower = q.targetWord.toLowerCase();
       const inVocab = vocabList.some(v => v.word.toLowerCase() === wordLower);
-      if (!inVocab && !isCommunicationLesson) return false;
+      if (!inVocab && !isCommunicationLesson) {
+        console.error(`[Practice QA Engine] Target word "${q.targetWord}" is NOT in vocabulary list of this lesson!`, { vocabList, q });
+        return false;
+      }
 
       const normalizeEmoji = (str: string) => str.replace(/[\uFE00-\uFE0F]/g, '');
 
       if (q.emoji) {
         const expectedEmoji = EMOJI_MAP[wordLower];
         if (expectedEmoji && normalizeEmoji(q.emoji) !== normalizeEmoji(expectedEmoji)) {
+          console.error(`[Practice QA Engine] Emoji mismatch! Expected "${expectedEmoji}", found "${q.emoji}" for targetWord "${q.targetWord}"`, q);
           return false;
         }
       }
-      if (!q.choices || q.choices.length !== 4) return false;
-      if (!q.choices.includes(q.correctAnswer)) return false;
-      if (!q.explanation || !q.explanation.includes(q.correctAnswer)) return false;
+      if (!q.choices || q.choices.length !== 4) {
+        console.error(`[Practice QA Engine] Choices count is not exactly 4!`, q);
+        return false;
+      }
+      if (!q.choices.includes(q.correctAnswer)) {
+        console.error(`[Practice QA Engine] Choices list does not contain correct answer "${q.correctAnswer}"! Choices:`, q.choices);
+        return false;
+      }
+      if (!q.explanation || !q.explanation.includes(q.correctAnswer)) {
+        console.error(`[Practice QA Engine] Explanation does not mention correct answer "${q.correctAnswer}"! Explanation: "${q.explanation}"`);
+        return false;
+      }
       return true;
     };
 
