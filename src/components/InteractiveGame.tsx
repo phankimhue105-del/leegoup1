@@ -296,7 +296,17 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         const oddDistractor = ODD_WORDS[Math.floor(rng() * ODD_WORDS.length)];
         const oddChoices = seededShuffle([...oddBase, oddDistractor]);
 
-        const unscrambledLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
+        const originalLetters = (qVocab || '').toLowerCase().replace(/\s+/g, '').split('');
+        let unscrambledLetters = [...originalLetters];
+        if (originalLetters.length > 1) {
+          let scrambled = seededShuffle(originalLetters);
+          let attempts = 0;
+          while (scrambled.join('') === originalLetters.join('') && attempts < 100) {
+            scrambled = seededShuffle(originalLetters);
+            attempts++;
+          }
+          unscrambledLetters = scrambled;
+        }
 
         let explanation = `Đáp án đúng là "${q.correctAnswer}".`;
         if (meaningVi) {
