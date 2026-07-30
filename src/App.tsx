@@ -201,6 +201,9 @@ export default function App() {
 
   // Trigger stage update & AI interaction when stage changes
   const handleStageChange = async (newStage: Stage) => {
+    if (currentUnit.id === 'unit-1' && currentLesson.number === 3 && newStage === 'vocabulary') {
+      return;
+    }
     setCurrentStage(newStage);
     soundFX.playClick();
 
@@ -247,7 +250,8 @@ export default function App() {
     setCheckUpUnitB(null);
     setCurrentUnit(unit);
     setCurrentLesson(lesson);
-    setCurrentStage('vocabulary');
+    const startStage = (unit.id === 'unit-1' && lesson.number === 3) ? 'modelPattern' : 'vocabulary';
+    setCurrentStage(startStage);
     setUnlockedBadge(undefined);
     fetchTeacherResponse(`Switched to Unit ${unit.number} Lesson ${lesson.number}: ${lesson.title}`);
   };
@@ -291,13 +295,16 @@ export default function App() {
   };
 
   const handleNextStage = () => {
-    const stages: Stage[] = [
+    let stages: Stage[] = [
       'vocabulary',
       'modelPattern',
       'practice',
       'speaking',
       'completed',
     ];
+    if (currentUnit.id === 'unit-1' && currentLesson.number === 3) {
+      stages = stages.filter(s => s !== 'vocabulary');
+    }
 
     const idx = stages.indexOf(currentStage);
     if (idx < stages.length - 1) {
