@@ -26,6 +26,11 @@ import { RewardModal } from './components/RewardModal';
 import { VocabularyCardPlayer } from './components/VocabularyCardPlayer';
 import { speakText } from './utils/ttsPlayer';
 import { soundFX } from './utils/soundEffects';
+import { checkup1Practice } from './data/practice/checkup1';
+import { checkup2Practice } from './data/practice/checkup2';
+import { checkup3Practice } from './data/practice/checkup3';
+import { checkup4Practice } from './data/practice/checkup4';
+
 
 function getModelPatternInfo(unitNumber: number, lessonNumber: number, lesson: Lesson) {
   const defaultPattern = lesson.sentencePatterns[0]?.pattern || 'It is a/an ______.';
@@ -401,27 +406,13 @@ export default function App() {
   const checkUpSource = checkUpUnitA?.checkUp || checkUpUnitB?.checkUp;
 
   // Dynamic Selector for Check-Up Practice Questions (8 questions: 4 from Unit A, 4 from Unit B)
-  const dynamicCheckUpQuestions = currentCheckUpNum !== null && checkUpUnitA && checkUpUnitB
+  const dynamicCheckUpQuestions = currentCheckUpNum !== null
     ? (() => {
-        const selected: PracticeQuestion[] = [];
-        const num = currentCheckUpNum;
-        
-        // Helper to select 4 questions from a unit deterministically
-        const selectFromUnit = (unit: Unit, seed: number) => {
-          unit.lessons.forEach((lesson, lIdx) => {
-            const qs = lesson.practiceQuestions || [];
-            if (qs.length > 0) {
-              const qSeed = seed + lIdx * 17;
-              const index = Math.abs(qSeed) % qs.length;
-              selected.push(qs[index]);
-            }
-          });
-        };
-
-        selectFromUnit(checkUpUnitA, num * 13);
-        selectFromUnit(checkUpUnitB, num * 17);
-
-        return selected.slice(0, 8);
+        if (currentCheckUpNum === 1) return checkup1Practice;
+        if (currentCheckUpNum === 2) return checkup2Practice;
+        if (currentCheckUpNum === 3) return checkup3Practice;
+        if (currentCheckUpNum === 4) return checkup4Practice;
+        return [];
       })()
     : undefined;
 
