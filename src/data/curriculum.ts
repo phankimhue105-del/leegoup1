@@ -195,10 +195,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🧶', vocabulary: 'yarn', question: "What's this?", choices: ["This is yarn.", "This is paint.", "This is paper.", "This is tape."], correctAnswer: "This is yarn." },
           { image: '🧴', vocabulary: 'glue', question: "What's this?", choices: ["This is glue.", "This is paint.", "This is paper.", "This is tape."], correctAnswer: "This is glue." },
           { image: '🩹', vocabulary: 'tape', question: "What's this?", choices: ["This is tape.", "This is paint.", "This is paper.", "This is chalk."], correctAnswer: "This is tape." },
-          { image: '🎨', vocabulary: 'paint', question: "Is this paper?", choices: ["No, it isn't. This is paint.", "Yes, this is paper.", "This is chalk.", "This is glue."], correctAnswer: "No, it isn't. This is paint." },
-          { image: '📄', vocabulary: 'paper', question: "Is this paper?", choices: ["Yes, this is paper.", "No, this is chalk.", "This is paint.", "This is tape."], correctAnswer: "Yes, this is paper." },
-          { image: '🧴', vocabulary: 'glue', question: "Is this glue?", choices: ["Yes, this is glue.", "No, this is tape.", "This is paper.", "This is chalk."], correctAnswer: "Yes, this is glue." },
-          { image: '🩹', vocabulary: 'tape', question: "Is this tape?", choices: ["Yes, this is tape.", "No, this is glue.", "This is yarn.", "This is chalk."], correctAnswer: "Yes, this is tape." }
+          { image: '🎨', vocabulary: 'paint', question: "Is this paint?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '📄', vocabulary: 'paper', question: "Is this paper?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🧴', vocabulary: 'glue', question: "Is this glue?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🩹', vocabulary: 'tape', question: "Is this tape?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🎨', promptText: 'paint', targetPhrase: 'paint' },
@@ -519,10 +519,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '👧', vocabulary: 'sister', question: "Who's this?", choices: ["This is my sister.", "This is my brother.", "This is my mother.", "This is my father."], correctAnswer: "This is my sister." },
           { image: '👵', vocabulary: 'grandmother', question: "Who's this?", choices: ["This is my grandmother.", "This is my grandfather.", "This is my mother.", "This is my father."], correctAnswer: "This is my grandmother." },
           { image: '👴', vocabulary: 'grandfather', question: "Who's this?", choices: ["This is my grandfather.", "This is my grandmother.", "This is my mother.", "This is my father."], correctAnswer: "This is my grandfather." },
-          { image: '👩', vocabulary: 'mother', question: "Is this your mother?", choices: ["Yes, it is.", "No, it isn't.", "This is my father.", "This is my brother."], correctAnswer: "Yes, it is." },
-          { image: '👨', vocabulary: 'father', question: "Is this your mother?", choices: ["No, it isn't. This is my father.", "Yes, it is.", "This is my sister.", "This is my brother."], correctAnswer: "No, it isn't. This is my father." },
-          { image: '👦', vocabulary: 'brother', question: "Is this your brother?", choices: ["Yes, it is.", "No, it isn't.", "This is my sister.", "This is my father."], correctAnswer: "Yes, it is." },
-          { image: '👧', vocabulary: 'sister', question: "Is this your brother?", choices: ["No, it isn't. This is my sister.", "Yes, it is.", "This is my father.", "This is my mother."], correctAnswer: "No, it isn't. This is my sister." }
+          { image: '👩', vocabulary: 'mother', question: "Is this your mother?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '👨', vocabulary: 'father', question: "Is this your father?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '👦', vocabulary: 'brother', question: "Is this your brother?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '👧', vocabulary: 'sister', question: "Is this your sister?", choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '👩', promptText: 'mother', targetPhrase: 'mother' },
@@ -674,10 +674,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a river." },
           { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a lake.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a hill." },
           { image: '🌅', vocabulary: 'lake', question: 'What can you see?', choices: ["I can see a lake.", "I can see a hill.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a lake." },
-          { image: '🌸', vocabulary: 'flower', question: 'Can you see a flower?', choices: ["Yes, I can.", "No, I can't.", "I can see a river.", "I can see a rock."], correctAnswer: "Yes, I can." },
-          { image: '🪨', vocabulary: 'rock', question: 'Can you see a tree?', choices: ["No, I can't. I can see a rock.", "Yes, I can.", "I can see a flower.", "I can see a river."], correctAnswer: "No, I can't. I can see a rock." },
-          { image: '🏞️', vocabulary: 'river', question: 'What can you see?', choices: ["I can see a river.", "I can see a flower.", "I can see a tree.", "I can see a rock."], correctAnswer: "I can see a river." },
-          { image: '⛰️', vocabulary: 'hill', question: 'What can you see?', choices: ["I can see a hill.", "I can see a lake.", "I can see a flower.", "I can see a tree."], correctAnswer: "I can see a hill." }
+          { image: '🌸', vocabulary: 'flower', question: 'Can you see a flower?', choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, I can." },
+          { image: '🪨', vocabulary: 'rock', question: 'Can you see a rock?', choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, I can." },
+          { image: '🏞️', vocabulary: 'river', question: 'Can you see a river?', choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, I can." },
+          { image: '⛰️', vocabulary: 'hill', question: 'Can you see a hill?', choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, I can." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🌸', promptText: 'flower', targetPhrase: 'flower' },
@@ -835,7 +835,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🐧', vocabulary: 'penguin', question: 'What is this?', choices: ["It's a penguin.", "It's a kangaroo.", "It's an elephant.", "It's a monkey."], correctAnswer: "It's a penguin." },
           { image: '🐒', vocabulary: 'monkey', question: 'Where is the monkey?', choices: ["It's in the tree.", "It's on the rock.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's in the tree." },
           { image: '🐻', vocabulary: 'bear', question: 'Where is the bear?', choices: ["It's on the rock.", "It's in the tree.", "It's under the rock.", "It's by the chair."], correctAnswer: "It's on the rock." },
-          { image: '🐘', vocabulary: 'elephant', question: 'Is the elephant big?', choices: ["Yes, it is big.", "No, it isn't.", "It is small.", "It is short."], correctAnswer: "Yes, it is big." },
+          { image: '🐘', vocabulary: 'elephant', question: 'Is the elephant big?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
           { image: '🐧', vocabulary: 'penguin', question: 'Where is the penguin?', choices: ["It's in the water.", "It's in the tree.", "It's on the rock.", "It's by the chair."], correctAnswer: "It's in the water." }
         ],
         speakingTasks: [
@@ -985,10 +985,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🦵', vocabulary: 'leg', question: 'What is this?', choices: ["This is my leg.", "This is my arm.", "This is my foot.", "These are my hands."], correctAnswer: "This is my leg." },
           { image: '🦶', vocabulary: 'foot', question: 'What is this?', choices: ["This is my foot.", "This is my leg.", "This is my arm.", "These are my hands."], correctAnswer: "This is my foot." },
           { image: '🦶', vocabulary: 'toe', question: 'What are these?', choices: ["These are my toes.", "These are my fingers.", "These are my hands.", "This is my arm."], correctAnswer: "These are my toes." },
-          { image: '💪', vocabulary: 'arm', question: 'Is this my arm?', choices: ["Yes, it is.", "No, it isn't.", "These are my legs.", "These are my hands."], correctAnswer: "Yes, it is." },
-          { image: '🦵', vocabulary: 'leg', question: 'Is this my arm?', choices: ["No, it isn't. It's my leg.", "Yes, it is.", "These are my hands.", "These are my toes."], correctAnswer: "No, it isn't. It's my leg." },
-          { image: '✋', vocabulary: 'hand', question: 'Are these my hands?', choices: ["Yes, they are.", "No, they aren't.", "This is my foot.", "This is my leg."], correctAnswer: "Yes, they are." },
-          { image: '☝️', vocabulary: 'finger', question: 'Are these my fingers?', choices: ["Yes, they are.", "No, they aren't.", "These are my toes.", "This is my arm."], correctAnswer: "Yes, they are." }
+          { image: '💪', vocabulary: 'arm', question: 'Is this my arm?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🦵', vocabulary: 'leg', question: 'Is this my leg?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '✋', vocabulary: 'hand', question: 'Are these my hands?', choices: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, they are." },
+          { image: '☝️', vocabulary: 'finger', question: 'Are these my fingers?', choices: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, they are." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '💪', promptText: 'arm', targetPhrase: 'arm' },
@@ -1146,10 +1146,10 @@ export const CURRICULUM_UNITS: Unit[] = [
           { image: '🐭', vocabulary: 'small', question: 'Is it small?', choices: ["It is small.", "It is big.", "It is long.", "It is short."], correctAnswer: "It is small." },
           { image: '📏', vocabulary: 'long', question: 'Is it long?', choices: ["It is long.", "It is short.", "It is big.", "It is small."], correctAnswer: "It is long." },
           { image: '📐', vocabulary: 'short', question: 'Is it short?', choices: ["It is short.", "It is long.", "It is big.", "It is small."], correctAnswer: "It is short." },
-          { image: '🧓', vocabulary: 'old', question: 'Is that bus new?', choices: ["No, it isn't. It's an old bus.", "Yes, it is.", "Those are new trucks.", "It is long."], correctAnswer: "No, it isn't. It's an old bus." },
-          { image: '✨', vocabulary: 'new', question: 'Are those trucks old?', choices: ["No, they aren't. They're new trucks.", "Yes, they are.", "That's an old bus.", "It is small."], correctAnswer: "No, they aren't. They're new trucks." },
-          { image: '🐘', vocabulary: 'big', question: 'Is that elephant big?', choices: ["Yes, it is big.", "No, it is small.", "It is long.", "It is short."], correctAnswer: "Yes, it is big." },
-          { image: '🐭', vocabulary: 'small', question: 'Is that mouse big?', choices: ["No, it is a small mouse.", "Yes, it is big.", "It is long.", "It is short."], correctAnswer: "No, it is a small mouse." }
+          { image: '🧓', vocabulary: 'old', question: 'Is that bus old?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '✨', vocabulary: 'new', question: 'Are those trucks new?', choices: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."], correctAnswer: "Yes, they are." },
+          { image: '🐘', vocabulary: 'big', question: 'Is that elephant big?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." },
+          { image: '🐭', vocabulary: 'small', question: 'Is that mouse small?', choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."], correctAnswer: "Yes, it is." }
         ],
         speakingTasks: [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🧓', promptText: 'old', targetPhrase: 'old' },
