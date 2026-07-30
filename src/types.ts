@@ -33,11 +33,18 @@ export interface SentencePattern {
 }
 
 export interface PracticeQuestion {
+  id?: number;
+  type?: string;
   image: string;
   vocabulary: string;
   question: string;
   choices: string[];
+  options?: string[];
   correctAnswer: string;
+  explanation?: string;
+  hintImage?: string;
+  unscrambledLetters?: string[];
+  oddChoices?: string[];
 }
 
 export interface SpeakingTask {
