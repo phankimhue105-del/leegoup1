@@ -32,95 +32,26 @@ import { checkup3Practice } from './data/practice/checkup3';
 import { checkup4Practice } from './data/practice/checkup4';
 
 import { lesson1Practice as u1l1 } from './data/practice/unit1/lesson1';
-import { lesson2Practice as u1l2 } from './data/practice/unit1/lesson2';
-import { lesson3Practice as u1l3 } from './data/practice/unit1/lesson3';
-import { lesson4Practice as u1l4 } from './data/practice/unit1/lesson4';
-
 import { lesson1Practice as u2l1 } from './data/practice/unit2/lesson1';
-import { lesson2Practice as u2l2 } from './data/practice/unit2/lesson2';
-import { lesson3Practice as u2l3 } from './data/practice/unit2/lesson3';
-import { lesson4Practice as u2l4 } from './data/practice/unit2/lesson4';
-
 import { lesson1Practice as u3l1 } from './data/practice/unit3/lesson1';
-import { lesson2Practice as u3l2 } from './data/practice/unit3/lesson2';
-import { lesson3Practice as u3l3 } from './data/practice/unit3/lesson3';
-import { lesson4Practice as u3l4 } from './data/practice/unit3/lesson4';
-
 import { lesson1Practice as u4l1 } from './data/practice/unit4/lesson1';
-import { lesson2Practice as u4l2 } from './data/practice/unit4/lesson2';
-import { lesson3Practice as u4l3 } from './data/practice/unit4/lesson3';
-import { lesson4Practice as u4l4 } from './data/practice/unit4/lesson4';
-
 import { lesson1Practice as u5l1 } from './data/practice/unit5/lesson1';
-import { lesson2Practice as u5l2 } from './data/practice/unit5/lesson2';
-import { lesson3Practice as u5l3 } from './data/practice/unit5/lesson3';
-import { lesson4Practice as u5l4 } from './data/practice/unit5/lesson4';
-
 import { lesson1Practice as u6l1 } from './data/practice/unit6/lesson1';
-import { lesson2Practice as u6l2 } from './data/practice/unit6/lesson2';
-import { lesson3Practice as u6l3 } from './data/practice/unit6/lesson3';
-import { lesson4Practice as u6l4 } from './data/practice/unit6/lesson4';
-
 import { lesson1Practice as u7l1 } from './data/practice/unit7/lesson1';
-import { lesson2Practice as u7l2 } from './data/practice/unit7/lesson2';
-import { lesson3Practice as u7l3 } from './data/practice/unit7/lesson3';
-import { lesson4Practice as u7l4 } from './data/practice/unit7/lesson4';
-
 import { lesson1Practice as u8l1 } from './data/practice/unit8/lesson1';
-import { lesson2Practice as u8l2 } from './data/practice/unit8/lesson2';
-import { lesson3Practice as u8l3 } from './data/practice/unit8/lesson3';
-import { lesson4Practice as u8l4 } from './data/practice/unit8/lesson4';
 
-const getLessonPracticeQuestions = (unitNum: number, lessonNum: number): PracticeQuestion[] => {
-  if (unitNum === 1) {
-    if (lessonNum === 1) return u1l1;
-    if (lessonNum === 2) return u1l2;
-    if (lessonNum === 3) return u1l3;
-    if (lessonNum === 4) return u1l4;
+const getLessonPracticeQuestions = (unitNum: number, lessonNum: number, currentPracticeQuestions?: PracticeQuestion[]): PracticeQuestion[] => {
+  if (lessonNum === 1) {
+    if (unitNum === 1) return u1l1;
+    if (unitNum === 2) return u2l1;
+    if (unitNum === 3) return u3l1;
+    if (unitNum === 4) return u4l1;
+    if (unitNum === 5) return u5l1;
+    if (unitNum === 6) return u6l1;
+    if (unitNum === 7) return u7l1;
+    if (unitNum === 8) return u8l1;
   }
-  if (unitNum === 2) {
-    if (lessonNum === 1) return u2l1;
-    if (lessonNum === 2) return u2l2;
-    if (lessonNum === 3) return u2l3;
-    if (lessonNum === 4) return u2l4;
-  }
-  if (unitNum === 3) {
-    if (lessonNum === 1) return u3l1;
-    if (lessonNum === 2) return u3l2;
-    if (lessonNum === 3) return u3l3;
-    if (lessonNum === 4) return u3l4;
-  }
-  if (unitNum === 4) {
-    if (lessonNum === 1) return u4l1;
-    if (lessonNum === 2) return u4l2;
-    if (lessonNum === 3) return u4l3;
-    if (lessonNum === 4) return u4l4;
-  }
-  if (unitNum === 5) {
-    if (lessonNum === 1) return u5l1;
-    if (lessonNum === 2) return u5l2;
-    if (lessonNum === 3) return u5l3;
-    if (lessonNum === 4) return u5l4;
-  }
-  if (unitNum === 6) {
-    if (lessonNum === 1) return u6l1;
-    if (lessonNum === 2) return u6l2;
-    if (lessonNum === 3) return u6l3;
-    if (lessonNum === 4) return u6l4;
-  }
-  if (unitNum === 7) {
-    if (lessonNum === 1) return u7l1;
-    if (lessonNum === 2) return u7l2;
-    if (lessonNum === 3) return u7l3;
-    if (lessonNum === 4) return u7l4;
-  }
-  if (unitNum === 8) {
-    if (lessonNum === 1) return u8l1;
-    if (lessonNum === 2) return u8l2;
-    if (lessonNum === 3) return u8l3;
-    if (lessonNum === 4) return u8l4;
-  }
-  return [];
+  return currentPracticeQuestions || [];
 };
 
 
@@ -557,7 +488,7 @@ export default function App() {
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : {
     ...currentLesson,
-    practiceQuestions: getLessonPracticeQuestions(currentUnit.number, currentLesson.number)
+    practiceQuestions: getLessonPracticeQuestions(currentUnit.number, currentLesson.number, currentLesson.practiceQuestions)
   };
   const currentUnitToUse = currentCheckUpNum !== null ? checkUpUnitVirtual : currentUnit;
 
