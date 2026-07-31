@@ -13,7 +13,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "one = số 1",
     hintImage: "1️⃣",
     unscrambledLetters: ["n", "e", "o"],
-    oddChoices: ["one", "nine", "two", "hamburger"]
+    oddChoices: ["one", "nine", "two", "hamburger"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "two = số 2",
     hintImage: "2️⃣",
     unscrambledLetters: ["o", "w", "t"],
-    oddChoices: ["ten", "alien", "five", "two"]
+    oddChoices: ["ten", "alien", "five", "two"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "three = số 3",
     hintImage: "3️⃣",
     unscrambledLetters: ["e", "t", "h", "r", "e"],
-    oddChoices: ["ten", "alien", "five", "three"]
+    oddChoices: ["ten", "alien", "five", "three"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -55,7 +58,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "four = số 4",
     hintImage: "4️⃣",
     unscrambledLetters: ["o", "r", "f", "u"],
-    oddChoices: ["two", "dinosaur", "four", "eleven"]
+    oddChoices: ["two", "dinosaur", "four", "eleven"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -69,7 +73,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "five = số 5",
     hintImage: "5️⃣",
     unscrambledLetters: ["i", "e", "f", "v"],
-    oddChoices: ["two", "dinosaur", "five", "eleven"]
+    oddChoices: ["two", "dinosaur", "five", "eleven"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -83,7 +88,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "six = số 6",
     hintImage: "6️⃣",
     unscrambledLetters: ["i", "s", "x"],
-    oddChoices: ["nine", "octopus", "three", "six"]
+    oddChoices: ["nine", "octopus", "three", "six"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -97,7 +103,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "seven = số 7",
     hintImage: "7️⃣",
     unscrambledLetters: ["v", "e", "s", "e", "n"],
-    oddChoices: ["nine", "octopus", "three", "seven"]
+    oddChoices: ["nine", "octopus", "three", "seven"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -111,7 +118,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "eight = số 8",
     hintImage: "8️⃣",
     unscrambledLetters: ["g", "i", "e", "h", "t"],
-    oddChoices: ["nine", "octopus", "three", "eight"]
+    oddChoices: ["nine", "octopus", "three", "eight"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -125,7 +133,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "nine = số 9",
     hintImage: "9️⃣",
     unscrambledLetters: ["e", "i", "n", "n"],
-    oddChoices: ["twelve", "spaceship", "nine", "four"]
+    oddChoices: ["twelve", "spaceship", "nine", "four"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -139,6 +148,7 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "ten = số 10",
     hintImage: "🔟",
     unscrambledLetters: ["e", "n", "t"],
-    oddChoices: ["twelve", "spaceship", "ten", "four"]
+    oddChoices: ["twelve", "spaceship", "ten", "four"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
