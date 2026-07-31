@@ -13,7 +13,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "old = cũ",
     hintImage: "🧓",
     unscrambledLetters: ["l", "d", "o"],
-    oddChoices: ["hamburger", "short", "big", "old"]
+    oddChoices: ["hamburger", "short", "big", "old"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "old = cũ",
     hintImage: "🧓",
     unscrambledLetters: ["l", "d", "o"],
-    oddChoices: ["guitar", "long", "old", "big"]
+    oddChoices: ["guitar", "long", "old", "big"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "new = mới",
     hintImage: "✨",
     unscrambledLetters: ["e", "n", "w"],
-    oddChoices: ["guitar", "long", "new", "big"]
+    oddChoices: ["guitar", "long", "new", "big"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -55,7 +58,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "new = mới",
     hintImage: "✨",
     unscrambledLetters: ["e", "n", "w"],
-    oddChoices: ["guitar", "long", "new", "big"]
+    oddChoices: ["guitar", "long", "new", "big"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -69,7 +73,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "big = to / lớn",
     hintImage: "🐘",
     unscrambledLetters: ["i", "b", "g"],
-    oddChoices: ["guitar", "long", "big", "new"]
+    oddChoices: ["guitar", "long", "big", "new"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -83,7 +88,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "big = to / lớn",
     hintImage: "🐘",
     unscrambledLetters: ["i", "b", "g"],
-    oddChoices: ["guitar", "long", "big", "new"]
+    oddChoices: ["guitar", "long", "big", "new"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -97,7 +103,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "small = nhỏ",
     hintImage: "🐭",
     unscrambledLetters: ["s", "l", "m", "l", "a"],
-    oddChoices: ["old", "short", "small", "guitar"]
+    oddChoices: ["old", "short", "small", "guitar"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -111,7 +118,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "small = nhỏ",
     hintImage: "🐭",
     unscrambledLetters: ["s", "l", "m", "l", "a"],
-    oddChoices: ["old", "short", "small", "guitar"]
+    oddChoices: ["old", "short", "small", "guitar"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -125,7 +133,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "long = dài",
     hintImage: "📏",
     unscrambledLetters: ["l", "o", "g", "n"],
-    oddChoices: ["old", "short", "long", "guitar"]
+    oddChoices: ["old", "short", "long", "guitar"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -139,6 +148,7 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "short = ngắn",
     hintImage: "📐",
     unscrambledLetters: ["o", "r", "h", "t", "s"],
-    oddChoices: ["alien", "small", "short", "big"]
+    oddChoices: ["alien", "small", "short", "big"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
