@@ -26,6 +26,7 @@ interface Question {
   explanation: string;
   vietnameseMeaning: string;
   hintImage?: string;
+  activityTitle?: string;
 }
 
 
@@ -279,7 +280,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || '',
           vietnameseMeaning: q.explanation || '',
-          hintImage: q.hintImage
+          hintImage: q.hintImage,
+          activityTitle: q.activityTitle
         };
 
         if (validateQuestion(questionObj)) {
@@ -784,10 +786,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
           <span className="font-black text-slate-800 text-sm md:text-base capitalize">
-            Game Mode: {isCommunicationLesson ? 'Communication' : (
-              (lesson.number === 1 && !lesson.id.includes('checkup') && selectedGame === 'chooseCorrect')
-                ? 'Choose the Correct Answer'
-                : selectedGame.replace(/([A-Z])/g, ' $1')
+            Game Mode: {currentQuestion?.activityTitle || (
+              isCommunicationLesson ? 'Communication' : selectedGame.replace(/([A-Z])/g, ' $1')
             )}
           </span>
         </div>
@@ -929,7 +929,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         {/* CHOOSE CORRECT */}
         {selectedGame === 'chooseCorrect' && (
           <div className="flex flex-col items-center gap-5">
-            {!(lesson.number === 1 && !lesson.id.includes('checkup')) && (
+            {!currentQuestion?.activityTitle && (
               <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
                 Fill in the Blank!
               </span>
