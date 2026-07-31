@@ -12,8 +12,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is paint.",
     explanation: "paint = sơn / màu vẽ",
     hintImage: "🎨",
-    unscrambledLetters: ["p", "t", "a", "i", "n"],
-    oddChoices: ["paper", "octopus", "tape", "paint"]
+    unscrambledLetters: ["i", "a", "n", "p", "t"],
+    oddChoices: ["yarn", "octopus", "paint", "chalk"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -21,13 +22,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🎨",
     vocabulary: "paint",
-    choices: ["This is tape.", "This is yarn.", "This is paint.", "This is glue."],
-    options: ["This is tape.", "This is yarn.", "This is paint.", "This is glue."],
+    choices: ["This is tape.", "This is paper.", "This is paint.", "This is glue."],
+    options: ["This is tape.", "This is paper.", "This is paint.", "This is glue."],
     correctAnswer: "This is paint.",
     explanation: "paint = sơn / màu vẽ",
     hintImage: "🎨",
-    unscrambledLetters: ["p", "t", "a", "i", "n"],
-    oddChoices: ["paper", "octopus", "tape", "paint"]
+    unscrambledLetters: ["p", "i", "t", "n", "a"],
+    oddChoices: ["paint", "yarn", "paper", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -40,8 +42,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is paper.",
     explanation: "paper = giấy",
     hintImage: "📄",
-    unscrambledLetters: ["p", "r", "a", "p", "e"],
-    oddChoices: ["paint", "octopus", "tape", "paper"]
+    unscrambledLetters: ["p", "p", "r", "e", "a"],
+    oddChoices: ["paper", "yarn", "paint", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -54,8 +57,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is paper.",
     explanation: "paper = giấy",
     hintImage: "📄",
-    unscrambledLetters: ["p", "r", "a", "p", "e"],
-    oddChoices: ["paint", "octopus", "tape", "paper"]
+    unscrambledLetters: ["p", "p", "r", "e", "a"],
+    oddChoices: ["paper", "yarn", "paint", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -68,8 +72,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is chalk.",
     explanation: "chalk = phấn",
     hintImage: "🖍️",
-    unscrambledLetters: ["l", "h", "k", "c", "a"],
-    oddChoices: ["octopus", "glue", "paper", "chalk"]
+    unscrambledLetters: ["c", "a", "k", "l", "h"],
+    oddChoices: ["chalk", "yarn", "paint", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -82,8 +87,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is chalk.",
     explanation: "chalk = phấn",
     hintImage: "🖍️",
-    unscrambledLetters: ["l", "h", "k", "c", "a"],
-    oddChoices: ["octopus", "glue", "paper", "chalk"]
+    unscrambledLetters: ["c", "a", "k", "l", "h"],
+    oddChoices: ["chalk", "yarn", "paint", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -96,8 +102,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is yarn.",
     explanation: "yarn = cuộn len",
     hintImage: "🧶",
-    unscrambledLetters: ["n", "a", "y", "r"],
-    oddChoices: ["octopus", "glue", "paper", "yarn"]
+    unscrambledLetters: ["n", "a", "r", "y"],
+    oddChoices: ["paper", "yarn", "glue", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -110,8 +117,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is yarn.",
     explanation: "yarn = cuộn len",
     hintImage: "🧶",
-    unscrambledLetters: ["r", "a", "n", "y"],
-    oddChoices: ["octopus", "chalk", "paper", "yarn"]
+    unscrambledLetters: ["n", "a", "r", "y"],
+    oddChoices: ["paper", "yarn", "glue", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -124,8 +132,9 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is glue.",
     explanation: "glue = keo dán",
     hintImage: "🧴",
-    unscrambledLetters: ["u", "l", "e", "g"],
-    oddChoices: ["octopus", "chalk", "paper", "glue"]
+    unscrambledLetters: ["e", "l", "u", "g"],
+    oddChoices: ["paper", "glue", "yarn", "wizard"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -138,7 +147,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     correctAnswer: "This is tape.",
     explanation: "tape = băng dính",
     hintImage: "🩹",
-    unscrambledLetters: ["p", "a", "e", "t"],
-    oddChoices: ["octopus", "chalk", "paper", "tape"]
+    unscrambledLetters: ["a", "p", "e", "t"],
+    oddChoices: ["tape", "paper", "volcano", "chalk"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
