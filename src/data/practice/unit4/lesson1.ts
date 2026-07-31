@@ -13,7 +13,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "mother = mẹ",
     hintImage: "👩",
     unscrambledLetters: ["e", "m", "h", "t", "o", "r"],
-    oddChoices: ["grandfather", "volcano", "father", "mother"]
+    oddChoices: ["grandfather", "volcano", "father", "mother"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "mother = mẹ",
     hintImage: "👩",
     unscrambledLetters: ["r", "t", "m", "o", "h", "e"],
-    oddChoices: ["mother", "sister", "father", "dinosaur"]
+    oddChoices: ["mother", "sister", "father", "dinosaur"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "father = bố",
     hintImage: "👨",
     unscrambledLetters: ["r", "t", "f", "a", "h", "e"],
-    oddChoices: ["father", "sister", "mother", "dinosaur"]
+    oddChoices: ["father", "sister", "mother", "dinosaur"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -55,7 +58,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "father = bố",
     hintImage: "👨",
     unscrambledLetters: ["r", "t", "f", "a", "h", "e"],
-    oddChoices: ["father", "sister", "mother", "dinosaur"]
+    oddChoices: ["father", "sister", "mother", "dinosaur"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -69,7 +73,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "brother = anh/em trai",
     hintImage: "👦",
     unscrambledLetters: ["t", "h", "o", "b", "r", "r", "e"],
-    oddChoices: ["grandmother", "grandfather", "volcano", "brother"]
+    oddChoices: ["grandmother", "grandfather", "volcano", "brother"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -83,7 +88,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "brother = anh/em trai",
     hintImage: "👦",
     unscrambledLetters: ["t", "h", "o", "b", "r", "r", "e"],
-    oddChoices: ["grandmother", "grandfather", "volcano", "brother"]
+    oddChoices: ["grandmother", "grandfather", "volcano", "brother"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -97,7 +103,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "sister = chị/em gái",
     hintImage: "👧",
     unscrambledLetters: ["t", "e", "s", "s", "i", "r"],
-    oddChoices: ["grandmother", "grandfather", "volcano", "sister"]
+    oddChoices: ["grandmother", "grandfather", "volcano", "sister"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -111,7 +118,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "sister = chị/em gái",
     hintImage: "👧",
     unscrambledLetters: ["r", "s", "t", "i", "s", "e"],
-    oddChoices: ["mother", "dinosaur", "sister", "grandmother"]
+    oddChoices: ["mother", "dinosaur", "sister", "grandmother"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -125,7 +133,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "grandmother = bà",
     hintImage: "👵",
     unscrambledLetters: ["m", "g", "t", "n", "e", "r", "o", "h", "a", "r", "d"],
-    oddChoices: ["mother", "dinosaur", "grandmother", "sister"]
+    oddChoices: ["mother", "dinosaur", "grandmother", "sister"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -139,6 +148,7 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "grandfather = ông",
     hintImage: "👴",
     unscrambledLetters: ["f", "g", "t", "n", "e", "r", "a", "h", "a", "r", "d"],
-    oddChoices: ["mother", "dinosaur", "grandfather", "sister"]
+    oddChoices: ["mother", "dinosaur", "grandfather", "sister"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
