@@ -784,7 +784,11 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
           <span className="font-black text-slate-800 text-sm md:text-base capitalize">
-            Game Mode: {isCommunicationLesson ? 'Communication' : selectedGame.replace(/([A-Z])/g, ' $1')}
+            Game Mode: {isCommunicationLesson ? 'Communication' : (
+              (lesson.number === 1 && !lesson.id.includes('checkup') && selectedGame === 'chooseCorrect')
+                ? 'Choose the Correct Answer'
+                : selectedGame.replace(/([A-Z])/g, ' $1')
+            )}
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-black bg-red-50 text-red-600 px-3.5 py-1.5 rounded-full border border-red-200 shadow-2xs">
@@ -925,9 +929,11 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         {/* CHOOSE CORRECT */}
         {selectedGame === 'chooseCorrect' && (
           <div className="flex flex-col items-center gap-5">
-            <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
-              Fill in the Blank!
-            </span>
+            {!(lesson.number === 1 && !lesson.id.includes('checkup')) && (
+              <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
+                Fill in the Blank!
+              </span>
+            )}
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
               <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
               {currentQuestion?.hintImage ? (
