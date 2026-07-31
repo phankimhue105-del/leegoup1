@@ -99,9 +99,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentQIndex, setCurrentQIndex] = useState(0); // 0 to questions.length - 1
-  const [selectedGame, setSelectedGame] = useState<MiniGameType>('pictureQuiz');
-  const [game1, setGame1] = useState<MiniGameType>('pictureQuiz');
-  const [game2, setGame2] = useState<MiniGameType>('wordPuzzle');
 
   // Game specific state
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -282,8 +279,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
         const correctAnswer = isConversational ? makeFullSentence(vocab.word) : vocab.word;
 
-        const activeGame = i < 5 ? game1 : game2;
-        const qType = mapGameToQuestionType(activeGame);
+        const qType = 'multiple_choice';
 
         const questionObj: Question = {
           type: qType,
@@ -350,25 +346,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   };
 
   useEffect(() => {
-    const rng = createSeededRandom(lesson.id || 'default-seed');
-    
-    function seededShuffle<T>(arr: T[]): T[] {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(rng() * (i + 1));
-        const temp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = temp;
-      }
-      return copy;
-    }
-
-    const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
-    const shuffledGames = seededShuffle(games);
-    setGame1(shuffledGames[0]);
-    setGame2(shuffledGames[1]);
-    setSelectedGame(shuffledGames[0]);
-
     generateQuestions();
     setCurrentQIndex(0);
     setUserAnswers([]);
@@ -379,17 +356,10 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   useEffect(() => {
     if (questions.length === 0) return;
     const currentQuestion = questions[currentQIndex];
-    if (isCommunicationLesson) {
-      setSelectedGame('chooseCorrect');
-      resetGameState('chooseCorrect', currentQuestion);
-      return;
-    }
-    const activeGame = mapQuestionTypeToGame(currentQuestion.type);
-    setSelectedGame(activeGame);
-    resetGameState(activeGame, currentQuestion);
-  }, [currentQIndex, questions, isCommunicationLesson]);
+    resetGameState(currentQuestion);
+  }, [currentQIndex, questions]);
 
-  const resetGameState = (gameType: MiniGameType, q: Question) => {
+  const resetGameState = (q: Question) => {
     setSelectedOption(null);
     setIsAnswerCorrect(null);
     setUnscrambleInput([]);
@@ -398,7 +368,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setTempPairs({});
     setIsCheckingMemory(false);
 
-    if (gameType === 'memoryGame') {
+    if (q.type === 'memory') {
       const rng = createSeededRandom(`${lesson.id}-${currentQIndex}`);
       function seededShuffle<T>(arr: T[]): T[] {
         const copy = [...arr];
@@ -438,7 +408,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     const newAnswer: UserAnswer = {
       questionNumber: currentQIndex + 1,
-      questionType: isCommunicationLesson ? 'Choose Correct' : selectedGame,
+      questionType: isCommunicationLesson ? 'Choose Correct' : (currentQ.type || 'multiple_choice'),
       targetWord: currentQ.targetWord,
       studentAnswer: studentAns,
       correctAnswer: correctAnswer,
@@ -591,20 +561,19 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const isReadyToSubmit = (() => {
     if (!currentQuestion) return false;
     if (isCommunicationLesson) return selectedOption !== null;
-    if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
+    if (currentQuestion.type === 'picture_quiz' || currentQuestion.type === 'multiple_choice' || currentQuestion.type === 'fill_blank' || currentQuestion.type === 'odd_one_out') {
       return selectedOption !== null;
     }
-    if (selectedGame === 'wordPuzzle') {
+    if (currentQuestion.type === 'unscramble') {
       const targetLen = currentQuestion.targetWord ? currentQuestion.targetWord.replace(/\s+/g, '').length : 0;
       return unscrambleInput.length === targetLen;
     }
-    if (selectedGame === 'matchingGame') {
+    if (currentQuestion.type === 'matching') {
       const startIndex = Math.min(currentQIndex, 7);
       const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
       return Object.keys(tempPairs).length === matchingWords.length;
     }
-    if (selectedGame === 'memoryGame') {
-      // Memory game is submitted once all cards are matched
+    if (currentQuestion.type === 'memory') {
       return memoryCards && memoryCards.length > 0 && memoryCards.every(c => c.matched);
     }
     return false;
@@ -626,9 +595,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return;
     }
 
-    if (selectedGame === 'pictureQuiz' || selectedGame === 'chooseCorrect' || selectedGame === 'oddOneOut') {
+    if (currentQuestion.type === 'picture_quiz' || currentQuestion.type === 'multiple_choice' || currentQuestion.type === 'fill_blank' || currentQuestion.type === 'odd_one_out') {
       let target = currentQuestion.correctAnswer;
-      if (selectedGame === 'oddOneOut') {
+      if (currentQuestion.type === 'odd_one_out') {
         target = currentQuestion.oddChoices?.find(choice => ODD_WORDS.includes(choice)) || '';
       }
       const isCorrect = selectedOption === target;
@@ -642,7 +611,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (selectedGame === 'wordPuzzle') {
+    } else if (currentQuestion.type === 'unscramble') {
       const spelled = unscrambleInput.join('');
       const targetClean = (currentQuestion?.targetWord || '').replace(/\s+/g, '');
       const isCorrect = spelled.toLowerCase() === targetClean.toLowerCase();
@@ -656,7 +625,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (selectedGame === 'matchingGame') {
+    } else if (currentQuestion.type === 'matching') {
       const startIndex = Math.min(currentQIndex, 7);
       const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
 
@@ -686,8 +655,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (selectedGame === 'memoryGame') {
-      // If we reach here, all cards are verified matched!
+    } else if (currentQuestion.type === 'memory') {
       setIsAnswerCorrect(true);
       soundFX.playCorrect();
       onCorrectAnswer();
@@ -717,25 +685,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setUserAnswers([]);
     setShowSummary(false);
     setCurrentQIndex(0);
-
-    const rng = createSeededRandom(lesson.id || 'default-seed');
-    function seededShuffle<T>(arr: T[]): T[] {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(rng() * (i + 1));
-        const temp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = temp;
-      }
-      return copy;
-    }
-
-    const games: MiniGameType[] = ['pictureQuiz', 'wordPuzzle', 'chooseCorrect', 'memoryGame', 'matchingGame', 'oddOneOut'];
-    const shuffledGames = seededShuffle(games);
-    setGame1(shuffledGames[0]);
-    setGame2(shuffledGames[1]);
-    setSelectedGame(shuffledGames[0]);
-
     generateQuestions();
   };
 
@@ -836,11 +785,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       <div className="flex items-center justify-between mb-4 border-b border-red-50 pb-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
-          <span className="font-black text-slate-800 text-sm md:text-base capitalize">
-            Game Mode: {currentQuestion?.activityTitle || (
-              isCommunicationLesson ? 'Communication' : selectedGame.replace(/([A-Z])/g, ' $1')
-            )}
-          </span>
+            <span className="text-slate-500 font-extrabold uppercase tracking-widest text-[9px] bg-slate-100 px-3 py-1 rounded-full">
+              {isCommunicationLesson ? 'Communication' : (currentQuestion?.type || 'multiple_choice').replace(/_([a-z])/g, ' $1')}
+            </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-black bg-red-50 text-red-600 px-3.5 py-1.5 rounded-full border border-red-200 shadow-2xs">
           <span>Question {currentQIndex + 1} / {questions.length}</span>
@@ -890,7 +837,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         ) : (
           <>
             {/* PICTURE QUIZ */}
-            {selectedGame === 'pictureQuiz' && (
+            {currentQuestion?.type === 'picture_quiz' && (
           <div className="flex flex-col items-center gap-5">
             <div className="text-9xl md:text-[11rem] select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
               {currentQuestion?.emoji || '🔤'}
@@ -928,7 +875,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* WORD PUZZLE */}
-        {selectedGame === 'wordPuzzle' && (
+        {currentQuestion?.type === 'unscramble' && (
           <div className="flex flex-col items-center gap-6">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
               Unscramble the word!
@@ -978,7 +925,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* CHOOSE CORRECT */}
-        {selectedGame === 'chooseCorrect' && (
+        {(currentQuestion?.type === 'multiple_choice' || currentQuestion?.type === 'fill_blank') && (
           <div className="flex flex-col items-center gap-5">
             {!currentQuestion?.activityTitle && (
               <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
@@ -1027,7 +974,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* MEMORY MATCHING */}
-        {selectedGame === 'memoryGame' && (
+        {currentQuestion?.type === 'memory' && (
           <div className="flex flex-col items-center gap-4">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-2">
               Match 3 Pairs! (Click a flipped card to undo)
@@ -1089,7 +1036,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* MATCHING GAME WITH LANG SEPARATION */}
-        {selectedGame === 'matchingGame' && (
+        {currentQuestion?.type === 'matching' && (
           <div className="flex flex-col items-center gap-4 w-full">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-3">
               Match word with meaning! (Nối từ với nghĩa đúng)
@@ -1165,7 +1112,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* ODD ONE OUT */}
-        {selectedGame === 'oddOneOut' && (
+        {currentQuestion?.type === 'odd_one_out' && (
           <div className="flex flex-col items-center gap-5">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
               Find the Odd One Out!
@@ -1220,7 +1167,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <div className="w-full bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn shadow-2xs">
               <div className="text-left space-y-1">
                 <span className="font-extrabold text-xs sm:text-sm text-emerald-800">✅ Correct! Good job! (Chính xác!) ⭐</span>
-                {selectedGame === 'matchingGame' && (
+                {currentQuestion?.type === 'matching' && (
                   <p className="text-[11px] font-bold text-emerald-700">
                     {(() => {
                       const startIndex = Math.min(currentQIndex, 7);
@@ -1247,7 +1194,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
               <div className="text-left space-y-1">
                 <span className="font-extrabold text-xs sm:text-sm text-rose-800 block">❌ Incorrect (Chưa chính xác)</span>
                 <p className="text-[11px] font-bold text-rose-700">
-                  {selectedGame === 'matchingGame'
+                  {currentQuestion?.type === 'matching'
                     ? `Đáp án đúng: ` + (() => {
                         const startIndex = Math.min(currentQIndex, 7);
                         const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
@@ -1257,7 +1204,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                           return `${w.charAt(0).toUpperCase() + w.slice(1)} = ${meaning}`;
                         }).join(', ');
                       })()
-                    : selectedGame === 'chooseCorrect' && currentQuestion?.sentencePattern
+                    : (currentQuestion?.type === 'multiple_choice' || currentQuestion?.type === 'fill_blank') && currentQuestion?.sentencePattern
                     ? (currentQuestion.sentencePattern.includes('______')
                         ? `Mẫu câu đúng: "${currentQuestion.sentencePattern.replace('______', currentQuestion.targetWord)}" (Nghĩa: "${currentQuestion.meaningVi}").`
                         : `Mẫu câu đúng: "${currentQuestion.sentencePattern} ${currentQuestion.targetWord}" (Nghĩa: "${currentQuestion.meaningVi}").`)
