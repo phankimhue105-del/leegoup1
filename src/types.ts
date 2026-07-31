@@ -45,6 +45,7 @@ export interface PracticeQuestion {
   hintImage?: string;
   unscrambledLetters?: string[];
   oddChoices?: string[];
+  activityTitle?: string;
 }
 
 export interface SpeakingTask {
