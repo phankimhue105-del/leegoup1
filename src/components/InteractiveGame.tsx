@@ -326,7 +326,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     setCurrentQIndex(0);
     setUserAnswers([]);
     setShowSummary(false);
-  }, [lesson]);
+  }, [lesson.id]);
 
   // Synchronize stage transitions (Deterministic)
   useEffect(() => {
