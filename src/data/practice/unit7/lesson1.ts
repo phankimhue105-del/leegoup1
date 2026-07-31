@@ -13,7 +13,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "arm = cánh tay",
     hintImage: "💪",
     unscrambledLetters: ["m", "r", "a"],
-    oddChoices: ["hand", "finger", "hamburger", "arm"]
+    oddChoices: ["hand", "finger", "hamburger", "arm"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "arm = cánh tay",
     hintImage: "💪",
     unscrambledLetters: ["m", "r", "a"],
-    oddChoices: ["hand", "finger", "hamburger", "arm"]
+    oddChoices: ["hand", "finger", "hamburger", "arm"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "hand = bàn tay",
     hintImage: "✋",
     unscrambledLetters: ["d", "h", "a", "n"],
-    oddChoices: ["foot", "hand", "guitar", "arm"]
+    oddChoices: ["foot", "hand", "guitar", "arm"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -55,7 +58,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "hand = bàn tay",
     hintImage: "✋",
     unscrambledLetters: ["d", "h", "a", "n"],
-    oddChoices: ["foot", "hand", "guitar", "arm"]
+    oddChoices: ["foot", "hand", "guitar", "arm"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -69,7 +73,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "finger = ngón tay",
     hintImage: "☝️",
     unscrambledLetters: ["n", "r", "g", "f", "i", "e"],
-    oddChoices: ["leg", "guitar", "finger", "foot"]
+    oddChoices: ["leg", "guitar", "finger", "foot"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -83,7 +88,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "finger = ngón tay",
     hintImage: "☝️",
     unscrambledLetters: ["n", "r", "g", "f", "i", "e"],
-    oddChoices: ["leg", "guitar", "finger", "foot"]
+    oddChoices: ["leg", "guitar", "finger", "foot"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -97,7 +103,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "leg = cẳng chân",
     hintImage: "🦵",
     unscrambledLetters: ["g", "l", "e"],
-    oddChoices: ["finger", "guitar", "leg", "foot"]
+    oddChoices: ["finger", "guitar", "leg", "foot"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -111,7 +118,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "leg = cẳng chân",
     hintImage: "🦵",
     unscrambledLetters: ["g", "l", "e"],
-    oddChoices: ["finger", "guitar", "leg", "foot"]
+    oddChoices: ["finger", "guitar", "leg", "foot"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -125,7 +133,8 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "foot = bàn chân",
     hintImage: "🦶",
     unscrambledLetters: ["o", "t", "f", "o"],
-    oddChoices: ["finger", "guitar", "foot", "leg"]
+    oddChoices: ["finger", "guitar", "foot", "leg"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -139,6 +148,7 @@ export const lesson1Practice: PracticeQuestion[] = [
     explanation: "toe = ngón chân",
     hintImage: "🦶",
     unscrambledLetters: ["o", "e", "t"],
-    oddChoices: ["hamburger", "foot", "hand", "toe"]
+    oddChoices: ["hamburger", "foot", "hand", "toe"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
