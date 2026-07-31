@@ -15,6 +15,7 @@ const ODD_WORDS = ['dinosaur', 'spaceship', 'hamburger', 'guitar', 'alien', 'oct
 type MiniGameType = 'pictureQuiz' | 'wordPuzzle' | 'chooseCorrect' | 'memoryGame' | 'matchingGame' | 'oddOneOut';
 
 interface Question {
+  type?: string;
   targetWord: string;
   meaningVi: string;
   emoji: string;
@@ -28,6 +29,47 @@ interface Question {
   hintImage?: string;
   activityTitle?: string;
 }
+
+const mapQuestionTypeToGame = (type: string | undefined): MiniGameType => {
+  if (!type) return 'chooseCorrect';
+  switch (type) {
+    case 'multiple_choice':
+      return 'chooseCorrect';
+    case 'picture_quiz':
+      return 'pictureQuiz';
+    case 'matching':
+      return 'matchingGame';
+    case 'unscramble':
+      return 'wordPuzzle';
+    case 'fill_blank':
+      return 'chooseCorrect';
+    case 'memory':
+      return 'memoryGame';
+    case 'odd_one_out':
+      return 'oddOneOut';
+    default:
+      return 'chooseCorrect';
+  }
+};
+
+const mapGameToQuestionType = (game: MiniGameType): string => {
+  switch (game) {
+    case 'chooseCorrect':
+      return 'multiple_choice';
+    case 'pictureQuiz':
+      return 'picture_quiz';
+    case 'matchingGame':
+      return 'matching';
+    case 'wordPuzzle':
+      return 'unscramble';
+    case 'memoryGame':
+      return 'memory';
+    case 'oddOneOut':
+      return 'odd_one_out';
+    default:
+      return 'multiple_choice';
+  }
+};
 
 
 interface UserAnswer {
@@ -240,7 +282,11 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
         const correctAnswer = isConversational ? makeFullSentence(vocab.word) : vocab.word;
 
+        const activeGame = i < 5 ? game1 : game2;
+        const qType = mapGameToQuestionType(activeGame);
+
         const questionObj: Question = {
+          type: qType,
           targetWord: vocab.word,
           meaningVi: vocab.meaningVi || vocab.word,
           emoji,
@@ -270,6 +316,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const predefined: Question[] = [];
       lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
+          type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
           emoji: q.image,
@@ -331,14 +378,16 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   // Synchronize stage transitions (Deterministic)
   useEffect(() => {
     if (questions.length === 0) return;
+    const currentQuestion = questions[currentQIndex];
     if (isCommunicationLesson) {
-      resetGameState('chooseCorrect', questions[currentQIndex]);
+      setSelectedGame('chooseCorrect');
+      resetGameState('chooseCorrect', currentQuestion);
       return;
     }
-    const activeGame = currentQIndex < 5 ? game1 : game2;
+    const activeGame = mapQuestionTypeToGame(currentQuestion.type);
     setSelectedGame(activeGame);
-    resetGameState(activeGame, questions[currentQIndex]);
-  }, [currentQIndex, game1, game2, questions, isCommunicationLesson]);
+    resetGameState(activeGame, currentQuestion);
+  }, [currentQIndex, questions, isCommunicationLesson]);
 
   const resetGameState = (gameType: MiniGameType, q: Question) => {
     setSelectedOption(null);
@@ -550,7 +599,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return unscrambleInput.length === targetLen;
     }
     if (selectedGame === 'matchingGame') {
-      return Object.keys(tempPairs).length === 3;
+      const startIndex = Math.min(currentQIndex, 7);
+      const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
+      return Object.keys(tempPairs).length === matchingWords.length;
     }
     if (selectedGame === 'memoryGame') {
       // Memory game is submitted once all cards are matched
@@ -841,7 +892,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             {/* PICTURE QUIZ */}
             {selectedGame === 'pictureQuiz' && (
           <div className="flex flex-col items-center gap-5">
-            <div className="text-8xl select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
+            <div className="text-9xl md:text-[11rem] select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
               {currentQuestion?.emoji || '🔤'}
             </div>
             <h4 className="text-xl font-black text-slate-800 mt-2">What is this in English?</h4>
@@ -885,7 +936,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
               <p className="text-2xl font-black text-amber-800">{currentQuestion?.emoji || '🔤'}</p>
               {currentQuestion?.hintImage ? (
-                <div className="flex items-center justify-center mt-1.5 text-2xl" title="Hint">
+                <div className="flex items-center justify-center mt-1.5 text-6xl md:text-7xl" title="Hint">
                   {currentQuestion.hintImage}
                 </div>
               ) : (
@@ -937,7 +988,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
               <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
               {currentQuestion?.hintImage ? (
-                <div className="flex items-center justify-center mt-2 text-2xl" title="Hint">
+                <div className="flex items-center justify-center mt-2 text-6xl md:text-7xl" title="Hint">
                   {currentQuestion.hintImage}
                 </div>
               ) : (
