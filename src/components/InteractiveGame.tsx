@@ -541,6 +541,15 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
 
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
+      console.log("====================================");
+      console.log("LESSON ID:", lesson.id);
+      console.log("LESSON NUMBER:", lesson.number);
+      console.log("practiceQuestions reference:", lesson.practiceQuestions);
+      console.log("FIRST QUESTION:", lesson.practiceQuestions?.[0]);
+      console.log("FIRST VOCAB:", lesson.practiceQuestions?.[0]?.vocabulary);
+      console.log("FIRST IMAGE:", lesson.practiceQuestions?.[0]?.image);
+      console.log("FIRST HINT:", lesson.practiceQuestions?.[0]?.hintImage);
+
       const predefined: Question[] = [];
       const isLesson2 = lesson.number === 2 || lesson.id.includes('-l2');
       lesson.practiceQuestions.forEach((q) => {
