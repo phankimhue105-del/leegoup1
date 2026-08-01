@@ -7,13 +7,13 @@ export const lesson2Practice: PracticeQuestion[] = [
     question: "How is it?",
     image: "⚡",
     vocabulary: "fast",
-    choices: ["slow", "quiet", "fast", "noisy"],
-    options: ["slow", "quiet", "fast", "noisy"],
-    correctAnswer: "fast",
-    explanation: "fast = nhanh",
+    choices: ["It's fast.", "It's slow.", "It's noisy.", "It's quiet."],
+    options: ["It's fast.", "It's slow.", "It's noisy.", "It's quiet."],
+    correctAnswer: "It's fast.",
+    explanation: "fast = nhanh. The correct answer is \"It's fast.\" because the lighting bolt (⚡) signifies speed. Other options represent other descriptions (slow, noisy, quiet).",
     hintImage: "⚡",
-    unscrambledLetters: ["a", "f", "t", "s"],
-    oddChoices: ["noisy", "slow", "alien", "fast"]
+    unscrambledLetters: ["s", "t", "a", "f"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   },
   {
     id: 2,
@@ -21,13 +21,13 @@ export const lesson2Practice: PracticeQuestion[] = [
     question: "How is it?",
     image: "🐢",
     vocabulary: "slow",
-    choices: ["fast", "quiet", "slow", "noisy"],
-    options: ["fast", "quiet", "slow", "noisy"],
-    correctAnswer: "slow",
-    explanation: "slow = chậm",
+    choices: ["It's slow.", "It's fast.", "It's noisy.", "It's quiet."],
+    options: ["It's slow.", "It's fast.", "It's noisy.", "It's quiet."],
+    correctAnswer: "It's slow.",
+    explanation: "slow = chậm. The correct answer is \"It's slow.\" because the turtle (🐢) represents slow movement. Other choices are incorrect.",
     hintImage: "🐢",
-    unscrambledLetters: ["l", "s", "w", "o"],
-    oddChoices: ["noisy", "fast", "alien", "slow"]
+    unscrambledLetters: ["l", "w", "o", "s"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   },
   {
     id: 3,
@@ -35,13 +35,13 @@ export const lesson2Practice: PracticeQuestion[] = [
     question: "How is it?",
     image: "📢",
     vocabulary: "noisy",
-    choices: ["fast", "quiet", "noisy", "slow"],
-    options: ["fast", "quiet", "noisy", "slow"],
-    correctAnswer: "noisy",
-    explanation: "noisy = ồn ào",
+    choices: ["It's noisy.", "It's quiet.", "It's fast.", "It's slow."],
+    options: ["It's noisy.", "It's quiet.", "It's fast.", "It's slow."],
+    correctAnswer: "It's noisy.",
+    explanation: "noisy = ồn ào. The correct answer is \"It's noisy.\" because the megaphone (📢) indicates loud noise. Other options describe quietness or speed.",
     hintImage: "📢",
-    unscrambledLetters: ["o", "n", "s", "i", "y"],
-    oddChoices: ["slow", "fast", "alien", "noisy"]
+    unscrambledLetters: ["o", "y", "s", "i", "n"],
+    oddChoices: ["noisy", "quiet", "dinosaur", "fast"]
   },
   {
     id: 4,
@@ -49,13 +49,13 @@ export const lesson2Practice: PracticeQuestion[] = [
     question: "How is it?",
     image: "🤫",
     vocabulary: "quiet",
-    choices: ["slow", "noisy", "quiet", "fast"],
-    options: ["slow", "noisy", "quiet", "fast"],
-    correctAnswer: "quiet",
-    explanation: "quiet = yên tĩnh",
+    choices: ["It's quiet.", "It's noisy.", "It's fast.", "It's slow."],
+    options: ["It's quiet.", "It's noisy.", "It's fast.", "It's slow."],
+    correctAnswer: "It's quiet.",
+    explanation: "quiet = yên tĩnh. The correct answer is \"It's quiet.\" because the shushing face (🤫) indicates silence or quietness. Other descriptions do not fit.",
     hintImage: "🤫",
-    unscrambledLetters: ["q", "e", "t", "u", "i"],
-    oddChoices: ["fast", "slow", "volcano", "quiet"]
+    unscrambledLetters: ["q", "u", "e", "t", "i"],
+    oddChoices: ["quiet", "noisy", "dinosaur", "fast"]
   },
   {
     id: 5,
@@ -66,38 +66,38 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "Yes, it is.",
-    explanation: "fast = nhanh",
+    explanation: "fast = nhanh. The correct answer is \"Yes, it is.\" because the lightning bolt represents fast speed, confirming the question. Negative responses and plural response formats are incorrect.",
     hintImage: "⚡",
-    unscrambledLetters: ["a", "s", "t", "f"],
-    oddChoices: ["slow", "noisy", "volcano", "fast"]
+    unscrambledLetters: ["s", "t", "a", "f"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   },
   {
     id: 6,
     type: "multiple_choice",
-    question: "Is it quiet?",
-    image: "📢",
+    question: "Is it slow?",
+    image: "🐢",
     vocabulary: "slow",
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
-    correctAnswer: "No, it isn't.",
-    explanation: "slow = chậm",
-    hintImage: "📢",
-    unscrambledLetters: ["l", "o", "w", "s"],
-    oddChoices: ["fast", "noisy", "volcano", "slow"]
+    correctAnswer: "Yes, it is.",
+    explanation: "slow = chậm. The correct answer is \"Yes, it is.\" because the turtle represents slowness, confirming the question. Other options do not fit.",
+    hintImage: "🐢",
+    unscrambledLetters: ["l", "w", "o", "s"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   },
   {
     id: 7,
     type: "multiple_choice",
-    question: "Is it slow?",
-    image: "⚡",
+    question: "Is it noisy?",
+    image: "📢",
     vocabulary: "noisy",
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
-    correctAnswer: "No, it isn't.",
-    explanation: "noisy = ồn ào",
-    hintImage: "⚡",
-    unscrambledLetters: ["n", "s", "y", "o", "i"],
-    oddChoices: ["fast", "slow", "volcano", "noisy"]
+    correctAnswer: "Yes, it is.",
+    explanation: "noisy = ồn ào. The correct answer is \"Yes, it is.\" because the megaphone stands for noise, confirming the question. Other options are incorrect.",
+    hintImage: "📢",
+    unscrambledLetters: ["o", "y", "s", "i", "n"],
+    oddChoices: ["noisy", "quiet", "dinosaur", "fast"]
   },
   {
     id: 8,
@@ -108,10 +108,10 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
-    explanation: "quiet = yên tĩnh",
+    explanation: "quiet = yên tĩnh. The correct answer is \"No, it isn't.\" because the image shows a loud megaphone, which is noisy, not quiet. The negative answer is correct.",
     hintImage: "📢",
-    unscrambledLetters: ["q", "e", "t", "u", "i"],
-    oddChoices: ["fast", "slow", "volcano", "quiet"]
+    unscrambledLetters: ["q", "u", "e", "t", "i"],
+    oddChoices: ["quiet", "noisy", "dinosaur", "fast"]
   },
   {
     id: 9,
@@ -122,10 +122,10 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "Yes, it is.",
-    explanation: "fast = nhanh",
+    explanation: "fast = nhanh. The correct answer is \"Yes, it is.\" because the lightning bolt is an emblem of speed. Other options do not match.",
     hintImage: "⚡",
-    unscrambledLetters: ["a", "s", "t", "f"],
-    oddChoices: ["slow", "noisy", "volcano", "fast"]
+    unscrambledLetters: ["s", "t", "a", "f"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   },
   {
     id: 10,
@@ -136,9 +136,9 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
-    explanation: "slow = chậm",
+    explanation: "slow = chậm. The correct answer is \"No, it isn't.\" because the lightning bolt indicates high speed, not slow. The negative answer is correct.",
     hintImage: "⚡",
-    unscrambledLetters: ["l", "o", "w", "s"],
-    oddChoices: ["fast", "noisy", "volcano", "slow"]
+    unscrambledLetters: ["s", "w", "l", "o"],
+    oddChoices: ["slow", "quiet", "dinosaur", "fast"]
   }
 ];
