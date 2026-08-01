@@ -146,7 +146,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
 
     const validateQuestion = (q: Question): boolean => {
-      if (!q.emoji) {
+      if (!q.emoji && q.type !== 'multiple_choice') {
         console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, q);
         return false;
       }
