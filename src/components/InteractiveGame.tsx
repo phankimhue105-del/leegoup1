@@ -317,7 +317,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
-          emoji: q.image || '💬',
+          emoji: q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
           choices: q.options || q.choices || [],
           sentencePattern: q.question,
           unscrambledLetters: q.unscrambledLetters || [],
@@ -325,8 +325,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || 'Đáp án đúng.',
           vietnameseMeaning: q.explanation || 'Đáp án đúng.',
-          hintImage: q.hintImage || '💬',
-          activityTitle: q.activityTitle || 'Complete the Conversation'
+          hintImage: q.hintImage || q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
+          activityTitle: q.activityTitle || (isCommunicationLesson ? 'Complete the Conversation' : '')
         };
 
         if (validateQuestion(questionObj)) {
