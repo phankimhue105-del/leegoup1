@@ -145,25 +145,55 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
 
 
-    const validateQuestion = (q: Question): boolean => {
-      if (!q.emoji && q.type !== 'multiple_choice') {
-        console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, q);
+    const validateQuestion = (questionObj: Question, rawQ?: any): boolean => {
+      if (!questionObj.emoji && questionObj.type !== 'multiple_choice') {
+        console.log("LESSON ID:", lesson.id);
+        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
+        console.log("QUESTION TEXT:", questionObj.sentencePattern);
+        console.log("FAILED QUESTION", questionObj);
+        console.log("FAILED EXPLANATION", questionObj.explanation);
+        console.log("FAILED ORIGINAL", rawQ);
+        console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, questionObj);
         return false;
       }
-      if (!q.choices || q.choices.length !== 4) {
-        console.error(`[Practice QA Engine] Validation error: choices count is not exactly 4!`, q);
+      if (!questionObj.choices || questionObj.choices.length !== 4) {
+        console.log("LESSON ID:", lesson.id);
+        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
+        console.log("QUESTION TEXT:", questionObj.sentencePattern);
+        console.log("FAILED QUESTION", questionObj);
+        console.log("FAILED EXPLANATION", questionObj.explanation);
+        console.log("FAILED ORIGINAL", rawQ);
+        console.error(`[Practice QA Engine] Validation error: choices count is not exactly 4!`, questionObj);
         return false;
       }
-      if (!q.choices.includes(q.correctAnswer)) {
-        console.error(`[Practice QA Engine] Validation error: correctAnswer "${q.correctAnswer}" is not in choices!`, q.choices);
+      if (!questionObj.choices.includes(questionObj.correctAnswer)) {
+        console.log("LESSON ID:", lesson.id);
+        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
+        console.log("QUESTION TEXT:", questionObj.sentencePattern);
+        console.log("FAILED QUESTION", questionObj);
+        console.log("FAILED EXPLANATION", questionObj.explanation);
+        console.log("FAILED ORIGINAL", rawQ);
+        console.error(`[Practice QA Engine] Validation error: correctAnswer "${questionObj.correctAnswer}" is not in choices!`, questionObj.choices);
         return false;
       }
-      if (!q.sentencePattern) {
-        console.error(`[Practice QA Engine] Validation error: question text is empty!`, q);
+      if (!questionObj.sentencePattern) {
+        console.log("LESSON ID:", lesson.id);
+        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
+        console.log("QUESTION TEXT:", questionObj.sentencePattern);
+        console.log("FAILED QUESTION", questionObj);
+        console.log("FAILED EXPLANATION", questionObj.explanation);
+        console.log("FAILED ORIGINAL", rawQ);
+        console.error(`[Practice QA Engine] Validation error: question text is empty!`, questionObj);
         return false;
       }
-      if (!q.explanation) {
-        console.error(`[Practice QA Engine] Validation error: explanation is missing!`, q);
+      if (!questionObj.explanation) {
+        console.log("LESSON ID:", lesson.id);
+        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
+        console.log("QUESTION TEXT:", questionObj.sentencePattern);
+        console.log("FAILED QUESTION", questionObj);
+        console.log("FAILED EXPLANATION", questionObj.explanation);
+        console.log("FAILED ORIGINAL", rawQ);
+        console.error(`[Practice QA Engine] Validation error: explanation is missing!`, questionObj);
         return false;
       }
       return true;
@@ -327,7 +357,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           activityTitle: q.activityTitle
         };
 
-        if (validateQuestion(questionObj)) {
+        if (validateQuestion(questionObj, q)) {
           predefined.push(questionObj);
         }
       });
