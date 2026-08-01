@@ -28,6 +28,7 @@ interface Question {
   vietnameseMeaning: string;
   hintImage?: string;
   activityTitle?: string;
+  [key: string]: any;
 }
 
 const mapQuestionTypeToGame = (type: string | undefined): MiniGameType => {
@@ -145,55 +146,25 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     }
 
 
-    const validateQuestion = (questionObj: Question, rawQ?: any): boolean => {
-      if (!questionObj.emoji && questionObj.type !== 'multiple_choice') {
-        console.log("LESSON ID:", lesson.id);
-        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
-        console.log("QUESTION TEXT:", questionObj.sentencePattern);
-        console.log("FAILED QUESTION", questionObj);
-        console.log("FAILED EXPLANATION", questionObj.explanation);
-        console.log("FAILED ORIGINAL", rawQ);
-        console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, questionObj);
+    const validateQuestion = (q: Question): boolean => {
+      if (!q.emoji) {
+        console.error(`[Practice QA Engine] Validation error: image/emoji is missing!`, q);
         return false;
       }
-      if (!questionObj.choices || questionObj.choices.length !== 4) {
-        console.log("LESSON ID:", lesson.id);
-        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
-        console.log("QUESTION TEXT:", questionObj.sentencePattern);
-        console.log("FAILED QUESTION", questionObj);
-        console.log("FAILED EXPLANATION", questionObj.explanation);
-        console.log("FAILED ORIGINAL", rawQ);
-        console.error(`[Practice QA Engine] Validation error: choices count is not exactly 4!`, questionObj);
+      if (!q.choices || q.choices.length !== 4) {
+        console.error(`[Practice QA Engine] Validation error: choices count is not exactly 4!`, q);
         return false;
       }
-      if (!questionObj.choices.includes(questionObj.correctAnswer)) {
-        console.log("LESSON ID:", lesson.id);
-        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
-        console.log("QUESTION TEXT:", questionObj.sentencePattern);
-        console.log("FAILED QUESTION", questionObj);
-        console.log("FAILED EXPLANATION", questionObj.explanation);
-        console.log("FAILED ORIGINAL", rawQ);
-        console.error(`[Practice QA Engine] Validation error: correctAnswer "${questionObj.correctAnswer}" is not in choices!`, questionObj.choices);
+      if (!q.choices.includes(q.correctAnswer)) {
+        console.error(`[Practice QA Engine] Validation error: correctAnswer "${q.correctAnswer}" is not in choices!`, q.choices);
         return false;
       }
-      if (!questionObj.sentencePattern) {
-        console.log("LESSON ID:", lesson.id);
-        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
-        console.log("QUESTION TEXT:", questionObj.sentencePattern);
-        console.log("FAILED QUESTION", questionObj);
-        console.log("FAILED EXPLANATION", questionObj.explanation);
-        console.log("FAILED ORIGINAL", rawQ);
-        console.error(`[Practice QA Engine] Validation error: question text is empty!`, questionObj);
+      if (!q.sentencePattern) {
+        console.error(`[Practice QA Engine] Validation error: question text is empty!`, q);
         return false;
       }
-      if (!questionObj.explanation) {
-        console.log("LESSON ID:", lesson.id);
-        console.log("QUESTION ID:", questionObj.activityTitle || rawQ?.id);
-        console.log("QUESTION TEXT:", questionObj.sentencePattern);
-        console.log("FAILED QUESTION", questionObj);
-        console.log("FAILED EXPLANATION", questionObj.explanation);
-        console.log("FAILED ORIGINAL", rawQ);
-        console.error(`[Practice QA Engine] Validation error: explanation is missing!`, questionObj);
+      if (!q.explanation) {
+        console.error(`[Practice QA Engine] Validation error: explanation is missing!`, q);
         return false;
       }
       return true;
@@ -342,6 +313,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       const predefined: Question[] = [];
       lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
+          ...q,
           type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
@@ -357,7 +329,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           activityTitle: q.activityTitle
         };
 
-        if (validateQuestion(questionObj, q)) {
+        if (validateQuestion(questionObj)) {
           predefined.push(questionObj);
         }
       });
@@ -366,9 +338,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
         generateDynamicQuestions();
       } else {
-        console.log("LESSON ID:", lesson.id);
-        console.log("RAW lesson.practiceQuestions:", lesson.practiceQuestions);
-        console.log("PREDEFINED:", predefined);
         setQuestions(predefined);
         setIsLoading(false);
       }
@@ -590,7 +559,6 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   }
 
   const currentQuestion = questions[currentQIndex];
-  console.log("CURRENT QUESTION:", currentQuestion);
 
   const isReadyToSubmit = (() => {
     if (!currentQuestion) return false;
