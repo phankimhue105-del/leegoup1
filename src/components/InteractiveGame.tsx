@@ -107,52 +107,43 @@ const getSentencePattern = (questionText: string, targetWord: string, type?: str
   const qText = (questionText || '').toLowerCase();
   
   if (qText.includes('do you like')) {
-    return 'Do you like + food/drink? ➔ Yes, I do. / No, I don\'t.';
+    return "Do you like + noun?\nYes, I do.\nNo, I don't.";
   }
-  if (qText.includes('is it a') || qText.includes('is it an')) {
-    return 'Is it a/an + noun? ➔ Yes, it is. / No, it isn\'t.';
+  if (qText.includes('is it a') || qText.includes('is it an') || qText.includes('is it ')) {
+    return "Is it a/an + noun?\nYes, it is.\nNo, it isn't.";
   }
   if (qText.includes('what is it') || qText.includes('what\'s this') || qText.includes('what is this')) {
-    return 'What is it? / What\'s this? ➔ It\'s a/an + noun. / This is a/an + noun.';
+    return "What is it?\nIt's a/an + noun.";
   }
   if (qText.includes('how many')) {
-    return 'How many + plural noun? ➔ [Number] + plural noun.';
+    return "How many + plural noun?\n[Number] + plural noun.";
   }
   if (qText.includes('who\'s this') || qText.includes('who is this')) {
-    return 'Who\'s this? ➔ This is my + family member.';
+    return "Who's this?\nThis is my + family member.";
   }
   if (qText.includes('can you')) {
-    return 'Can you + action? ➔ Yes, I can. / No, I can\'t.';
+    return "Can you + verb?\nYes, I can.\nNo, I can't.";
   }
   if (qText.includes('how are you')) {
-    return 'How are you? ➔ I\'m fine. Thank you. / I\'m great!';
+    return "How are you?\nI'm fine. Thank you.";
   }
   if (qText.includes('how old are you')) {
-    return 'How old are you? ➔ I\'m + [age] + years old.';
+    return "How old are you?\nI'm + [age] + years old.";
   }
   if (qText.includes('what color')) {
-    return 'What color is it? ➔ It\'s + color.';
+    return "What color is it?\nIt's + color.";
   }
-  if (qText.includes('where is') || qText.includes('where\'s')) {
-    return 'Where is + noun? ➔ It\'s in/on/under + the + noun.';
+  if (qText.includes('where is') || qText.includes('where are') || qText.includes('where\'s')) {
+    return "Where are + plural noun?\nThey're on/under/in/behind/next to...";
   }
   if (qText.includes('what can you do')) {
-    return 'What can you do? ➔ I can + action.';
+    return "What can you do?\nI can + verb.";
   }
   if (qText.includes('let\'s share') || qText.includes('share')) {
-    return 'Let\'s share. ➔ OK.';
-  }
-  if (qText.includes('your turn')) {
-    return 'It\'s your turn. ➔ Thank you.';
-  }
-  if (qText.includes('here you are')) {
-    return 'Here you are. ➔ Thank you.';
-  }
-  if (qText.includes('sorry')) {
-    return 'I\'m sorry. ➔ That\'s OK.';
+    return "Let's share. -> OK.";
   }
   
-  return 'Subject + verb + object/complement.';
+  return "Subject + verb + object/complement.";
 };
 
 const getWhyCorrect = (q: any): string => {
@@ -162,53 +153,83 @@ const getWhyCorrect = (q: any): string => {
   const emoji = q.emoji || q.image || '💬';
   const answer = q.correctAnswer || '';
   
-  if (qText.includes('do you like')) {
-    if (answer.toLowerCase().includes('yes')) {
-      return `Hình ảnh ${emoji} cho thấy bạn nhỏ đang rất thích món ${meaning || word}. Vì thế, câu trả lời đúng là đồng ý: "${answer}".`;
-    } else {
-      return `Hình ảnh ${emoji} cho thấy bạn nhỏ không thích món ${meaning || word}. Vì thế, câu trả lời đúng là từ chối: "${answer}".`;
-    }
-  }
-  if (qText.includes('is it a') || qText.includes('is it an')) {
-    if (answer.toLowerCase().includes('yes')) {
-      return `Bức hình hiển thị rõ ràng là ${emoji} ${meaning || word}. Vì thế, chúng ta trả lời xác nhận: "${answer}".`;
-    } else {
-      return `Bức hình ${emoji} không phải là vật được hỏi. Vì thế, câu trả lời phủ định là: "${answer}".`;
-    }
-  }
   if (qText.includes('what is it') || qText.includes('what\'s this') || qText.includes('what is this')) {
-    return `Bức tranh có hình ${emoji} ${meaning || word}. Do đó, câu giới thiệu đồ vật chính xác là: "${answer}".`;
+    return `Picture clearly shows a ${meaning || word} (${emoji}).\n` +
+           `To identify an object in English, we ask "What is it?"\n` +
+           `The correct response pattern is "It's a/an + noun."\n` +
+           `Therefore, "${answer}" is correct.\n\n` +
+           `Bức tranh thể hiện một chiếc/quả ${meaning || word}.\n` +
+           `Khi hỏi tên đồ vật ta dùng "What is it?"\n` +
+           `Cấu trúc trả lời là "It's a/an + danh từ."\n` +
+           `Vì vậy đáp án đúng là "${answer}".`;
   }
-  if (qText.includes('how many')) {
-    return `Chúng mình cùng đếm số lượng ${meaning || word} ${emoji} trong hình nhé! Câu trả lời chính xác chỉ số lượng đúng là: "${answer}".`;
+  if (qText.includes('is it a') || qText.includes('is it an') || qText.includes('is it ')) {
+    const isYes = answer.toLowerCase().includes('yes');
+    if (isYes) {
+      return `Picture clearly shows a ${meaning || word} (${emoji}).\n` +
+             `To confirm an object, we ask "Is it a/an + noun?"\n` +
+             `Since the picture matches, we answer: "Yes, it is."\n` +
+             `Therefore, "${answer}" is correct.\n\n` +
+             `Bức tranh thể hiện đúng là hình ${emoji} ${meaning || word}.\n` +
+             `Khi muốn xác nhận đồ vật ta dùng câu hỏi "Is it a/an + danh từ?"\n` +
+             `Vì hình ảnh chính xác nên câu trả lời là: "Yes, it is."\n` +
+             `Vì vậy đáp án đúng là "${answer}".`;
+    } else {
+      return `Picture shows ${emoji}, which is not the asked object.\n` +
+             `To confirm an object, we ask "Is it a/an + noun?"\n` +
+             `Since the picture does not match, we answer: "No, it isn't."\n` +
+             `Therefore, "${answer}" is correct.\n\n` +
+             `Bức tranh hiển thị ${emoji}, không phải vật được hỏi.\n` +
+             `Khi muốn xác nhận đồ vật ta dùng câu hỏi "Is it a/an + danh từ?"\n` +
+             `Vì hình ảnh không khớp nên câu trả lời là: "No, it isn't."\n` +
+             `Vì vậy đáp án đúng là "${answer}".`;
+    }
   }
-  if (qText.includes('who\'s this') || qText.includes('who is this')) {
-    return `Trong ảnh ${emoji} chính là ${meaning || word} của bạn nhỏ. Vì vậy, câu giới thiệu thành viên gia đình đúng là: "${answer}".`;
+  if (qText.includes('do you like')) {
+    const isYes = answer.toLowerCase().includes('yes');
+    if (isYes) {
+      return `Picture shows a happy face and the food ${emoji}.\n` +
+             `To ask about preferences, we use "Do you like + noun?"\n` +
+             `Since the child likes it, the correct response is "Yes, I do."\n\n` +
+             `Hình ảnh hiển thị gương mặt vui vẻ bên cạnh món ${meaning || word} ${emoji}.\n` +
+             `Để hỏi sở thích, ta dùng "Do you like + danh từ?"\n` +
+             `Vì bạn nhỏ thích món này nên câu trả lời là: "Yes, I do."`;
+    } else {
+      return `Picture shows a sad/disliking face and the food ${emoji}.\n` +
+             `To ask about preferences, we use "Do you like + noun?"\n` +
+             `Since the child dislikes it, the correct response is "No, I don't."\n\n` +
+             `Hình ảnh hiển thị gương mặt không thích bên cạnh món ${meaning || word} ${emoji}.\n` +
+             `Để hỏi sở thích, ta dùng "Do you like + danh từ?"\n` +
+             `Vì bạn nhỏ không thích món này nên câu trả lời là: "No, I don't."`;
+    }
   }
   if (qText.includes('can you')) {
-    if (answer.toLowerCase().includes('yes')) {
-      return `Hình ảnh ${emoji} miêu tả hành động có thể thực hiện được. Vì thế, câu trả lời là đồng ý: "${answer}".`;
+    const isYes = answer.toLowerCase().includes('yes');
+    if (isYes) {
+      return `Picture shows a child performing the action successfully (${emoji}).\n` +
+             `To ask about ability, we use "Can you + verb?"\n` +
+             `Since they can do it, the correct response is "Yes, I can."\n\n` +
+             `Hình vẽ cho thấy bạn nhỏ thực hiện thành công hành động này (${emoji}).\n` +
+             `Để hỏi về khả năng, ta dùng "Can you + động từ?"\n` +
+             `Vì bạn nhỏ làm được nên câu trả lời là: "Yes, I can."`;
     } else {
-      return `Hình ảnh ${emoji} cho thấy hành động không thể thực hiện được. Vì thế, câu trả lời là: "${answer}".`;
+      return `Picture shows a child failing or unable to perform the action (${emoji}).\n` +
+             `To ask about ability, we use "Can you + verb?"\n` +
+             `Since they cannot do it, the correct response is "No, I can't."\n\n` +
+             `Hình vẽ cho thấy bạn nhỏ không làm được hành động này (${emoji}).\n` +
+             `Để hỏi về khả năng, ta dùng "Can you + động từ?"\n` +
+             `Vì bạn nhỏ không làm được nên câu trả lời là: "No, I can't."`;
     }
   }
-  if (qText.includes('how are you')) {
-    return `Đây là một đoạn hội thoại chào hỏi thân thiện khi gặp nhau. Câu trả lời lịch sự và tự nhiên là: "${answer}".`;
-  }
-  if (qText.includes('how old are you')) {
-    return `Câu hỏi dùng để hỏi tuổi của bạn. Trả lời đúng cấu trúc giới thiệu tuổi là: "${answer}".`;
-  }
-  if (qText.includes('what color')) {
-    return `Nhìn vào hình ảnh, chúng ta thấy rõ màu sắc là ${emoji} ${meaning || word}. Vì vậy, câu trả lời đúng là: "${answer}".`;
-  }
-  if (qText.includes('where is') || qText.includes('where\'s')) {
-    return `Hình vẽ ${emoji} chỉ vị trí của đồ vật. Từ chỉ vị trí chính xác phù hợp là: "${answer}".`;
-  }
-  if (qText.includes('what can you do')) {
-    return `Hình ảnh ${emoji} thể hiện hoạt động ${meaning || word} mà chúng mình có thể làm. Vì vậy, câu trả lời đúng là: "${answer}".`;
-  }
-  if (qText.includes('share') || qText.includes('your turn') || qText.includes('here you are')) {
-    return `Đây là cách giao tiếp lịch sự khi chúng mình cùng chơi hoặc chia sẻ đồ dùng với bạn bè đấy!`;
+  if (qText.includes('where is') || qText.includes('where are') || qText.includes('where\'s')) {
+    return `Picture shows the spatial position of the objects (${emoji}).\n` +
+           `To ask about location, we ask "Where is/are + noun?"\n` +
+           `We describe it using a preposition of place (on, under, in, behind).\n` +
+           `Therefore, "${answer}" is correct.\n\n` +
+           `Hình vẽ mô tả vị trí không gian của các vật thể (${emoji}).\n` +
+           `Để hỏi vị trí, ta dùng "Where is/are + danh từ?"\n` +
+           `Chúng ta trả lời bằng giới từ chỉ vị trí thích hợp.\n` +
+           `Vì vậy đáp án đúng là "${answer}".`;
   }
   
   return `Hình ảnh ${emoji} minh họa cho từ khóa "${word}" (${meaning}). Đáp án phù hợp nhất mô tả bức tranh là: "${answer}".`;
@@ -224,27 +245,27 @@ const getVietnameseTranslation = (questionText: string, targetWord: string, mean
   const qLower = qText.toLowerCase();
   
   if (qLower.includes('do you like')) {
-    qTrans = `Con có thích ${meaning || word} không?`;
-  } else if (qLower.includes('is it a') || qLower.includes('is it an')) {
-    qTrans = `Đó có phải là ${meaning || word} không?`;
+    qTrans = `Bạn có thích ${meaning || word} không?`;
+  } else if (qLower.includes('is it a') || qLower.includes('is it an') || qLower.includes('is it ')) {
+    qTrans = `Đó có phải là một cái/quả ${meaning || word} không?`;
   } else if (qLower.includes('what is it') || qLower.includes('what\'s this') || qLower.includes('what is this')) {
     qTrans = `Đây là cái gì thế nhỉ?`;
   } else if (qLower.includes('how many')) {
     qTrans = `Có bao nhiêu ${meaning || word}?`;
   } else if (qLower.includes('who\'s this') || qLower.includes('who is this')) {
-    qTrans = `Đây là ai vậy con?`;
+    qTrans = `Đây là ai thế?`;
   } else if (qLower.includes('can you')) {
-    qTrans = `Con có biết ${meaning || word} không?`;
+    qTrans = `Bạn có biết ${meaning || word} không?`;
   } else if (qLower.includes('how are you')) {
-    qTrans = `Con khỏe không?`;
+    qTrans = `Bạn khỏe không?`;
   } else if (qLower.includes('how old are you')) {
-    qTrans = `Con bao nhiêu tuổi rồi?`;
+    qTrans = `Bạn bao nhiêu tuổi rồi?`;
   } else if (qLower.includes('what color')) {
-    qTrans = `Nó có màu gì vậy con?`;
-  } else if (qLower.includes('where is') || qLower.includes('where\'s')) {
-    qTrans = `${meaning || word} đang ở đâu thế?`;
+    qTrans = `Nó có màu gì vậy?`;
+  } else if (qLower.includes('where is') || qLower.includes('where are') || qLower.includes('where\'s')) {
+    qTrans = `Những con/cái ${meaning || word} đang ở đâu?`;
   } else if (qLower.includes('what can you do')) {
-    qTrans = `Con có thể làm gì nào?`;
+    qTrans = `Bạn có thể làm gì?`;
   } else {
     qTrans = qText;
   }
@@ -252,35 +273,29 @@ const getVietnameseTranslation = (questionText: string, targetWord: string, mean
   let ansTrans = '';
   const ansLower = ansText.toLowerCase();
   if (ansLower === 'yes, i do.') {
-    ansTrans = 'Dạ có, con thích ạ.';
+    ansTrans = 'Có, mình thích.';
   } else if (ansLower === 'no, i don\'t.') {
-    ansTrans = 'Dạ không, con không thích ạ.';
+    ansTrans = 'Không, mình không thích.';
   } else if (ansLower === 'yes, it is.') {
-    ansTrans = 'Dạ đúng rồi, chính là nó ạ.';
+    ansTrans = 'Đúng vậy, chính là nó.';
   } else if (ansLower === 'no, it isn\'t.') {
-    ansTrans = 'Dạ không phải đâu ạ.';
+    ansTrans = 'Không phải đâu.';
   } else if (ansLower === 'yes, i can.') {
-    ansTrans = 'Dạ có, con làm được ạ.';
+    ansTrans = 'Có, mình làm được.';
   } else if (ansLower === 'no, i can\'t.') {
-    ansTrans = 'Dạ con không làm được ạ.';
+    ansTrans = 'Không, mình không làm được.';
   } else if (ansLower.includes("it's a") || ansLower.includes("it's an")) {
-    ansTrans = `Nó là ${meaning || word} ạ.`;
+    ansTrans = `Nó là một cái/quả ${meaning || word}.`;
   } else if (ansLower.includes("this is my")) {
-    ansTrans = `Đây là ${meaning || word} của con ạ.`;
+    ansTrans = `Đây là ${meaning || word} của mình.`;
   } else if (ansLower === "i'm fine. thank you.") {
-    ansTrans = 'Con khỏe. Con cảm ơn ạ.';
-  } else if (ansLower === "i'm great! thank you.") {
-    ansTrans = 'Con rất tốt! Con cảm ơn ạ.';
-  } else if (ansLower.includes("i'm")) {
-    ansTrans = `Con ${ansText.replace(/i'm/gi, '').trim()} tuổi ạ.`;
-  } else if (ansLower.includes("let's share")) {
-    ansTrans = 'Chúng mình cùng chia sẻ nhé!';
-  } else if (ansLower === 'ok.') {
-    ansTrans = 'Đồng ý / Được chứ!';
-  } else if (ansLower === 'thank you.') {
-    ansTrans = 'Con cảm ơn ạ.';
-  } else if (ansLower.includes('here you are')) {
-    ansTrans = 'Của bạn đây nhé.';
+    ansTrans = 'Mình khỏe, cảm ơn bạn.';
+  } else if (ansLower.includes("they're on")) {
+    ansTrans = `Chúng ở trên ${meaning || 'vật thể'}.`;
+  } else if (ansLower.includes("they're under")) {
+    ansTrans = `Chúng ở dưới ${meaning || 'vật thể'}.`;
+  } else if (ansLower.includes("they're in")) {
+    ansTrans = `Chúng ở trong ${meaning || 'vật thể'}.`;
   } else {
     ansTrans = ansText;
   }
