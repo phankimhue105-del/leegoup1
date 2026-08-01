@@ -95,6 +95,222 @@ function createSeededRandom(seed: string) {
   };
 }
 
+const cleanTranslation = (text: string): string => {
+  if (!text) return '';
+  if (text.includes('=')) {
+    return text.split('=')[1].trim();
+  }
+  return text.trim();
+};
+
+const getSentencePattern = (questionText: string, targetWord: string, type?: string): string => {
+  const qText = (questionText || '').toLowerCase();
+  
+  if (qText.includes('do you like')) {
+    return 'Do you like + food/drink? ➔ Yes, I do. / No, I don\'t.';
+  }
+  if (qText.includes('is it a') || qText.includes('is it an')) {
+    return 'Is it a/an + noun? ➔ Yes, it is. / No, it isn\'t.';
+  }
+  if (qText.includes('what is it') || qText.includes('what\'s this') || qText.includes('what is this')) {
+    return 'What is it? / What\'s this? ➔ It\'s a/an + noun. / This is a/an + noun.';
+  }
+  if (qText.includes('how many')) {
+    return 'How many + plural noun? ➔ [Number] + plural noun.';
+  }
+  if (qText.includes('who\'s this') || qText.includes('who is this')) {
+    return 'Who\'s this? ➔ This is my + family member.';
+  }
+  if (qText.includes('can you')) {
+    return 'Can you + action? ➔ Yes, I can. / No, I can\'t.';
+  }
+  if (qText.includes('how are you')) {
+    return 'How are you? ➔ I\'m fine. Thank you. / I\'m great!';
+  }
+  if (qText.includes('how old are you')) {
+    return 'How old are you? ➔ I\'m + [age] + years old.';
+  }
+  if (qText.includes('what color')) {
+    return 'What color is it? ➔ It\'s + color.';
+  }
+  if (qText.includes('where is') || qText.includes('where\'s')) {
+    return 'Where is + noun? ➔ It\'s in/on/under + the + noun.';
+  }
+  if (qText.includes('what can you do')) {
+    return 'What can you do? ➔ I can + action.';
+  }
+  if (qText.includes('let\'s share') || qText.includes('share')) {
+    return 'Let\'s share. ➔ OK.';
+  }
+  if (qText.includes('your turn')) {
+    return 'It\'s your turn. ➔ Thank you.';
+  }
+  if (qText.includes('here you are')) {
+    return 'Here you are. ➔ Thank you.';
+  }
+  if (qText.includes('sorry')) {
+    return 'I\'m sorry. ➔ That\'s OK.';
+  }
+  
+  return 'Subject + verb + object/complement.';
+};
+
+const getWhyCorrect = (q: any): string => {
+  const qText = (q.sentencePattern || q.question || '').toLowerCase();
+  const word = q.targetWord || '';
+  const meaning = cleanTranslation(q.meaningVi || q.explanation || '');
+  const emoji = q.emoji || q.image || '💬';
+  const answer = q.correctAnswer || '';
+  
+  if (qText.includes('do you like')) {
+    if (answer.toLowerCase().includes('yes')) {
+      return `Hình ảnh ${emoji} cho thấy bạn nhỏ đang rất thích món ${meaning || word}. Vì thế, câu trả lời đúng là đồng ý: "${answer}".`;
+    } else {
+      return `Hình ảnh ${emoji} cho thấy bạn nhỏ không thích món ${meaning || word}. Vì thế, câu trả lời đúng là từ chối: "${answer}".`;
+    }
+  }
+  if (qText.includes('is it a') || qText.includes('is it an')) {
+    if (answer.toLowerCase().includes('yes')) {
+      return `Bức hình hiển thị rõ ràng là ${emoji} ${meaning || word}. Vì thế, chúng ta trả lời xác nhận: "${answer}".`;
+    } else {
+      return `Bức hình ${emoji} không phải là vật được hỏi. Vì thế, câu trả lời phủ định là: "${answer}".`;
+    }
+  }
+  if (qText.includes('what is it') || qText.includes('what\'s this') || qText.includes('what is this')) {
+    return `Bức tranh có hình ${emoji} ${meaning || word}. Do đó, câu giới thiệu đồ vật chính xác là: "${answer}".`;
+  }
+  if (qText.includes('how many')) {
+    return `Chúng mình cùng đếm số lượng ${meaning || word} ${emoji} trong hình nhé! Câu trả lời chính xác chỉ số lượng đúng là: "${answer}".`;
+  }
+  if (qText.includes('who\'s this') || qText.includes('who is this')) {
+    return `Trong ảnh ${emoji} chính là ${meaning || word} của bạn nhỏ. Vì vậy, câu giới thiệu thành viên gia đình đúng là: "${answer}".`;
+  }
+  if (qText.includes('can you')) {
+    if (answer.toLowerCase().includes('yes')) {
+      return `Hình ảnh ${emoji} miêu tả hành động có thể thực hiện được. Vì thế, câu trả lời là đồng ý: "${answer}".`;
+    } else {
+      return `Hình ảnh ${emoji} cho thấy hành động không thể thực hiện được. Vì thế, câu trả lời là: "${answer}".`;
+    }
+  }
+  if (qText.includes('how are you')) {
+    return `Đây là một đoạn hội thoại chào hỏi thân thiện khi gặp nhau. Câu trả lời lịch sự và tự nhiên là: "${answer}".`;
+  }
+  if (qText.includes('how old are you')) {
+    return `Câu hỏi dùng để hỏi tuổi của bạn. Trả lời đúng cấu trúc giới thiệu tuổi là: "${answer}".`;
+  }
+  if (qText.includes('what color')) {
+    return `Nhìn vào hình ảnh, chúng ta thấy rõ màu sắc là ${emoji} ${meaning || word}. Vì vậy, câu trả lời đúng là: "${answer}".`;
+  }
+  if (qText.includes('where is') || qText.includes('where\'s')) {
+    return `Hình vẽ ${emoji} chỉ vị trí của đồ vật. Từ chỉ vị trí chính xác phù hợp là: "${answer}".`;
+  }
+  if (qText.includes('what can you do')) {
+    return `Hình ảnh ${emoji} thể hiện hoạt động ${meaning || word} mà chúng mình có thể làm. Vì vậy, câu trả lời đúng là: "${answer}".`;
+  }
+  if (qText.includes('share') || qText.includes('your turn') || qText.includes('here you are')) {
+    return `Đây là cách giao tiếp lịch sự khi chúng mình cùng chơi hoặc chia sẻ đồ dùng với bạn bè đấy!`;
+  }
+  
+  return `Hình ảnh ${emoji} minh họa cho từ khóa "${word}" (${meaning}). Đáp án phù hợp nhất mô tả bức tranh là: "${answer}".`;
+};
+
+const getVietnameseTranslation = (questionText: string, targetWord: string, meaningVi: string, correctAnswer: string): string => {
+  const qText = questionText || '';
+  const ansText = correctAnswer || '';
+  const word = targetWord || '';
+  const meaning = cleanTranslation(meaningVi);
+  
+  let qTrans = '';
+  const qLower = qText.toLowerCase();
+  
+  if (qLower.includes('do you like')) {
+    qTrans = `Con có thích ${meaning || word} không?`;
+  } else if (qLower.includes('is it a') || qLower.includes('is it an')) {
+    qTrans = `Đó có phải là ${meaning || word} không?`;
+  } else if (qLower.includes('what is it') || qLower.includes('what\'s this') || qLower.includes('what is this')) {
+    qTrans = `Đây là cái gì thế nhỉ?`;
+  } else if (qLower.includes('how many')) {
+    qTrans = `Có bao nhiêu ${meaning || word}?`;
+  } else if (qLower.includes('who\'s this') || qLower.includes('who is this')) {
+    qTrans = `Đây là ai vậy con?`;
+  } else if (qLower.includes('can you')) {
+    qTrans = `Con có biết ${meaning || word} không?`;
+  } else if (qLower.includes('how are you')) {
+    qTrans = `Con khỏe không?`;
+  } else if (qLower.includes('how old are you')) {
+    qTrans = `Con bao nhiêu tuổi rồi?`;
+  } else if (qLower.includes('what color')) {
+    qTrans = `Nó có màu gì vậy con?`;
+  } else if (qLower.includes('where is') || qLower.includes('where\'s')) {
+    qTrans = `${meaning || word} đang ở đâu thế?`;
+  } else if (qLower.includes('what can you do')) {
+    qTrans = `Con có thể làm gì nào?`;
+  } else {
+    qTrans = qText;
+  }
+  
+  let ansTrans = '';
+  const ansLower = ansText.toLowerCase();
+  if (ansLower === 'yes, i do.') {
+    ansTrans = 'Dạ có, con thích ạ.';
+  } else if (ansLower === 'no, i don\'t.') {
+    ansTrans = 'Dạ không, con không thích ạ.';
+  } else if (ansLower === 'yes, it is.') {
+    ansTrans = 'Dạ đúng rồi, chính là nó ạ.';
+  } else if (ansLower === 'no, it isn\'t.') {
+    ansTrans = 'Dạ không phải đâu ạ.';
+  } else if (ansLower === 'yes, i can.') {
+    ansTrans = 'Dạ có, con làm được ạ.';
+  } else if (ansLower === 'no, i can\'t.') {
+    ansTrans = 'Dạ con không làm được ạ.';
+  } else if (ansLower.includes("it's a") || ansLower.includes("it's an")) {
+    ansTrans = `Nó là ${meaning || word} ạ.`;
+  } else if (ansLower.includes("this is my")) {
+    ansTrans = `Đây là ${meaning || word} của con ạ.`;
+  } else if (ansLower === "i'm fine. thank you.") {
+    ansTrans = 'Con khỏe. Con cảm ơn ạ.';
+  } else if (ansLower === "i'm great! thank you.") {
+    ansTrans = 'Con rất tốt! Con cảm ơn ạ.';
+  } else if (ansLower.includes("i'm")) {
+    ansTrans = `Con ${ansText.replace(/i'm/gi, '').trim()} tuổi ạ.`;
+  } else if (ansLower.includes("let's share")) {
+    ansTrans = 'Chúng mình cùng chia sẻ nhé!';
+  } else if (ansLower === 'ok.') {
+    ansTrans = 'Đồng ý / Được chứ!';
+  } else if (ansLower === 'thank you.') {
+    ansTrans = 'Con cảm ơn ạ.';
+  } else if (ansLower.includes('here you are')) {
+    ansTrans = 'Của bạn đây nhé.';
+  } else {
+    ansTrans = ansText;
+  }
+  
+  return `❓ ${qText} ➔ ${qTrans}\n💬 ${ansText} ➔ ${ansTrans}`;
+};
+
+const getVocabularySection = (q: any, vocabList: any[]): string => {
+  const items: string[] = [];
+  
+  if (q.targetWord && q.meaningVi) {
+    items.push(`${q.targetWord} = ${cleanTranslation(q.meaningVi)}`);
+  }
+  
+  const choices = q.choices || [];
+  choices.forEach((c: string) => {
+    const cleanWord = c.toLowerCase()
+      .replace(/it's a\/?an\s+/i, '')
+      .replace(/this is my\s+/i, '')
+      .replace(/\.$/, '')
+      .trim();
+    const match = (vocabList || []).find(v => v.word.toLowerCase() === cleanWord);
+    if (match && match.word !== q.targetWord && !items.some(x => x.startsWith(match.word))) {
+      items.push(`${match.word} = ${match.meaningVi}`);
+    }
+  });
+  
+  return items.map(item => `• ${item}`).join('\n');
+};
+
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
   const isCommunicationLesson = lesson.number === 3 || lesson.id.includes('checkup');
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -1165,63 +1381,72 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             <span>Submit Answer (Nộp bài)</span>
           </button>
         ) : (
-          isAnswerCorrect === true ? (
-            <div className="w-full bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn shadow-2xs">
-              <div className="text-left space-y-1">
-                <span className="font-extrabold text-xs sm:text-sm text-emerald-800">✅ Correct! Good job! (Chính xác!) ⭐</span>
-                {currentQuestion?.type === 'matching' && (
-                  <p className="text-[11px] font-bold text-emerald-700">
-                    {(() => {
-                      const startIndex = Math.min(currentQIndex, 7);
-                      const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
-                      return matchingWords.map(w => {
-                        const vocabItem = (vocabList || []).find(v => v.word.toLowerCase() === w.toLowerCase());
-                        const meaning = vocabItem ? vocabItem.meaningVi : '';
-                        return `${w.charAt(0).toUpperCase() + w.slice(1)} = ${meaning}`;
-                      }).join(', ');
-                    })()}
-                  </p>
-                )}
-              </div>
+          <div className="w-full flex flex-col gap-4 text-left p-5 rounded-3xl border-2 animate-fadeIn bg-white shadow-md">
+            {/* Status Header */}
+            <div className="flex items-center justify-between border-b pb-3">
+              <span className={`text-base font-black flex items-center gap-1.5 ${isAnswerCorrect ? 'text-emerald-600' : 'text-rose-600'}`}>
+                {isAnswerCorrect ? '✅ Correct! Good job! (Chính xác!) ⭐' : '❌ Incorrect! Keep trying! (Chưa chính xác)'}
+              </span>
               <button
                 onClick={handleNextQuestion}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
+                className={`px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-md transition-all active:scale-95 flex items-center gap-2 ${
+                  isAnswerCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'
+                }`}
               >
                 <span>Continue (Tiếp tục)</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          ) : (
-            <div className="w-full bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl text-rose-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn shadow-2xs">
-              <div className="text-left space-y-1">
-                <span className="font-extrabold text-xs sm:text-sm text-rose-800 block">❌ Incorrect (Chưa chính xác)</span>
-                <p className="text-[11px] font-bold text-rose-700">
-                  {currentQuestion?.type === 'matching'
-                    ? `Đáp án đúng: ` + (() => {
-                        const startIndex = Math.min(currentQIndex, 7);
-                        const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
-                        return matchingWords.map(w => {
-                          const vocabItem = (vocabList || []).find(v => v.word.toLowerCase() === w.toLowerCase());
-                          const meaning = vocabItem ? vocabItem.meaningVi : '';
-                          return `${w.charAt(0).toUpperCase() + w.slice(1)} = ${meaning}`;
-                        }).join(', ');
-                      })()
-                    : (currentQuestion?.type === 'multiple_choice' || currentQuestion?.type === 'fill_blank') && currentQuestion?.sentencePattern
-                    ? (currentQuestion.sentencePattern.includes('______')
-                        ? `Mẫu câu đúng: "${currentQuestion.sentencePattern.replace('______', currentQuestion.targetWord)}" (Nghĩa: "${currentQuestion.meaningVi}").`
-                        : `Mẫu câu đúng: "${currentQuestion.sentencePattern} ${currentQuestion.targetWord}" (Nghĩa: "${currentQuestion.meaningVi}").`)
-                    : `Đáp án đúng là "${currentQuestion?.targetWord || ''}" vì từ này có nghĩa là "${currentQuestion?.meaningVi || ''}".`}
-                </p>
+
+            {/* Teaching Feedback Content */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
+              {/* Left Column */}
+              <div className="space-y-3">
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">① Correct Answer (Đáp án đúng)</span>
+                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 text-sm">
+                    {currentQuestion?.correctAnswer}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">② Sentence Pattern (Mẫu câu)</span>
+                  <div className="p-2.5 bg-indigo-50/50 border border-indigo-100/50 rounded-xl font-extrabold text-indigo-950">
+                    {getSentencePattern(currentQuestion?.sentencePattern || currentQuestion?.question || '', currentQuestion?.targetWord || '', currentQuestion?.type)}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">④ Vietnamese Meaning (Nghĩa tiếng Việt)</span>
+                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 whitespace-pre-line leading-relaxed font-bold">
+                    {getVietnameseTranslation(
+                      currentQuestion?.sentencePattern || currentQuestion?.question || '',
+                      currentQuestion?.targetWord || '',
+                      currentQuestion?.meaningVi || '',
+                      currentQuestion?.correctAnswer || ''
+                    )}
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={handleNextQuestion}
-                className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
-              >
-                <span>Continue (Tiếp tục)</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+
+              {/* Right Column */}
+              <div className="space-y-3">
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
+                  <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
+                    {getWhyCorrect(currentQuestion)}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">⑤ Vocabulary (Từ vựng bổ ích)</span>
+                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 whitespace-pre-line">
+                    {getVocabularySection(currentQuestion, vocabList)}
+                  </div>
+                </div>
+              </div>
             </div>
-          )
+          </div>
         )}
       </div>
     </div>
