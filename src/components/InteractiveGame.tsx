@@ -317,16 +317,16 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
-          emoji: q.image,
+          emoji: q.image || '💬',
           choices: q.options || q.choices || [],
           sentencePattern: q.question,
           unscrambledLetters: q.unscrambledLetters || [],
           oddChoices: q.oddChoices || [],
           correctAnswer: q.correctAnswer,
-          explanation: q.explanation || '',
-          vietnameseMeaning: q.explanation || '',
-          hintImage: q.hintImage,
-          activityTitle: q.activityTitle
+          explanation: q.explanation || 'Đáp án đúng.',
+          vietnameseMeaning: q.explanation || 'Đáp án đúng.',
+          hintImage: q.hintImage || '💬',
+          activityTitle: q.activityTitle || 'Complete the Conversation'
         };
 
         if (validateQuestion(questionObj)) {
