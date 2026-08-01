@@ -542,13 +542,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
     if (lesson.practiceQuestions && lesson.practiceQuestions.length > 0) {
       const predefined: Question[] = [];
+      const isLesson2 = lesson.number === 2 || lesson.id.includes('-l2');
       lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
           ...q,
           type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
-          emoji: q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
+          emoji: isLesson2 ? (q.image || '') : (q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤')),
           choices: q.options || q.choices || [],
           sentencePattern: q.question,
           unscrambledLetters: q.unscrambledLetters || [],
@@ -556,11 +557,11 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || 'Đáp án đúng.',
           vietnameseMeaning: q.explanation || 'Đáp án đúng.',
-          hintImage: q.hintImage || q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
+          hintImage: isLesson2 ? (q.hintImage || q.image || '') : (q.hintImage || q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤')),
           activityTitle: q.activityTitle || (isCommunicationLesson ? 'Complete the Conversation' : '')
         };
 
-        if (validateQuestion(questionObj)) {
+        if (isLesson2 || validateQuestion(questionObj)) {
           predefined.push(questionObj);
         }
       });
@@ -1012,6 +1013,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       </div>
     );
   }
+
+  console.log("===== IMAGE TRACE =====");
+  console.log("lesson.id:", lesson.id);
+  console.log("currentQuestion:", currentQuestion);
+  console.log("currentQuestion.hintImage:", currentQuestion?.hintImage);
+  console.log("currentQuestion.emoji:", currentQuestion?.emoji);
+  console.log("currentQuestion.targetWord:", currentQuestion?.targetWord);
+  console.log("=======================");
 
   return (
     <div id="interactive-game-container" className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md max-w-2xl mx-auto my-2 text-center flex flex-col justify-between min-h-[460px]">
