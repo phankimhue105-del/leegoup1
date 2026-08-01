@@ -336,6 +336,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
         generateDynamicQuestions();
       } else {
+        console.log("LESSON ID:", lesson.id);
+        console.log("RAW lesson.practiceQuestions:", lesson.practiceQuestions);
+        console.log("PREDEFINED:", predefined);
         setQuestions(predefined);
         setIsLoading(false);
       }
@@ -557,6 +560,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   }
 
   const currentQuestion = questions[currentQIndex];
+  console.log("CURRENT QUESTION:", currentQuestion);
 
   const isReadyToSubmit = (() => {
     if (!currentQuestion) return false;
