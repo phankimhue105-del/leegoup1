@@ -40,7 +40,27 @@ import { lesson1Practice as u6l1 } from './data/practice/unit6/lesson1';
 import { lesson1Practice as u7l1 } from './data/practice/unit7/lesson1';
 import { lesson1Practice as u8l1 } from './data/practice/unit8/lesson1';
 
+const DEBUG_U4: PracticeQuestion[] = [
+  {
+    id: 999,
+    type: "multiple_choice",
+    question: "THIS COMES FROM APP",
+    image: "🔥",
+    vocabulary: "TEST",
+    choices: ["A", "B", "C", "D"],
+    options: ["A", "B", "C", "D"],
+    correctAnswer: "A",
+    explanation: "TEST",
+    hintImage: "🔥",
+    unscrambledLetters: ["T", "E", "S", "T"],
+    oddChoices: ["A", "B", "C", "D"]
+  }
+];
+
 const getLessonPracticeQuestions = (unitNum: number, lessonNum: number, currentPracticeQuestions?: PracticeQuestion[]): PracticeQuestion[] => {
+  if (unitNum === 4 && lessonNum === 2) {
+    return DEBUG_U4;
+  }
   if (lessonNum === 1) {
     if (unitNum === 1) return u1l1;
     if (unitNum === 2) return u2l1;
@@ -488,19 +508,7 @@ export default function App() {
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : {
     ...currentLesson,
-    practiceQuestions: [
-      {
-        id:999,
-        type:"multiple_choice",
-        question:"THIS IS A TEST QUESTION",
-        image:"🔥",
-        hintImage:"🔥",
-        vocabulary:"TEST",
-        choices:["A","B","C","D"],
-        correctAnswer:"A",
-        explanation:"TEST"
-      }
-    ]
+    practiceQuestions: getLessonPracticeQuestions(currentUnit.number, currentLesson.number, currentLesson.practiceQuestions)
   };
   const currentUnitToUse = currentCheckUpNum !== null ? checkUpUnitVirtual : currentUnit;
 
@@ -1001,3 +1009,4 @@ export default function App() {
     </div>
   );
 }
+
