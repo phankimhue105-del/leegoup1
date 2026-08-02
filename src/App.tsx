@@ -31,48 +31,7 @@ import { checkup2Practice } from './data/practice/checkup2';
 import { checkup3Practice } from './data/practice/checkup3';
 import { checkup4Practice } from './data/practice/checkup4';
 
-import { lesson1Practice as u1l1 } from './data/practice/unit1/lesson1';
-import { lesson1Practice as u2l1 } from './data/practice/unit2/lesson1';
-import { lesson1Practice as u3l1 } from './data/practice/unit3/lesson1';
-import { lesson1Practice as u4l1 } from './data/practice/unit4/lesson1';
-import { lesson1Practice as u5l1 } from './data/practice/unit5/lesson1';
-import { lesson1Practice as u6l1 } from './data/practice/unit6/lesson1';
-import { lesson1Practice as u7l1 } from './data/practice/unit7/lesson1';
-import { lesson1Practice as u8l1 } from './data/practice/unit8/lesson1';
 
-const DEBUG_U4: PracticeQuestion[] = [
-  {
-    id: 999,
-    type: "multiple_choice",
-    question: "THIS COMES FROM APP",
-    image: "🔥",
-    vocabulary: "TEST",
-    choices: ["A", "B", "C", "D"],
-    options: ["A", "B", "C", "D"],
-    correctAnswer: "A",
-    explanation: "TEST",
-    hintImage: "🔥",
-    unscrambledLetters: ["T", "E", "S", "T"],
-    oddChoices: ["A", "B", "C", "D"]
-  }
-];
-
-const getLessonPracticeQuestions = (unitNum: number, lessonNum: number, currentPracticeQuestions?: PracticeQuestion[]): PracticeQuestion[] => {
-  if (unitNum === 4 && lessonNum === 2) {
-    return DEBUG_U4;
-  }
-  if (lessonNum === 1) {
-    if (unitNum === 1) return u1l1;
-    if (unitNum === 2) return u2l1;
-    if (unitNum === 3) return u3l1;
-    if (unitNum === 4) return u4l1;
-    if (unitNum === 5) return u5l1;
-    if (unitNum === 6) return u6l1;
-    if (unitNum === 7) return u7l1;
-    if (unitNum === 8) return u8l1;
-  }
-  return currentPracticeQuestions || [];
-};
 
 
 function getModelPatternInfo(unitNumber: number, lessonNumber: number, lesson: Lesson) {
@@ -506,10 +465,7 @@ export default function App() {
     speakingTasks: dynamicCheckUpSpeaking
   } : currentLesson;
 
-  const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : {
-    ...currentLesson,
-    practiceQuestions: getLessonPracticeQuestions(currentUnit.number, currentLesson.number, currentLesson.practiceQuestions)
-  };
+  const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : currentLesson;
   const currentUnitToUse = currentCheckUpNum !== null ? checkUpUnitVirtual : currentUnit;
 
   const modelPatternInfo = getModelPatternInfo(currentUnitToUse.number, currentLessonToUse.number, currentLessonToUse);
@@ -1009,4 +965,3 @@ export default function App() {
     </div>
   );
 }
-
