@@ -674,7 +674,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const handleLetterClick = (letter: string) => {
     if (isAnswerCorrect !== null) return;
     soundFX.playClick();
-    if (unscrambleInput.length < currentQuestion.targetWord.length) {
+    if (unscrambleInput.length < renderQuestion.targetWord.length) {
       setUnscrambleInput(prev => [...prev, letter]);
     }
   };
@@ -799,24 +799,24 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     );
   }
 
-  const currentQuestion = questions[currentQIndex];
+  const renderQuestion = questions[currentQIndex];
 
   const isReadyToSubmit = (() => {
-    if (!currentQuestion) return false;
+    if (!renderQuestion) return false;
     if (isCommunicationLesson) return selectedOption !== null;
-    if (currentQuestion.type === 'picture_quiz' || currentQuestion.type === 'multiple_choice' || currentQuestion.type === 'fill_blank' || currentQuestion.type === 'odd_one_out') {
+    if (renderQuestion.type === 'picture_quiz' || renderQuestion.type === 'multiple_choice' || renderQuestion.type === 'fill_blank' || renderQuestion.type === 'odd_one_out') {
       return selectedOption !== null;
     }
-    if (currentQuestion.type === 'unscramble') {
-      const targetLen = currentQuestion.targetWord ? currentQuestion.targetWord.replace(/\s+/g, '').length : 0;
+    if (renderQuestion.type === 'unscramble') {
+      const targetLen = renderQuestion.targetWord ? renderQuestion.targetWord.replace(/\s+/g, '').length : 0;
       return unscrambleInput.length === targetLen;
     }
-    if (currentQuestion.type === 'matching') {
+    if (renderQuestion.type === 'matching') {
       const startIndex = Math.min(currentQIndex, 7);
       const matchingWords = Array.from(new Set((questions || []).slice(startIndex, startIndex + 3).map(q => q.targetWord)));
       return Object.keys(tempPairs).length === matchingWords.length;
     }
-    if (currentQuestion.type === 'memory') {
+    if (renderQuestion.type === 'memory') {
       return memoryCards && memoryCards.length > 0 && memoryCards.every(c => c.matched);
     }
     return false;
@@ -826,9 +826,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
     if (isAnswerCorrect !== null || !isReadyToSubmit) return;
 
     if (isCommunicationLesson) {
-      const isCorrect = selectedOption === currentQuestion.correctAnswer;
+      const isCorrect = selectedOption === renderQuestion.correctAnswer;
       setIsAnswerCorrect(isCorrect);
-      recordAnswer(selectedOption || '', isCorrect, currentQuestion.correctAnswer);
+      recordAnswer(selectedOption || '', isCorrect, renderQuestion.correctAnswer);
       if (isCorrect) {
         soundFX.playCorrect();
         onCorrectAnswer();
@@ -838,10 +838,10 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return;
     }
 
-    if (currentQuestion.type === 'picture_quiz' || currentQuestion.type === 'multiple_choice' || currentQuestion.type === 'fill_blank' || currentQuestion.type === 'odd_one_out') {
-      let target = currentQuestion.correctAnswer;
-      if (currentQuestion.type === 'odd_one_out') {
-        target = currentQuestion.oddChoices?.find(choice => ODD_WORDS.includes(choice)) || '';
+    if (renderQuestion.type === 'picture_quiz' || renderQuestion.type === 'multiple_choice' || renderQuestion.type === 'fill_blank' || renderQuestion.type === 'odd_one_out') {
+      let target = renderQuestion.correctAnswer;
+      if (renderQuestion.type === 'odd_one_out') {
+        target = renderQuestion.oddChoices?.find(choice => ODD_WORDS.includes(choice)) || '';
       }
       const isCorrect = selectedOption === target;
 
@@ -854,9 +854,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (currentQuestion.type === 'unscramble') {
+    } else if (renderQuestion.type === 'unscramble') {
       const spelled = unscrambleInput.join('');
-      const targetClean = (currentQuestion?.targetWord || '').replace(/\s+/g, '');
+      const targetClean = (renderQuestion?.targetWord || '').replace(/\s+/g, '');
       const isCorrect = spelled.toLowerCase() === targetClean.toLowerCase();
 
       setIsAnswerCorrect(isCorrect);
@@ -868,7 +868,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (currentQuestion.type === 'matching') {
+    } else if (renderQuestion.type === 'matching') {
       const startIndex = Math.min(currentQIndex, 7);
       const matchingWords = Array.from(new Set(questions.slice(startIndex, startIndex + 3).map(q => q.targetWord)));
 
@@ -898,7 +898,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       } else {
         soundFX.playClick();
       }
-    } else if (currentQuestion.type === 'memory') {
+    } else if (renderQuestion.type === 'memory') {
       setIsAnswerCorrect(true);
       soundFX.playCorrect();
       onCorrectAnswer();
@@ -1025,10 +1025,10 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
   console.log("===== IMAGE TRACE =====");
   console.log("lesson.id:", lesson.id);
-  console.log("currentQuestion:", currentQuestion);
-  console.log("currentQuestion.hintImage:", currentQuestion?.hintImage);
-  console.log("currentQuestion.emoji:", currentQuestion?.emoji);
-  console.log("currentQuestion.targetWord:", currentQuestion?.targetWord);
+  console.log("currentQuestion:", renderQuestion);
+  console.log("currentQuestion.hintImage:", renderQuestion?.hintImage);
+  console.log("currentQuestion.emoji:", renderQuestion?.emoji);
+  console.log("currentQuestion.targetWord:", renderQuestion?.targetWord);
   console.log("=======================");
 
   return (
@@ -1037,7 +1037,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-500 animate-spin" />
             <span className="text-slate-500 font-extrabold uppercase tracking-widest text-[9px] bg-slate-100 px-3 py-1 rounded-full">
-              {isCommunicationLesson ? 'Communication' : (currentQuestion?.type || 'multiple_choice').replace(/_([a-z])/g, ' $1')}
+              {isCommunicationLesson ? 'Communication' : (renderQuestion?.type || 'multiple_choice').replace(/_([a-z])/g, ' $1')}
             </span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-black bg-red-50 text-red-600 px-3.5 py-1.5 rounded-full border border-red-200 shadow-2xs">
@@ -1053,13 +1053,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </span>
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full my-4">
               <h4 className="text-xl font-black text-slate-800 leading-relaxed whitespace-pre-line text-left">
-                {currentQuestion?.sentencePattern || ''}
+                {renderQuestion?.sentencePattern || ''}
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {(currentQuestion?.choices || []).map((choice, idx) => {
+              {(renderQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
-                const isTarget = choice === currentQuestion?.correctAnswer;
+                const isTarget = choice === renderQuestion?.correctAnswer;
                 
                 let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
                 if (isAnswerCorrect !== null) {
@@ -1088,16 +1088,16 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         ) : (
           <>
             {/* PICTURE QUIZ */}
-            {currentQuestion?.type === 'picture_quiz' && (
+            {renderQuestion?.type === 'picture_quiz' && (
           <div className="flex flex-col items-center gap-5">
             <div className="text-9xl md:text-[11rem] select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce">
-              {currentQuestion?.emoji || '🔤'}
+              {renderQuestion?.emoji || '🔤'}
             </div>
             <h4 className="text-xl font-black text-slate-800 mt-2">What is this in English?</h4>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {(currentQuestion?.choices || []).map((choice, idx) => {
+              {(renderQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
-                const isTarget = choice === currentQuestion?.correctAnswer;
+                const isTarget = choice === renderQuestion?.correctAnswer;
                 
                 let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
                 if (isAnswerCorrect !== null) {
@@ -1126,19 +1126,19 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* WORD PUZZLE */}
-        {currentQuestion?.type === 'unscramble' && (
+        {renderQuestion?.type === 'unscramble' && (
           <div className="flex flex-col items-center gap-6">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
               Unscramble the word!
             </span>
             <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
-              <p className="text-2xl font-black text-amber-800">{currentQuestion?.emoji || '🔤'}</p>
-              {currentQuestion?.hintImage ? (
+              <p className="text-2xl font-black text-amber-800">{renderQuestion?.emoji || '🔤'}</p>
+              {renderQuestion?.hintImage ? (
                 <div className="flex items-center justify-center mt-1.5 text-6xl md:text-7xl" title="Hint">
-                  {currentQuestion.hintImage}
+                  {renderQuestion.hintImage}
                 </div>
               ) : (
-                currentQuestion?.meaningVi && <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {currentQuestion.meaningVi}</p>
+                renderQuestion?.meaningVi && <p className="text-sm font-extrabold text-slate-600 mt-1">Hint: {renderQuestion.meaningVi}</p>
               )}
             </div>
 
@@ -1161,7 +1161,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </div>
 
             <div className="flex flex-wrap gap-2 justify-center max-w-sm">
-              {(currentQuestion?.unscrambledLetters || []).map((letter, idx) => (
+              {(renderQuestion?.unscrambledLetters || []).map((letter, idx) => (
                 <button
                   key={idx}
                   disabled={isAnswerCorrect !== null}
@@ -1176,27 +1176,27 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* CHOOSE CORRECT */}
-        {(currentQuestion?.type === 'multiple_choice' || currentQuestion?.type === 'fill_blank') && (
+        {(renderQuestion?.type === 'multiple_choice' || renderQuestion?.type === 'fill_blank') && (
           <div className="flex flex-col items-center gap-5">
-            {!currentQuestion?.activityTitle && (
+            {!renderQuestion?.activityTitle && (
               <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
                 Fill in the Blank!
               </span>
             )}
             <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
-              <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{currentQuestion?.sentencePattern || ''}"</h4>
-              {currentQuestion?.hintImage ? (
+              <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{renderQuestion?.sentencePattern || ''}"</h4>
+              {renderQuestion?.hintImage ? (
                 <div className="flex items-center justify-center mt-2 text-6xl md:text-7xl" title="Hint">
-                  {currentQuestion.hintImage}
+                  {renderQuestion.hintImage}
                 </div>
               ) : (
-                currentQuestion?.meaningVi && <p className="text-xs font-bold text-red-600 mt-2">Hint: ({currentQuestion.meaningVi})</p>
+                renderQuestion?.meaningVi && <p className="text-xs font-bold text-red-600 mt-2">Hint: ({renderQuestion.meaningVi})</p>
               )}
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {(currentQuestion?.choices || []).map((choice, idx) => {
+              {(renderQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
-                const isTarget = choice === currentQuestion?.correctAnswer;
+                const isTarget = choice === renderQuestion?.correctAnswer;
 
                 let btnStyle = 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-red-50/50 hover:border-red-300';
                 if (isAnswerCorrect !== null) {
@@ -1225,7 +1225,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* MEMORY MATCHING */}
-        {currentQuestion?.type === 'memory' && (
+        {renderQuestion?.type === 'memory' && (
           <div className="flex flex-col items-center gap-4">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-2">
               Match 3 Pairs! (Click a flipped card to undo)
@@ -1287,7 +1287,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* MATCHING GAME WITH LANG SEPARATION */}
-        {currentQuestion?.type === 'matching' && (
+        {renderQuestion?.type === 'matching' && (
           <div className="flex flex-col items-center gap-4 w-full">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full mb-3">
               Match word with meaning! (Nối từ với nghĩa đúng)
@@ -1363,14 +1363,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         )}
 
         {/* ODD ONE OUT */}
-        {currentQuestion?.type === 'odd_one_out' && (
+        {renderQuestion?.type === 'odd_one_out' && (
           <div className="flex flex-col items-center gap-5">
             <span className="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">
               Find the Odd One Out!
             </span>
             <h4 className="text-xl font-black text-slate-800">One of these is NOT like the others! Tap it:</h4>
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
-              {(currentQuestion?.oddChoices || []).map((choice, idx) => {
+              {(renderQuestion?.oddChoices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
                 const isTarget = ODD_WORDS.includes(choice);
                 
@@ -1438,14 +1438,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">① Correct Answer (Đáp án đúng)</span>
                   <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 text-sm">
-                    {currentQuestion?.correctAnswer}
+                    {renderQuestion?.correctAnswer}
                   </div>
                 </div>
 
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">② Sentence Pattern (Mẫu câu)</span>
                   <div className="p-2.5 bg-indigo-50/50 border border-indigo-100/50 rounded-xl font-extrabold text-indigo-950">
-                    {getSentencePattern(currentQuestion?.sentencePattern || currentQuestion?.question || '', currentQuestion?.targetWord || '', currentQuestion?.type)}
+                    {getSentencePattern(renderQuestion?.sentencePattern || renderQuestion?.question || '', renderQuestion?.targetWord || '', renderQuestion?.type)}
                   </div>
                 </div>
 
@@ -1453,10 +1453,10 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">④ Vietnamese Meaning (Nghĩa tiếng Việt)</span>
                   <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 whitespace-pre-line leading-relaxed font-bold">
                     {getVietnameseTranslation(
-                      currentQuestion?.sentencePattern || currentQuestion?.question || '',
-                      currentQuestion?.targetWord || '',
-                      currentQuestion?.meaningVi || '',
-                      currentQuestion?.correctAnswer || ''
+                      renderQuestion?.sentencePattern || renderQuestion?.question || '',
+                      renderQuestion?.targetWord || '',
+                      renderQuestion?.meaningVi || '',
+                      renderQuestion?.correctAnswer || ''
                     )}
                   </div>
                 </div>
@@ -1467,14 +1467,14 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
                   <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
-                    {getWhyCorrect(currentQuestion)}
+                    {getWhyCorrect(renderQuestion)}
                   </div>
                 </div>
 
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">⑤ Vocabulary (Từ vựng bổ ích)</span>
                   <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 whitespace-pre-line">
-                    {getVocabularySection(currentQuestion, vocabList)}
+                    {getVocabularySection(renderQuestion, vocabList)}
                   </div>
                 </div>
               </div>
