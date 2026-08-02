@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, RotateCcw, Award, Star } from 'lucide-react';
+import { Sparkles, ArrowRight, RotateCcw, Award } from 'lucide-react';
 import { Lesson } from '../types';
 import { soundFX } from '../utils/soundEffects';
 
@@ -14,13 +14,7 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [showSummary, setShowSummary] = useState(false);
-  const [userAnswers, setUserAnswers] = useState<{
-    questionNumber: number;
-    studentAnswer: string;
-    correctAnswer: string;
-    isCorrect: boolean;
-    explanation: string;
-  }[]>([]);
+  const [correctCount, setCorrectCount] = useState(0);
 
   const questions = lesson.practiceQuestions || [];
 
@@ -46,15 +40,8 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
     const isCorrect = selectedOption === q.correctAnswer;
     setIsAnswerCorrect(isCorrect);
 
-    setUserAnswers(prev => [...prev, {
-      questionNumber: currentQIndex + 1,
-      studentAnswer: selectedOption,
-      correctAnswer: q.correctAnswer,
-      isCorrect,
-      explanation: q.explanation || 'Đáp án đúng.'
-    }]);
-
     if (isCorrect) {
+      setCorrectCount(prev => prev + 1);
       soundFX.playCorrect();
       onCorrectAnswer();
     } else {
@@ -77,27 +64,24 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
 
   const handleTryAgain = () => {
     soundFX.playClick();
-    setUserAnswers([]);
     setShowSummary(false);
     setCurrentQIndex(0);
+    setCorrectCount(0);
     setIsAnswerCorrect(null);
     setSelectedOption(null);
   };
 
   const handleContinue = () => {
     soundFX.playClick();
-    const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
     const scorePercentage = questions.length > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
     onGameCompleted(scorePercentage);
   };
 
   if (showSummary) {
-    const correctCount = userAnswers.filter(ans => ans.isCorrect).length;
     const scorePercentage = Math.round((correctCount / questions.length) * 100);
-    const incorrectAnswers = userAnswers.filter(ans => !ans.isCorrect);
 
     return (
-      <div id="interactive-game-container" className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md max-w-2xl mx-auto my-2 text-center flex flex-col justify-between min-h-[460px] animate-fadeIn">
+      <div id="interactive-game-container" className="bg-white rounded-3xl p-6 border-2 border-red-100 shadow-md max-w-2xl mx-auto my-2 text-center flex flex-col justify-between min-h-[460px]">
         <div className="flex items-center justify-between mb-4 border-b border-red-50 pb-3">
           <div className="flex items-center gap-2">
             <Award className="w-6 h-6 text-amber-500 animate-bounce" />
@@ -110,7 +94,7 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
           </span>
         </div>
 
-        <div className="flex-1 flex flex-col items-center py-2 space-y-4">
+        <div className="flex-1 flex flex-col items-center py-8 space-y-4">
           <div className="flex items-center gap-4 bg-gradient-to-r from-red-500 to-rose-600 text-white px-8 py-4 rounded-3xl shadow-md w-full max-w-md justify-around">
             <div className="text-center">
               <span className="text-[10px] font-black text-amber-300 block uppercase">SCORE</span>
@@ -120,27 +104,6 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
             <div className="text-center">
               <span className="text-[10px] font-black text-amber-300 block uppercase">PERCENTAGE</span>
               <span className="text-3xl font-black">{scorePercentage}%</span>
-            </div>
-          </div>
-
-          <div className="w-full max-w-md bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left">
-            <h4 className="text-xs font-black text-slate-700 uppercase mb-3">Review Mistakes (Xem lại câu sai)</h4>
-            <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
-              {incorrectAnswers.length > 0 ? (
-                incorrectAnswers.map((ans, idx) => (
-                  <div key={idx} className="bg-white border border-rose-100 p-2.5 rounded-xl text-xs space-y-1">
-                    <span className="font-extrabold text-red-600 block">Question {ans.questionNumber}</span>
-                    <p className="text-slate-600 font-semibold">Your Answer: <span className="text-rose-600 line-through capitalize font-bold">{ans.studentAnswer}</span></p>
-                    <p className="text-slate-700 font-extrabold">Correct Answer: <span className="text-emerald-600 capitalize">{ans.correctAnswer}</span></p>
-                    <p className="text-[10px] font-medium italic text-slate-400 mt-1">💡 {ans.explanation}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-6 text-emerald-600 font-black flex flex-col items-center gap-1.5">
-                  <Star className="w-8 h-8 fill-amber-300 text-amber-400 animate-spin" />
-                  <span>Excellent! Perfect {correctCount}/{questions.length} Score! 🌟</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
