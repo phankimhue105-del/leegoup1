@@ -488,7 +488,19 @@ export default function App() {
 
   const currentLessonToUse = currentCheckUpNum !== null ? checkUpLessonVirtual : {
     ...currentLesson,
-    practiceQuestions: getLessonPracticeQuestions(currentUnit.number, currentLesson.number, currentLesson.practiceQuestions)
+    practiceQuestions: [
+      {
+        id:999,
+        type:"multiple_choice",
+        question:"THIS IS A TEST QUESTION",
+        image:"🔥",
+        hintImage:"🔥",
+        vocabulary:"TEST",
+        choices:["A","B","C","D"],
+        correctAnswer:"A",
+        explanation:"TEST"
+      }
+    ]
   };
   const currentUnitToUse = currentCheckUpNum !== null ? checkUpUnitVirtual : currentUnit;
 
