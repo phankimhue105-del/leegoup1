@@ -470,6 +470,24 @@ export default function App() {
 
   const modelPatternInfo = getModelPatternInfo(currentUnitToUse.number, currentLessonToUse.number, currentLessonToUse);
 
+  console.log("CURRENT LESSON OBJECT", currentLesson);
+  console.log("CURRENT LESSON ID", currentLesson.id);
+  console.log("CURRENT LESSON TITLE", currentLesson.title);
+  console.log("CURRENT LESSON PRACTICE", currentLesson.practiceQuestions);
+  console.log(
+    "IS SAME REFERENCE",
+    currentLesson === CURRICULUM_UNITS[currentUnit.number - 1]?.lessons[currentLesson.number - 1]
+  );
+  console.log(
+    "EXPECTED ARRAY",
+    CURRICULUM_UNITS[currentUnit.number - 1]?.lessons[currentLesson.number - 1]?.practiceQuestions
+  );
+  console.log(
+    "SAME ARRAY",
+    currentLesson.practiceQuestions ===
+    CURRICULUM_UNITS[currentUnit.number - 1]?.lessons[currentLesson.number - 1]?.practiceQuestions
+  );
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col font-sans">
       {/* Lesson Routine Header */}
