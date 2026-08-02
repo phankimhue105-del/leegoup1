@@ -74,7 +74,7 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 6,
     type: "multiple_choice",
-    question: "Do you like chicken?",
+    question: "### TEST U4-L2 ###",
     image: "🙁🍗",
     vocabulary: "chicken",
     choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
