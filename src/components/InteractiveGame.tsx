@@ -3,6 +3,7 @@ import { Sparkles, Star, ArrowRight, RotateCcw, Award } from 'lucide-react';
 import { Lesson } from '../types';
 import { EMOJI_MAP } from '../data/curriculum';
 import { soundFX } from '../utils/soundEffects';
+import { lesson2Practice as u4l2Practice } from '../data/practice/unit4/lesson2';
 
 interface Props {
   lesson: Lesson;
@@ -427,7 +428,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
         if (lesson.id.includes('u3-l1') || lesson.id.includes('checkup-l-2')) {
           isConversational = true;
           questionPrompt = 'How old are you?';
-        } else if (lesson.id.includes('u2-l2') || lesson.id.includes('checkup-l-1')) {
+        } else if (lesson.id.includes('checkup-l-1')) {
           isConversational = true;
           questionPrompt = 'What color is it?';
         } else if (lesson.id.includes('u2-l1')) {
@@ -552,6 +553,12 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
 
       const predefined: Question[] = [];
       const isLesson2 = lesson.number === 2 || lesson.id.includes('-l2');
+      if (isLesson2 && lesson.id.includes('u4-l2')) {
+        console.assert(
+          lesson.practiceQuestions?.[0]?.question === u4l2Practice?.[0]?.question,
+          "Lesson2 is NOT using the database!"
+        );
+      }
       lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
           ...q,
@@ -576,8 +583,12 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       });
 
       if (predefined.length === 0) {
-        console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
-        generateDynamicQuestions();
+        if (isLesson2) {
+          console.error("Lesson 2 predefined questions list is empty!");
+        } else {
+          console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
+          generateDynamicQuestions();
+        }
       } else {
         setQuestions(predefined);
         setIsLoading(false);
@@ -585,7 +596,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return;
     }
 
-    generateDynamicQuestions();
+    if (!isLesson2) {
+      generateDynamicQuestions();
+    }
   };
 
   useEffect(() => {
