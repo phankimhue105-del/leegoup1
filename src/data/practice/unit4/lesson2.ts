@@ -1,4 +1,3 @@
-THIS_SHOULD_BREAK_THE_BUILD
 import { PracticeQuestion } from '../../../types';
 
 export const lesson2Practice: PracticeQuestion[] = [
