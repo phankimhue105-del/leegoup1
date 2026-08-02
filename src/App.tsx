@@ -20,6 +20,7 @@ import { CURRICULUM_UNITS, LEEGO_BRAND } from './data/curriculum';
 import { LeeGoTeacherAvatar } from './components/LeeGoTeacherAvatar';
 import { LessonFlowHeader } from './components/LessonFlowHeader';
 import { InteractiveGame } from './components/InteractiveGame';
+import { InteractiveLesson2 } from './components/InteractiveLesson2';
 import { SpeakingPractice } from './components/SpeakingPractice';
 import { CurriculumDrawer } from './components/CurriculumDrawer';
 import { RewardModal } from './components/RewardModal';
@@ -573,14 +574,25 @@ export default function App() {
 
               {/* STAGE 3: PRACTICE */}
               {currentStage === 'practice' && (
-                <InteractiveGame
-                  lesson={currentLessonToUse}
-                  onCorrectAnswer={() => addStars(1)}
-                  onGameCompleted={(score) => {
-                    setLastPracticeScore(score);
-                    handleNextStage();
-                  }}
-                />
+                currentLessonToUse.number === 2 ? (
+                  <InteractiveLesson2
+                    lesson={currentLessonToUse}
+                    onCorrectAnswer={() => addStars(1)}
+                    onGameCompleted={(score) => {
+                      setLastPracticeScore(score);
+                      handleNextStage();
+                    }}
+                  />
+                ) : (
+                  <InteractiveGame
+                    lesson={currentLessonToUse}
+                    onCorrectAnswer={() => addStars(1)}
+                    onGameCompleted={(score) => {
+                      setLastPracticeScore(score);
+                      handleNextStage();
+                    }}
+                  />
+                )
               )}
 
               {/* STAGE 4: SPEAKING */}
