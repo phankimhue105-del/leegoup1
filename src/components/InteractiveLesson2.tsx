@@ -9,6 +9,60 @@ interface Props {
   onGameCompleted: (score: number) => void;
 }
 
+const simplifyExplanation = (text: string, targetWord?: string): string => {
+  if (!text) return '';
+  let cleaned = text.trim();
+  
+  cleaned = cleaned.replace(/^correct!\s*/i, '');
+  cleaned = cleaned.replace(/^the correct answer is\s*/i, '');
+  cleaned = cleaned.replace(/^the answer is\s*/i, '');
+  cleaned = cleaned.replace(/^correct!\s*yes,\s*it\s*is\s*a\s*\w+\./i, 'Yes, it is.');
+  
+  if (cleaned.toLowerCase().includes('yes, it is') || cleaned.toLowerCase() === 'đáp án đúng.') {
+    return 'Yes, it is.';
+  }
+  
+  if (cleaned.toLowerCase().includes("no, it isn't")) {
+    if (targetWord) {
+      return `No. It's a ${targetWord.toLowerCase()}.`;
+    }
+    const match = cleaned.match(/it\s*is\s*a\s+(\w+)/i);
+    if (match) {
+      return `No. It's a ${match[1].toLowerCase()}.`;
+    }
+    return "No, it isn't.";
+  }
+  
+  if (cleaned.includes('=')) {
+    const parts = cleaned.split('=');
+    const english = parts[0].trim().replace(/['"]/g, '');
+    let vietnamese = parts[1].trim();
+    vietnamese = vietnamese
+      .replace(/^(Không phải|Đúng vậy|Đúng thế),\s*/i, '')
+      .replace(/^nó màu\s+/i, '')
+      .replace(/^nó là\s+/i, '')
+      .replace(/^đây là\s+/i, '');
+    return `${english} = ${vietnamese}`;
+  }
+  
+  return cleaned;
+};
+
+const renderChoiceContent = (choice: string) => {
+  const emojiRegex = /[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/;
+  const isEmoji = emojiRegex.test(choice) && choice.length <= 4;
+  
+  if (isEmoji) {
+    return (
+      <span className="text-5xl sm:text-6xl block my-1 animate-scaleUp select-none" style={{ lineHeight: '1.2' }}>
+        {choice}
+      </span>
+    );
+  }
+  
+  return <span>{choice}</span>;
+};
+
 export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -174,7 +228,7 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
                   onClick={() => handleSelectOption(choice)}
                   className={`p-4 rounded-2xl border-2 text-base font-extrabold transition-all transform hover:scale-[1.02] active:scale-98 ${btnStyle}`}
                 >
-                  {choice}
+                  {renderChoiceContent(choice)}
                 </button>
               );
             })}
@@ -212,7 +266,7 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
               <div>
                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">Explanation (Giải thích)</span>
                 <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
-                  {q.explanation}
+                  {simplifyExplanation(q.explanation, q.vocabulary)}
                 </div>
               </div>
             </div>
