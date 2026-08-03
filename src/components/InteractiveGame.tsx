@@ -381,7 +381,7 @@ const getVocabularySection = (q: any, vocabList: any[]): string => {
 };
 
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
-  const isCommunicationLesson = lesson.number === 3 || lesson.id.includes('checkup');
+  const isCommunicationLesson = lesson.number === 3 && !lesson.id.includes('checkup');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentQIndex, setCurrentQIndex] = useState(0); // 0 to questions.length - 1
