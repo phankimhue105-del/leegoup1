@@ -3,7 +3,6 @@ import { Sparkles, Star, ArrowRight, RotateCcw, Award } from 'lucide-react';
 import { Lesson } from '../types';
 import { EMOJI_MAP } from '../data/curriculum';
 import { soundFX } from '../utils/soundEffects';
-import { lesson2Practice as u4l2Practice } from '../data/practice/unit4/lesson2';
 
 interface Props {
   lesson: Lesson;
@@ -552,20 +551,13 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       console.log("FIRST HINT:", lesson.practiceQuestions?.[0]?.hintImage);
 
       const predefined: Question[] = [];
-      const isLesson2 = lesson.number === 2 || lesson.id.includes('-l2');
-      if (isLesson2 && lesson.id.includes('u4-l2')) {
-        console.assert(
-          lesson.practiceQuestions?.[0]?.question === u4l2Practice?.[0]?.question,
-          "Lesson2 is NOT using the database!"
-        );
-      }
       lesson.practiceQuestions.forEach((q) => {
         const questionObj: Question = {
           ...q,
           type: q.type || 'multiple_choice',
           targetWord: q.vocabulary || '',
           meaningVi: q.explanation || '',
-          emoji: isLesson2 ? (q.image || '') : (q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤')),
+          emoji: q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
           choices: q.options || q.choices || [],
           sentencePattern: q.question,
           unscrambledLetters: q.unscrambledLetters || [],
@@ -573,22 +565,18 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || 'Đáp án đúng.',
           vietnameseMeaning: q.explanation || 'Đáp án đúng.',
-          hintImage: isLesson2 ? (q.hintImage || q.image || '') : (q.hintImage || q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤')),
+          hintImage: q.hintImage || q.image || (isCommunicationLesson ? '💬' : EMOJI_MAP[(q.vocabulary || '').toLowerCase()] || '🔤'),
           activityTitle: q.activityTitle || (isCommunicationLesson ? 'Complete the Conversation' : '')
         };
 
-        if (isLesson2 || validateQuestion(questionObj)) {
+        if (validateQuestion(questionObj)) {
           predefined.push(questionObj);
         }
       });
 
       if (predefined.length === 0) {
-        if (isLesson2) {
-          console.error("Lesson 2 predefined questions list is empty!");
-        } else {
-          console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
-          generateDynamicQuestions();
-        }
+        console.warn("Predefined questions failed validation, falling back to generated questions for recovery.");
+        generateDynamicQuestions();
       } else {
         setQuestions(predefined);
         setIsLoading(false);
@@ -596,9 +584,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
       return;
     }
 
-    if (!isLesson2) {
-      generateDynamicQuestions();
-    }
+    generateDynamicQuestions();
   };
 
   useEffect(() => {
