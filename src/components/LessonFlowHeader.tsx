@@ -92,7 +92,7 @@ export const LessonFlowHeader: React.FC<Props> = ({
       <div className="bg-gradient-to-r from-red-50 via-rose-50 to-amber-50 border-t border-red-100 overflow-x-auto no-scrollbar py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between min-w-max gap-1">
           {(() => {
-            const stagesToRender = (currentUnit.id === 'unit-1' && currentLesson.number === 3)
+            const stagesToRender = (!currentLesson.vocabulary || currentLesson.vocabulary.length === 0)
               ? STAGE_ORDER.filter(s => s.id !== 'vocabulary')
               : STAGE_ORDER;
             
