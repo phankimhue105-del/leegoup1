@@ -3,6 +3,8 @@ import { Volume2, ChevronLeft, ChevronRight, Sparkles, Languages } from 'lucide-
 import { VocabularyItem } from '../types';
 import { speakText } from '../utils/ttsPlayer';
 import { soundFX } from '../utils/soundEffects';
+import { lesson1Practice } from '../data/practice/unit2/lesson1';
+import { lesson2Practice } from '../data/practice/unit2/lesson2';
 
 interface Props {
   vocabulary: VocabularyItem[];
@@ -154,14 +156,14 @@ const EMOJI_LOOKUP: Record<string, string> = {
   rectangle: '▮',
   paint: '🎨',
   paper: '📄',
-  chalk: '🖍️',
+  chalk: '▯',
   yarn: '🧶',
   glue: '🧴',
   tape: '🩹',
   red: '🔴',
   yellow: '🟡',
   blue: '🔵',
-  white: '⚪',
+  white: '📄',
   black: '⚫',
   green: '🟢',
   purple: '🟣',
@@ -311,8 +313,21 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
   const pronunciation = IPA_LOOKUP[wordLower] || `/${currentItem.word}/`;
   const emoji = EMOJI_LOOKUP[wordLower] || '🔤';
 
+  // Find if there is a custom illustration in the practice questions for the current word
+  const customIllustration = React.useMemo(() => {
+    if (wordLower === 'chalk') {
+      const q = lesson1Practice.find(p => p.vocabulary === 'chalk');
+      return q?.image;
+    }
+    if (wordLower === 'white') {
+      const q = lesson2Practice.find(p => p.vocabulary === 'white');
+      return q?.image;
+    }
+    return null;
+  }, [wordLower]);
+
   // Format illustration URL using Icons8 color icons for clean, child-friendly vector illustrations
-  const iconName = wordLower.replace(/\s+/g, '-');
+  const iconName = wordLower === 'white' ? 'blank-file' : wordLower.replace(/\s+/g, '-');
   const imageUrl = `https://img.icons8.com/color/256/${encodeURIComponent(iconName)}.png`;
 
   React.useEffect(() => {
@@ -381,7 +396,11 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
 
         {/* Illustration Container */}
         <div className="w-48 h-48 rounded-2xl bg-amber-50/50 border border-amber-100 flex items-center justify-center mb-6 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-300">
-          {!imageError ? (
+          {customIllustration ? (
+            <div className="w-full h-full flex items-center justify-center p-4">
+              {customIllustration}
+            </div>
+          ) : !imageError ? (
             <img
               src={imageUrl}
               alt={currentItem.word}
