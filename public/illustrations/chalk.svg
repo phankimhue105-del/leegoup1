@@ -1,0 +1,28 @@
+      <rect x="75" y="40" width="22" height="110" rx="3" fill="url(#cylinder-grad)"/>
+      <!-- Cylinder top oval to give 3D effect -->
+      <ellipse cx="86" cy="40" rx="11" ry="4" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="0.5"/>
+    </g>
+    
+    <!-- Chalk Stick 2 (Broken, diagonal) -->
+    <g transform="rotate(30 110 110)">
+      <!-- Main part -->
+      <rect x="105" y="70" width="22" height="70" rx="3" fill="url(#cylinder-grad)"/>
+      <!-- Flat broken top -->
+      <ellipse cx="116" cy="70" rx="11" ry="3" fill="#E5E7EB"/>
+      
+      <!-- Broken small piece -->
+      <rect x="105" y="45" width="22" height="18" rx="2" fill="url(#cylinder-grad)"/>
+      <!-- Broken small piece top -->
+      <ellipse cx="116" cy="45" rx="11" ry="3" fill="#F3F4F6"/>
+      <!-- Broken small piece bottom -->
+      <ellipse cx="116" cy="63" rx="11" ry="3" fill="#D1D5DB"/>
+    </g>
+    
+    <!-- Chalk dust particles (subtle white circles) -->
+    <circle cx="65" cy="140" r="1.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="72" cy="150" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="140" cy="130" r="1.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="148" cy="120" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="115" cy="66" r="1.2" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+</svg>
