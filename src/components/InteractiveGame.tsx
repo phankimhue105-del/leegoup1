@@ -358,26 +358,14 @@ const getVietnameseTranslation = (questionText: string, targetWord: string, mean
 };
 
 const getVocabularySection = (q: any, vocabList: any[]): string => {
-  const items: string[] = [];
+  const word = q.targetWord || q.vocabulary || '';
+  if (!word) return '';
   
-  if (q.targetWord && q.meaningVi) {
-    items.push(`${q.targetWord} = ${cleanTranslation(q.meaningVi)}`);
-  }
+  const match = (vocabList || []).find(v => v.word.toLowerCase() === word.toLowerCase());
+  const meaning = match ? match.meaningVi : q.meaningVi || q.explanation || '';
+  const cleanMeaning = cleanTranslation(meaning);
   
-  const choices = q.choices || [];
-  choices.forEach((c: string) => {
-    const cleanWord = c.toLowerCase()
-      .replace(/it's a\/?an\s+/i, '')
-      .replace(/this is my\s+/i, '')
-      .replace(/\.$/, '')
-      .trim();
-    const match = (vocabList || []).find(v => v.word.toLowerCase() === cleanWord);
-    if (match && match.word !== q.targetWord && !items.some(x => x.startsWith(match.word))) {
-      items.push(`${match.word} = ${match.meaningVi}`);
-    }
-  });
-  
-  return items.map(item => `• ${item}`).join('\n');
+  return `${word.toLowerCase()} = ${cleanMeaning}`;
 };
 
 export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGameCompleted }) => {
@@ -1523,7 +1511,11 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                     {getVietnameseTranslation(
                       renderQuestion?.sentencePattern || renderQuestion?.question || '',
                       renderQuestion?.targetWord || '',
-                      renderQuestion?.meaningVi || '',
+                      (() => {
+                        const word = renderQuestion?.targetWord || renderQuestion?.vocabulary || '';
+                        const match = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
+                        return match ? match.meaningVi : renderQuestion?.meaningVi || '';
+                      })(),
                       renderQuestion?.correctAnswer || ''
                     )}
                   </div>
