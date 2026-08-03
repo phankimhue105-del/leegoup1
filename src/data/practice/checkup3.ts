@@ -1,116 +1,194 @@
-import { PracticeQuestion } from '../../types';
+import { PracticeQuestion, SpeakingTask } from '../../types';
 
 export const checkup3Practice: PracticeQuestion[] = [
   {
     id: 1,
     type: "multiple_choice",
-    question: "What can you see?",
-    image: "🌸",
-    vocabulary: "flower",
-    choices: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a river."],
-    options: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a river."],
-    correctAnswer: "I can see a flower.",
-    explanation: "flower = bông hoa",
-    hintImage: "🌸",
-    unscrambledLetters: ["e", "r", "o", "f", "w", "l"],
-    oddChoices: ["hamburger", "flower", "river", "lake"]
+    question: "Which one is a turtle?",
+    image: "❓",
+    vocabulary: "turtle",
+    choices: ["🐢", "🐸", "🕷️", "🐜"],
+    options: ["🐢", "🐸", "🕷️", "🐜"],
+    correctAnswer: "🐢",
+    explanation: "turtle = con rùa",
+    hintImage: "❓"
   },
   {
     id: 2,
     type: "multiple_choice",
-    question: "What can you do?",
-    image: "⚽🏃",
-    vocabulary: "play soccer",
-    choices: ["I can play soccer.", "I can jump rope.", "I can fly a kite.", "I can ride a bike."],
-    options: ["I can play soccer.", "I can jump rope.", "I can fly a kite.", "I can ride a bike."],
-    correctAnswer: "I can play soccer.",
-    explanation: "play soccer = đá bóng",
-    hintImage: "⚽🏃",
-    unscrambledLetters: ["y", "o", "r", "l", "s", "a", "e", "c", "p", "c"],
-    oddChoices: ["fly a kite", "play soccer", "ride a bike", "dinosaur"]
+    question: "Which one is a bear?",
+    image: "❓",
+    vocabulary: "bear",
+    choices: ["🐻", "🐘", "🐒", "🐅"],
+    options: ["🐻", "🐘", "🐒", "🐅"],
+    correctAnswer: "🐻",
+    explanation: "bear = con gấu",
+    hintImage: "❓"
   },
   {
     id: 3,
     type: "multiple_choice",
-    question: "What can you see?",
-    image: "🐢",
-    vocabulary: "turtle",
-    choices: ["I can see a turtle.", "I can see a frog.", "I can see a spider.", "I can see an ant."],
-    options: ["I can see a turtle.", "I can see a frog.", "I can see a spider.", "I can see an ant."],
-    correctAnswer: "I can see a turtle.",
-    explanation: "turtle = con rùa",
-    hintImage: "🐢",
-    unscrambledLetters: ["t", "e", "u", "l", "r", "t"],
-    oddChoices: ["spider", "turtle", "ant", "dinosaur"]
+    question: "Can you see a spider?",
+    image: "🕷️",
+    vocabulary: "spider",
+    choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
+    options: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
+    correctAnswer: "Yes, I can.",
+    explanation: "Yes, I can.",
+    hintImage: "🕷️"
   },
   {
     id: 4,
     type: "multiple_choice",
-    question: "What is this?",
-    image: "🐘",
-    vocabulary: "elephant",
-    choices: ["It's an elephant.", "It's a monkey.", "It's a tiger.", "It's a bear."],
-    options: ["It's an elephant.", "It's a monkey.", "It's a tiger.", "It's a bear."],
-    correctAnswer: "It's an elephant.",
-    explanation: "elephant = con voi",
-    hintImage: "🐘",
-    unscrambledLetters: ["p", "a", "l", "h", "e", "n", "e", "t"],
-    oddChoices: ["spaceship", "tiger", "elephant", "kangaroo"]
+    question: "Can snakes walk?",
+    image: "🐍",
+    vocabulary: "walk",
+    choices: ["Yes, they can.", "No, they can't.", "Yes, it is.", "No, it isn't."],
+    options: ["Yes, they can.", "No, they can't.", "Yes, it is.", "No, it isn't."],
+    correctAnswer: "No, they can't.",
+    explanation: "No, they can't.",
+    hintImage: "🐍"
   },
   {
     id: 5,
     type: "multiple_choice",
-    question: "What are they?",
-    image: "🐍",
-    vocabulary: "snake",
-    choices: ["They're snakes.", "They're giraffes.", "They're zebras.", "They're elephants."],
-    options: ["They're snakes.", "They're giraffes.", "They're zebras.", "They're elephants."],
-    correctAnswer: "They're snakes.",
-    explanation: "snake = con rắn",
-    hintImage: "🐍",
-    unscrambledLetters: ["k", "n", "e", "a", "s"],
-    oddChoices: ["snake", "giraffe", "zebra", "alien"]
+    question: "Choose the correct sentence.",
+    image: "🏊",
+    vocabulary: "swim",
+    choices: ["I can swim.", "I can run.", "I can hop.", "I can walk."],
+    options: ["I can swim.", "I can run.", "I can hop.", "I can walk."],
+    correctAnswer: "I can swim.",
+    explanation: "swim = bơi",
+    hintImage: "🏊"
   },
   {
     id: 6,
     type: "multiple_choice",
-    question: "What can zebras do?",
-    image: "🏃",
-    vocabulary: "run",
-    choices: ["Zebras can run.", "Zebras can hop.", "Zebras can swim.", "Zebras can walk."],
-    options: ["Zebras can run.", "Zebras can hop.", "Zebras can swim.", "Zebras can walk."],
-    correctAnswer: "Zebras can run.",
-    explanation: "run = chạy",
-    hintImage: "🏃",
-    unscrambledLetters: ["u", "n", "r"],
-    oddChoices: ["swim", "run", "walk", "dinosaur"]
+    question: "Choose the correct sentence.",
+    image: "🐒🌳",
+    vocabulary: "monkey",
+    choices: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
+    options: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
+    correctAnswer: "The monkey is in the tree.",
+    explanation: "in the tree = ở trên cây",
+    hintImage: "🐒🌳"
   },
   {
     id: 7,
     type: "multiple_choice",
-    question: "Can you see a frog?",
-    image: "🐸",
-    vocabulary: "frog",
-    choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
-    options: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
-    correctAnswer: "Yes, I can.",
-    explanation: "frog = con ếch",
-    hintImage: "🐸",
-    unscrambledLetters: ["g", "r", "o", "f"],
-    oddChoices: ["spider", "frog", "ant", "dinosaur"]
+    question: "I can see a ______.",
+    image: "🏞️",
+    vocabulary: "river",
+    choices: ["river", "flower", "tree", "rock"],
+    options: ["river", "flower", "tree", "rock"],
+    correctAnswer: "river",
+    explanation: "river = sông",
+    hintImage: "🏞️"
   },
   {
     id: 8,
     type: "multiple_choice",
-    question: "Where is the monkey?",
-    image: "🐒",
-    vocabulary: "monkey",
-    choices: ["It's in the tree.", "It's on the rock.", "It's under the rock.", "It's by the chair."],
-    options: ["It's in the tree.", "It's on the rock.", "It's under the rock.", "It's by the chair."],
-    correctAnswer: "It's in the tree.",
-    explanation: "monkey = con khỉ",
-    hintImage: "🐒",
-    unscrambledLetters: ["k", "y", "o", "e", "n", "m"],
-    oddChoices: ["bear", "monkey", "penguin", "hamburger"]
+    question: "Zebras can ______.",
+    image: "🏃",
+    vocabulary: "run",
+    choices: ["run", "swim", "hop", "walk"],
+    options: ["run", "swim", "hop", "walk"],
+    correctAnswer: "run",
+    explanation: "run = chạy",
+    hintImage: "🏃"
+  },
+  {
+    id: 9,
+    type: "multiple_choice",
+    question: "Choose the different item.",
+    image: "❓",
+    vocabulary: "pizza",
+    choices: ["🐘", "🐒", "🐅", "🍕"],
+    options: ["🐘", "🐒", "🐅", "🍕"],
+    correctAnswer: "🍕",
+    explanation: "pizza = bánh pizza",
+    hintImage: "❓"
+  },
+  {
+    id: 10,
+    type: "multiple_choice",
+    question: "Teacher: Please help me.",
+    image: "💬",
+    vocabulary: "sure",
+    choices: ["Sure.", "Yes, I do.", "No, I don't.", "Thank you."],
+    options: ["Sure.", "Yes, I do.", "No, I don't.", "Thank you."],
+    correctAnswer: "Sure.",
+    explanation: "Sure.",
+    hintImage: "💬"
+  }
+];
+
+export const checkup3Speaking: SpeakingTask[] = [
+  {
+    number: 1,
+    type: "repeat_word",
+    instruction: "Repeat the word aloud!",
+    emoji: "🌸",
+    promptText: "flower",
+    targetPhrase: "flower"
+  },
+  {
+    number: 2,
+    type: "repeat_word",
+    instruction: "Repeat the word aloud!",
+    emoji: "🐒",
+    promptText: "monkey",
+    targetPhrase: "monkey"
+  },
+  {
+    number: 3,
+    type: "read_sentence",
+    instruction: "Read the sentence aloud!",
+    emoji: "🏞️",
+    promptText: "I can see a river.",
+    targetPhrase: "I can see a river."
+  },
+  {
+    number: 4,
+    type: "read_sentence",
+    instruction: "Read the sentence aloud!",
+    emoji: "🦓🏃",
+    promptText: "Zebras can run.",
+    targetPhrase: "Zebras can run."
+  },
+  {
+    number: 5,
+    type: "answer_question",
+    instruction: "Answer the question!",
+    emoji: "🐢",
+    teacherQuestion: "Can you see a turtle?",
+    promptText: "Yes, I can.",
+    targetPhrase: "Yes, I can."
+  },
+  {
+    number: 6,
+    type: "answer_question",
+    instruction: "Answer the question!",
+    emoji: "🐍",
+    teacherQuestion: "Can snakes walk?",
+    promptText: "No, they can't.",
+    targetPhrase: "No, they can't."
+  },
+  {
+    number: 7,
+    type: "describe_picture",
+    instruction: "Describe the picture!",
+    emoji: "🐒🌳",
+    promptText: "The monkey is in the tree.",
+    targetPhrase: "The monkey is in the tree."
+  },
+  {
+    number: 8,
+    type: "conversation",
+    instruction: "Complete the conversation!",
+    emoji: "💬",
+    teacherQuestion: "Please help me.",
+    promptText: "Sure.",
+    targetPhrase: "Sure."
   }
 ];
