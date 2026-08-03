@@ -42,7 +42,7 @@ export const checkup2Practice: PracticeQuestion[] = [
     type: "multiple_choice",
     question: "Is it a ball?",
     image: "🚗",
-    vocabulary: "ball",
+    vocabulary: "car",
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
