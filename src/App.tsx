@@ -209,7 +209,7 @@ export default function App() {
 
   // Trigger stage update & AI interaction when stage changes
   const handleStageChange = async (newStage: Stage) => {
-    if (currentUnit.id === 'unit-1' && currentLesson.number === 3 && newStage === 'vocabulary') {
+    if (currentLesson.number === 3 && newStage === 'vocabulary') {
       return;
     }
     setCurrentStage(newStage);
@@ -258,7 +258,7 @@ export default function App() {
     setCheckUpUnitB(null);
     setCurrentUnit(unit);
     setCurrentLesson(lesson);
-    const startStage = (unit.id === 'unit-1' && lesson.number === 3) ? 'modelPattern' : 'vocabulary';
+    const startStage = lesson.number === 3 ? 'modelPattern' : 'vocabulary';
     setCurrentStage(startStage);
     setUnlockedBadge(undefined);
     fetchTeacherResponse(`Switched to Unit ${unit.number} Lesson ${lesson.number}: ${lesson.title}`);
@@ -310,7 +310,7 @@ export default function App() {
       'speaking',
       'completed',
     ];
-    if (currentUnit.id === 'unit-1' && currentLesson.number === 3) {
+    if (currentLesson.number === 3) {
       stages = stages.filter(s => s !== 'vocabulary');
     }
 
