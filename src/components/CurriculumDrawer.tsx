@@ -21,10 +21,32 @@ function isUnitLocked(unitNumber: number, completedUnitIds: string[]): boolean {
 
 // Returns the checkup info corresponding to the even unit bottom position
 function getCheckUpForUnit(unitNumber: number) {
-  if (unitNumber === 2) return { number: 1, data: CURRICULUM_UNITS[0].checkUp, prevUnit: CURRICULUM_UNITS[0], currentUnit: CURRICULUM_UNITS[1] };
-  if (unitNumber === 4) return { number: 2, data: CURRICULUM_UNITS[2].checkUp, prevUnit: CURRICULUM_UNITS[2], currentUnit: CURRICULUM_UNITS[3] };
-  if (unitNumber === 6) return { number: 3, data: CURRICULUM_UNITS[4].checkUp, prevUnit: CURRICULUM_UNITS[4], currentUnit: CURRICULUM_UNITS[5] };
-  if (unitNumber === 8) return { number: 4, data: CURRICULUM_UNITS[7].checkUp, prevUnit: CURRICULUM_UNITS[6], currentUnit: CURRICULUM_UNITS[7] };
+  if (unitNumber === 2) {
+    const u1 = CURRICULUM_UNITS.find(u => u.number === 1) || CURRICULUM_UNITS[0];
+    const u2 = CURRICULUM_UNITS.find(u => u.number === 2) || CURRICULUM_UNITS[1];
+    return { number: 1, data: u1?.checkUp, prevUnit: u1, currentUnit: u2 };
+  }
+  if (unitNumber === 4) {
+    const u3 = CURRICULUM_UNITS.find(u => u.number === 3) || CURRICULUM_UNITS[2];
+    const u4 = CURRICULUM_UNITS.find(u => u.number === 4) || CURRICULUM_UNITS[3];
+    return { number: 2, data: u3?.checkUp, prevUnit: u3, currentUnit: u4 };
+  }
+  if (unitNumber === 6) {
+    const u5 = CURRICULUM_UNITS.find(u => u.number === 5) || CURRICULUM_UNITS[4];
+    const u6 = CURRICULUM_UNITS.find(u => u.number === 6) || CURRICULUM_UNITS[5];
+    return { number: 3, data: u5?.checkUp, prevUnit: u5, currentUnit: u6 };
+  }
+  if (unitNumber === 8) {
+    const u7 = CURRICULUM_UNITS.find(u => u.number === 7) || CURRICULUM_UNITS[6];
+    const u8 = CURRICULUM_UNITS.find(u => u.number === 8) || CURRICULUM_UNITS[7];
+    const checkUpData = u7?.checkUp || {
+      title: 'CHECK UP 4 (Units 7–8)',
+      description: 'Review Body Parts, Healthy Habits, Adjectives, Transportation and Polite Expressions.',
+      phonics: ['rake', 'vase', 'beet', 'peek', 'cube', 'lime', 'rose', 'bone', 'mule'],
+      project: 'My Robot'
+    };
+    return { number: 4, data: checkUpData, prevUnit: u7, currentUnit: u8 };
+  }
   return null;
 }
 
