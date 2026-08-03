@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Star, Award, BookOpen, Flame, Sparkles, ChevronRight, Menu, Volume2, Mic } from 'lucide-react';
 import { Stage, StudentProgress, Unit, Lesson } from '../types';
 
@@ -28,6 +28,14 @@ export const LessonFlowHeader: React.FC<Props> = ({
   onOpenCurriculum,
 }) => {
   const currentStageIndex = STAGE_ORDER.findIndex((s) => s.id === currentStage);
+
+  // Auto-route Check-Up past vocabulary and modelPattern stages
+  useEffect(() => {
+    const isCheckUp = currentLesson.id.startsWith('checkup');
+    if (isCheckUp && (currentStage === 'vocabulary' || currentStage === 'modelPattern')) {
+      onSelectStage('practice');
+    }
+  }, [currentLesson.id, currentStage, onSelectStage]);
 
   return (
     <header id="leego-flow-header" className="bg-white border-b border-red-100 shadow-xs sticky top-0 z-30">
@@ -92,7 +100,10 @@ export const LessonFlowHeader: React.FC<Props> = ({
       <div className="bg-gradient-to-r from-red-50 via-rose-50 to-amber-50 border-t border-red-100 overflow-x-auto no-scrollbar py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between min-w-max gap-1">
           {(() => {
-            const stagesToRender = (!currentLesson.vocabulary || currentLesson.vocabulary.length === 0)
+            const isCheckUp = currentLesson.id.startsWith('checkup');
+            const stagesToRender = isCheckUp
+              ? STAGE_ORDER.filter(s => s.id !== 'vocabulary' && s.id !== 'modelPattern')
+              : (!currentLesson.vocabulary || currentLesson.vocabulary.length === 0)
               ? STAGE_ORDER.filter(s => s.id !== 'vocabulary')
               : STAGE_ORDER;
             
