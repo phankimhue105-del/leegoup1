@@ -42,7 +42,7 @@ export const checkup1Practice: PracticeQuestion[] = [
     type: "multiple_choice",
     question: "Is this a ruler?",
     image: "🎒",
-    vocabulary: "ruler",
+    vocabulary: "backpack",
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
