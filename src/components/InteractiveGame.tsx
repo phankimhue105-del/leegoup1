@@ -353,8 +353,8 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showSummary, setShowSummary] = useState(false);
 
-  // Fallback vocabulary list for stability
-  const vocabList = lesson.vocabulary && lesson.vocabulary.length > 0 ? lesson.vocabulary : [
+  // Fallback vocabulary list for stability (disabled for Lesson 3 Story/Communication)
+  const vocabList = lesson.vocabulary && (lesson.vocabulary.length > 0 || lesson.number === 3) ? lesson.vocabulary : [
     { id: 'v-fb-1', word: 'pencil', meaningVi: 'bút chì', exampleSentence: 'It is a pencil.' },
     { id: 'v-fb-2', word: 'book', meaningVi: 'sách', exampleSentence: 'It is a book.' },
     { id: 'v-fb-3', word: 'eraser', meaningVi: 'cục tẩy', exampleSentence: 'It is an eraser.' },
