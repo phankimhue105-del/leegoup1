@@ -1236,16 +1236,31 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 Fill in the Blank!
               </span>
             )}
-            <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
-              <h4 className="text-xl font-black text-slate-800 leading-relaxed">"{renderQuestion?.sentencePattern || ''}"</h4>
-              {renderQuestion?.hintImage ? (
-                <div className="flex items-center justify-center mt-2 text-6xl md:text-7xl" title="Hint">
-                  {renderQuestion.hintImage}
-                </div>
-              ) : (
-                renderQuestion?.meaningVi && <p className="text-xs font-bold text-red-600 mt-2">Hint: ({renderQuestion.meaningVi})</p>
-              )}
-            </div>
+            {(() => {
+              const isCheckUp = lesson.id.startsWith('checkup');
+              const illustration = renderQuestion?.hintImage || renderQuestion?.image || renderQuestion?.emoji;
+              return (
+                <>
+                  {isCheckUp && illustration && (
+                    <div className="text-9xl md:text-[11rem] select-none p-4 bg-amber-50 rounded-full border-2 border-amber-200 animate-bounce mb-3">
+                      {illustration}
+                    </div>
+                  )}
+                  <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 max-w-md w-full">
+                    <h4 className="text-xl font-black text-slate-800 leading-relaxed">
+                      {isCheckUp ? (renderQuestion?.sentencePattern || '') : `"${renderQuestion?.sentencePattern || ''}"`}
+                    </h4>
+                    {!isCheckUp && renderQuestion?.hintImage ? (
+                      <div className="flex items-center justify-center mt-2 text-6xl md:text-7xl" title="Hint">
+                        {renderQuestion.hintImage}
+                      </div>
+                    ) : (
+                      !isCheckUp && renderQuestion?.meaningVi && <p className="text-xs font-bold text-red-600 mt-2">Hint: ({renderQuestion.meaningVi})</p>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
             <div className="grid grid-cols-2 gap-4 w-full mt-2">
               {(renderQuestion?.choices || []).map((choice, idx) => {
                 const isSelected = selectedOption === choice;
