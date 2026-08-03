@@ -4,23 +4,23 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 1,
     type: "multiple_choice",
-    question: "Do you like juice?",
+    question: "😊 Do you like juice?",
     image: "🧃",
     vocabulary: "juice",
     choices: [
-      "Yes, I like juice.",
-      "No, I don't like fish.",
-      "I don't like chicken.",
-      "Yes, I like rice."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
     options: [
-      "Yes, I like juice.",
-      "No, I don't like fish.",
-      "I don't like chicken.",
-      "Yes, I like rice."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
-    correctAnswer: "Yes, I like juice.",
-    explanation: "juice = nước ép. Yes, I like juice. = Vâng, tớ thích nước ép.",
+    correctAnswer: "Yes, I do.",
+    explanation: "😊 Yes, I do. = Tôi thích nước ép.",
     hintImage: "🧃",
     unscrambledLetters: ["j", "u", "i", "c", "e"],
     oddChoices: ["juice", "chicken", "fish", "dinosaur"]
@@ -28,23 +28,23 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 2,
     type: "multiple_choice",
-    question: "Do you like chicken?",
+    question: "😞 Do you like chicken?",
     image: "🍗",
     vocabulary: "chicken",
     choices: [
-      "I like chicken.",
-      "I don't like fish.",
-      "Yes, I like juice.",
-      "No, I like ice cream."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
     options: [
-      "I like chicken.",
-      "I don't like fish.",
-      "Yes, I like juice.",
-      "No, I like ice cream."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
-    correctAnswer: "I like chicken.",
-    explanation: "chicken = thịt gà. I like chicken. = Tớ thích thịt gà.",
+    correctAnswer: "No, I don't.",
+    explanation: "😞 No, I don't. = Tôi không thích thịt gà.",
     hintImage: "🍗",
     unscrambledLetters: ["c", "h", "i", "c", "k", "e", "n"],
     oddChoices: ["chicken", "juice", "fish", "spaceship"]
@@ -52,23 +52,23 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 3,
     type: "multiple_choice",
-    question: "Do you like fish?",
+    question: "😊 Do you like fish?",
     image: "🐟",
     vocabulary: "fish",
     choices: [
-      "I don't like fish.",
-      "I like chicken.",
-      "Yes, I like juice.",
-      "No, I like ice cream."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
     options: [
-      "I don't like fish.",
-      "I like chicken.",
-      "Yes, I like juice.",
-      "No, I like ice cream."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
-    correctAnswer: "I don't like fish.",
-    explanation: "fish = cá. I don't like fish. = Tớ không thích cá.",
+    correctAnswer: "Yes, I do.",
+    explanation: "😊 Yes, I do. = Tôi thích cá.",
     hintImage: "🐟",
     unscrambledLetters: ["f", "i", "s", "h"],
     oddChoices: ["fish", "chicken", "juice", "guitar"]
@@ -76,23 +76,23 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 4,
     type: "multiple_choice",
-    question: "Do you like ice cream?",
+    question: "😞 Do you like ice cream?",
     image: "🍦",
     vocabulary: "ice cream",
     choices: [
-      "I like ice cream.",
-      "I don't like fish.",
-      "Yes, I like juice.",
-      "No, I like chicken."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
     options: [
-      "I like ice cream.",
-      "I don't like fish.",
-      "Yes, I like juice.",
-      "No, I like chicken."
+      "Yes, I do.",
+      "No, I don't.",
+      "Yes, I am.",
+      "No, I can't."
     ],
-    correctAnswer: "I like ice cream.",
-    explanation: "ice cream = kem. I like ice cream. = Tớ thích kem.",
+    correctAnswer: "No, I don't.",
+    explanation: "😞 No, I don't. = Tôi không thích kem.",
     hintImage: "🍦",
     unscrambledLetters: ["i", "c", "e", "c", "r", "e", "a", "m"],
     oddChoices: ["ice cream", "fish", "chicken", "wizard"]
