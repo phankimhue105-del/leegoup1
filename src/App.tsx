@@ -574,9 +574,9 @@ export default function App() {
 
               {/* STAGE 3: PRACTICE */}
               {currentStage === 'practice' && (
-                currentLessonToUse.number === 2 ? (
+                currentLesson.number === 2 ? (
                   <InteractiveLesson2
-                    lesson={currentLessonToUse}
+                    lesson={currentLesson}
                     onCorrectAnswer={() => addStars(1)}
                     onGameCompleted={(score) => {
                       setLastPracticeScore(score);
