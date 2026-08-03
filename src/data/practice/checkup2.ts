@@ -1,116 +1,194 @@
-import { PracticeQuestion } from '../../types';
+import { PracticeQuestion, SpeakingTask } from '../../types';
 
 export const checkup2Practice: PracticeQuestion[] = [
   {
     id: 1,
     type: "multiple_choice",
-    question: "How many dolls?",
-    image: "🧸",
-    vocabulary: "doll",
-    choices: ["One doll.", "Two dolls.", "Three dolls.", "Four dolls."],
-    options: ["One doll.", "Two dolls.", "Three dolls.", "Four dolls."],
-    correctAnswer: "One doll.",
-    explanation: "doll = búp bê",
-    hintImage: "🧸",
-    unscrambledLetters: ["o", "l", "d", "l"],
-    oddChoices: ["volcano", "cars", "kite", "doll"]
+    question: "Which one is a puzzle?",
+    image: "❓",
+    vocabulary: "puzzle",
+    choices: ["🧩", "🃏", "🧱", "🎮"],
+    options: ["🧩", "🃏", "🧱", "🎮"],
+    correctAnswer: "🧩",
+    explanation: "puzzle = trò chơi ghép hình",
+    hintImage: "❓"
   },
   {
     id: 2,
     type: "multiple_choice",
-    question: "What do you have?",
-    image: "🎮",
-    vocabulary: "game",
-    choices: ["I have one game.", "I have a puzzle.", "I have cards.", "I have marbles."],
-    options: ["I have one game.", "I have a puzzle.", "I have cards.", "I have marbles."],
-    correctAnswer: "I have one game.",
-    explanation: "game = trò chơi",
-    hintImage: "🎮",
-    unscrambledLetters: ["m", "g", "e", "a"],
-    oddChoices: ["game", "card", "marble", "octopus"]
+    question: "Which one is pizza?",
+    image: "❓",
+    vocabulary: "pizza",
+    choices: ["🍕", "🍎", "🍌", "🍪"],
+    options: ["🍕", "🍎", "🍌", "🍪"],
+    correctAnswer: "🍕",
+    explanation: "pizza = bánh pizza",
+    hintImage: "❓"
   },
   {
     id: 3,
     type: "multiple_choice",
-    question: "Who's this?",
-    image: "👩",
-    vocabulary: "mother",
-    choices: ["This is my mother.", "This is my father.", "This is my sister.", "This is my brother."],
-    options: ["This is my mother.", "This is my father.", "This is my sister.", "This is my brother."],
-    correctAnswer: "This is my mother.",
-    explanation: "mother = mẹ",
-    hintImage: "👩",
-    unscrambledLetters: ["e", "r", "t", "m", "h", "o"],
-    oddChoices: ["hamburger", "mother", "sister", "grandfather"]
+    question: "Do you like fish?",
+    image: "🐟",
+    vocabulary: "fish",
+    choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
+    options: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
+    correctAnswer: "Yes, I do.",
+    explanation: "Yes, I do.",
+    hintImage: "🐟"
   },
   {
     id: 4,
     type: "multiple_choice",
-    question: "Do you like juice?",
-    image: "🧃",
-    vocabulary: "juice",
-    choices: ["I like juice.", "I don't like juice.", "I like chicken.", "I don't like fish."],
-    options: ["I like juice.", "I don't like juice.", "I like chicken.", "I don't like fish."],
-    correctAnswer: "I like juice.",
-    explanation: "juice = nước ép",
-    hintImage: "🧃",
-    unscrambledLetters: ["e", "i", "j", "c", "u"],
-    oddChoices: ["juice", "ice cream", "chicken", "octopus"]
+    question: "Is it a ball?",
+    image: "🚗",
+    vocabulary: "ball",
+    choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
+    options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
+    correctAnswer: "No, it isn't.",
+    explanation: "car = xe ô tô",
+    hintImage: "🚗"
   },
   {
     id: 5,
     type: "multiple_choice",
-    question: "What's this?",
-    image: "🍕",
-    vocabulary: "pizza",
-    choices: ["This is pizza.", "This is rice.", "This is a cookie.", "This is bread."],
-    options: ["This is pizza.", "This is rice.", "This is a cookie.", "This is bread."],
-    correctAnswer: "This is pizza.",
-    explanation: "pizza = bánh pizza",
-    hintImage: "🍕",
-    unscrambledLetters: ["a", "z", "p", "z", "i"],
-    oddChoices: ["pizza", "bread", "rice", "octopus"]
+    question: "Choose the correct sentence.",
+    image: "🪁🪁",
+    vocabulary: "kites",
+    choices: ["Two kites.", "One kite.", "Three kites.", "Four kites."],
+    options: ["Two kites.", "One kite.", "Three kites.", "Four kites."],
+    correctAnswer: "Two kites.",
+    explanation: "two kites = hai con diều",
+    hintImage: "🪁🪁"
   },
   {
     id: 6,
     type: "multiple_choice",
-    question: "How many cars?",
-    image: "🚗🚗",
-    vocabulary: "cars",
-    choices: ["Two cars.", "One car.", "Three cars.", "Four cars."],
-    options: ["Two cars.", "One car.", "Three cars.", "Four cars."],
-    correctAnswer: "Two cars.",
-    explanation: "cars = những ô tô",
-    hintImage: "🚗🚗",
-    unscrambledLetters: ["r", "c", "s", "a"],
-    oddChoices: ["volcano", "car", "kite", "cars"]
+    question: "Choose the correct sentence.",
+    image: "🍞",
+    vocabulary: "bread",
+    choices: ["I like bread.", "I like juice.", "I like chicken.", "I like fish."],
+    options: ["I like bread.", "I like juice.", "I like chicken.", "I like fish."],
+    correctAnswer: "I like bread.",
+    explanation: "bread = bánh mì",
+    hintImage: "🍞"
   },
   {
     id: 7,
     type: "multiple_choice",
-    question: "Is this your brother?",
-    image: "👦",
-    vocabulary: "brother",
-    choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
-    options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
-    correctAnswer: "Yes, it is.",
-    explanation: "brother = anh/em trai",
-    hintImage: "👦",
-    unscrambledLetters: ["h", "e", "o", "b", "r", "t", "r"],
-    oddChoices: ["hamburger", "brother", "sister", "grandfather"]
+    question: "I don't like ______.",
+    image: "🥛",
+    vocabulary: "milk",
+    choices: ["milk", "chicken", "fish", "rice"],
+    options: ["milk", "chicken", "fish", "rice"],
+    correctAnswer: "milk",
+    explanation: "milk = sữa",
+    hintImage: "🥛"
   },
   {
     id: 8,
     type: "multiple_choice",
-    question: "Do you have a puzzle?",
-    image: "🧩",
-    vocabulary: "puzzle",
-    choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
-    options: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
+    question: "Count the ______.",
+    image: "🧱🧱🧱",
+    vocabulary: "blocks",
+    choices: ["blocks", "puzzles", "cards", "games"],
+    options: ["blocks", "puzzles", "cards", "games"],
+    correctAnswer: "blocks",
+    explanation: "blocks = những khối hình",
+    hintImage: "🧱🧱🧱"
+  },
+  {
+    id: 9,
+    type: "multiple_choice",
+    question: "Choose the different item.",
+    image: "❓",
+    vocabulary: "car",
+    choices: ["🍕", "🍗", "🐟", "🚗"],
+    options: ["🍕", "🍗", "🐟", "🚗"],
+    correctAnswer: "🚗",
+    explanation: "car = xe ô tô",
+    hintImage: "❓"
+  },
+  {
+    id: 10,
+    type: "multiple_choice",
+    question: "Teacher: Do you like apples?",
+    image: "🍎",
+    vocabulary: "apple",
+    choices: ["Yes, I do.", "Yes, it is.", "No, it isn't.", "No, they aren't."],
+    options: ["Yes, I do.", "Yes, it is.", "No, it isn't.", "No, they aren't."],
     correctAnswer: "Yes, I do.",
-    explanation: "puzzle = trò xếp hình",
-    hintImage: "🧩",
-    unscrambledLetters: ["l", "e", "z", "p", "z", "u"],
-    oddChoices: ["puzzle", "card", "game", "octopus"]
+    explanation: "Yes, I do.",
+    hintImage: "🍎"
+  }
+];
+
+export const checkup2Speaking: SpeakingTask[] = [
+  {
+    number: 1,
+    type: "repeat_word",
+    instruction: "Repeat the word aloud!",
+    emoji: "3️⃣",
+    promptText: "three",
+    targetPhrase: "three"
+  },
+  {
+    number: 2,
+    type: "repeat_word",
+    instruction: "Repeat the word aloud!",
+    emoji: "🍕",
+    promptText: "pizza",
+    targetPhrase: "pizza"
+  },
+  {
+    number: 3,
+    type: "read_sentence",
+    instruction: "Read the sentence aloud!",
+    emoji: "🍗",
+    promptText: "I like chicken.",
+    targetPhrase: "I like chicken."
+  },
+  {
+    number: 4,
+    type: "read_sentence",
+    instruction: "Read the sentence aloud!",
+    emoji: "🥛",
+    promptText: "I don't like milk.",
+    targetPhrase: "I don't like milk."
+  },
+  {
+    number: 5,
+    type: "answer_question",
+    instruction: "Answer the question!",
+    emoji: "🎂7️⃣",
+    teacherQuestion: "How old are you?",
+    promptText: "I'm seven.",
+    targetPhrase: "I'm seven."
+  },
+  {
+    number: 6,
+    type: "answer_question",
+    instruction: "Answer the question!",
+    emoji: "🐟",
+    teacherQuestion: "Do you like fish?",
+    promptText: "Yes, I do.",
+    targetPhrase: "Yes, I do."
+  },
+  {
+    number: 7,
+    type: "describe_picture",
+    instruction: "Describe the picture!",
+    emoji: "🚗🚗🚗",
+    promptText: "I see three cars.",
+    targetPhrase: "I see three cars."
+  },
+  {
+    number: 8,
+    type: "conversation",
+    instruction: "Complete the conversation!",
+    emoji: "🧃",
+    teacherQuestion: "Here you are.",
+    promptText: "Thank you.",
+    targetPhrase: "Thank you."
   }
 ];
