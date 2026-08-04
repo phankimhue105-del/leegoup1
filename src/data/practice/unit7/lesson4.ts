@@ -7,9 +7,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Which one is wash my hands?",
     image: "❓",
     vocabulary: "wash my hands",
-    choices: ["👐", "🧼", "🪮", "🪥"],
-    options: ["👐", "🧼", "🪮", "🪥"],
-    correctAnswer: "👐",
+    choices: ["🧼👐", "🧼👦", "🪮👦", "🪥🦷"],
+    options: ["🧼👐", "🧼👦", "🪮👦", "🪥🦷"],
+    correctAnswer: "🧼👐",
     explanation: "✓ Correct!\n\"wash my hands\" = rửa tay",
     hintImage: "❓"
   },
@@ -19,9 +19,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Which one is brush my teeth?",
     image: "❓",
     vocabulary: "brush my teeth",
-    choices: ["🪥", "🪮", "👐", "🧼"],
-    options: ["🪥", "🪮", "👐", "🧼"],
-    correctAnswer: "🪥",
+    choices: ["🪥🦷", "🪮👦", "🧼👐", "🧼👦"],
+    options: ["🪥🦷", "🪮👦", "🧼👐", "🧼👦"],
+    correctAnswer: "🪥🦷",
     explanation: "✓ Correct!\n\"brush my teeth\" = đánh răng",
     hintImage: "❓"
   },
@@ -40,38 +40,38 @@ export const lesson4Practice: PracticeQuestion[] = [
   {
     id: 4,
     type: "multiple_choice",
-    question: "Is this my nose?",
+    question: "😊 😊 Is this my nose?",
     image: "👃",
     vocabulary: "nose",
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "Yes, it is.",
-    explanation: "😊 Yes, it is.\n(Có.)",
+    explanation: "😊 Yes, it is.\n→ Đúng.",
     hintImage: "👃"
   },
   {
     id: 5,
     type: "multiple_choice",
-    question: "Are these my eyes?",
-    image: "👂",
+    question: "😊 😊 Are these my eyes?",
+    image: "👁️👁️",
     vocabulary: "eye",
-    choices: ["No, they aren't.", "Yes, they are.", "Yes, it is.", "No, it isn't."],
-    options: ["No, they aren't.", "Yes, they are.", "Yes, it is.", "No, it isn't."],
-    correctAnswer: "No, they aren't.",
-    explanation: "😞 No, they aren't.\n(Không phải.)",
-    hintImage: "👂"
+    choices: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."],
+    options: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."],
+    correctAnswer: "Yes, they are.",
+    explanation: "😊 Yes, they are.\n→ Đúng.",
+    hintImage: "👁️👁️"
   },
   {
     id: 6,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🧼",
+    image: "🧼👦",
     vocabulary: "wash my face",
     choices: ["I can wash my face.", "I can wash my hands.", "I can brush my hair.", "I can brush my teeth."],
     options: ["I can wash my face.", "I can wash my hands.", "I can brush my hair.", "I can brush my teeth."],
     correctAnswer: "I can wash my face.",
     explanation: "✓ Correct!\n\"wash my face\" = rửa mặt",
-    hintImage: "🧼"
+    hintImage: "🧼👦"
   },
   {
     id: 7,
@@ -89,13 +89,13 @@ export const lesson4Practice: PracticeQuestion[] = [
     id: 8,
     type: "multiple_choice",
     question: "I can ______ my teeth.",
-    image: "🪥",
+    image: "🪥🦷",
     vocabulary: "brush my teeth",
     choices: ["brush", "wash", "comb", "clean"],
     options: ["brush", "wash", "comb", "clean"],
     correctAnswer: "brush",
     explanation: "✓ Correct!\n\"brush\" = chải/đánh",
-    hintImage: "🪥"
+    hintImage: "🪥🦷"
   },
   {
     id: 9,
@@ -115,9 +115,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Choose the different item.",
     image: "❓",
     vocabulary: "car",
-    choices: ["👐", "🧼", "🪥", "🚗"],
-    options: ["👐", "🧼", "🪥", "🚗"],
-    correctAnswer: "🚗",
+    choices: ["🧼👐", "🧼👦", "🪥🦷", "🚗💨"],
+    options: ["🧼👐", "🧼👦", "🪥🦷", "🚗💨"],
+    correctAnswer: "🚗💨",
     explanation: "✓ Correct!\n\"car\" = xe ô tô",
     hintImage: "❓"
   }
