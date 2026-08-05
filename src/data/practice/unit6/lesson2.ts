@@ -234,12 +234,22 @@ export const lesson2Practice: PracticeQuestion[] = [
   {
     id: 5,
     type: "multiple_choice",
-    question: "Which one is 'under'?",
+    question: "Which one is correct?",
     image: UnderIllustrationSVG as any,
     vocabulary: "under",
-    choices: ["📦⬇️ (under)", "📦⬆️ (on)", "📦📥 (in)", "📦➡️ (next to)"],
-    options: ["📦⬇️ (under)", "📦⬆️ (on)", "📦📥 (in)", "📦➡️ (next to)"],
-    correctAnswer: "📦⬇️ (under)",
+    choices: [
+      "The ball is under the table.",
+      "The ball is on the table.",
+      "The ball is in the table.",
+      "The ball is behind the table."
+    ],
+    options: [
+      "The ball is under the table.",
+      "The ball is on the table.",
+      "The ball is in the table.",
+      "The ball is behind the table."
+    ],
+    correctAnswer: "The ball is under the table.",
     explanation: "under = ở dưới",
     hintImage: UnderIllustrationSVG as any
   },
