@@ -1527,7 +1527,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
                   <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
-                    {simplifyExplanation(getWhyCorrect(renderQuestion), renderQuestion?.targetWord || renderQuestion?.vocabulary)}
+                    {lesson.id === 'u7-l1' || lesson.id === 'u7-l3'
+                      ? renderQuestion?.explanation || 'Đáp án đúng.'
+                      : simplifyExplanation(getWhyCorrect(renderQuestion), renderQuestion?.targetWord || renderQuestion?.vocabulary)}
                   </div>
                 </div>
 
