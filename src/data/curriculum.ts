@@ -1039,7 +1039,7 @@ export const EMOJI_MAP: Record<string, string> = {
   elephant: '🐘', monkey: '🐒', tiger: '🐅', bear: '🐻', kangaroo: '🦘', penguin: '🐧', snake: '🐍', giraffe: '🦒', zebra: '🦓',
   run: '🏃', hop: '🐇', swim: '🏊', walk: '🚶', arm: '💪', hand: '✋', finger: '☝️', leg: '🦵', foot: '🦶', toe: '👣',
   eye: '👁️', nose: '👃', mouth: '👄', ear: '👂', 'wash my face': '🧼', 'wash my hands': '👐🧼', 'brush my hair': '🪮', 'brush my teeth': '🪥',
-  old: '🧓', new: '✨', big: '🐘', small: '🐭', long: '📏', short: '📐', fast: '⚡', slow: '🐢', noisy: '📢', quiet: '🤫',
+  old: '🧓', new: '✨', big: '🐘', small: '🐭', long: '📏━━━━', short: '📏', fast: '⚡', slow: '🐢', noisy: '📢', quiet: '🤫',
   bus: '🚌', truck: '🚚', train: '🚆', boat: '⛵'
 };
 
