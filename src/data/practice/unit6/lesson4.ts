@@ -77,13 +77,13 @@ export const lesson4Practice: PracticeQuestion[] = [
     id: 7,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🐒🌳",
-    vocabulary: "monkey",
-    choices: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
-    options: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
-    correctAnswer: "The monkey is in the tree.",
-    explanation: "in the tree = ở trên cây",
-    hintImage: "🐒🌳"
+    image: "🐻🚶",
+    vocabulary: "walk",
+    choices: ["Bears can walk.", "Bears can fly.", "Bears can swim.", "Bears can run."],
+    options: ["Bears can walk.", "Bears can fly.", "Bears can swim.", "Bears can run."],
+    correctAnswer: "Bears can walk.",
+    explanation: "walk = đi bộ",
+    hintImage: "🐻🚶"
   },
   {
     id: 8,
