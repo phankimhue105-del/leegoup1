@@ -10,7 +10,7 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, they are.", "No, they aren't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "Yes, they are.",
-    explanation: "😊 Yes, they are.\n(Đúng rồi, đây là đôi mắt.)",
+    explanation: "😊 Yes, they are.\n→ Đúng.",
     hintImage: "👁️👁️",
     unscrambledLetters: ["y", "e", "e"],
     oddChoices: ["mouth", "eye", "volcano", "ear"]
@@ -24,7 +24,7 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
-    explanation: "😞 No, it isn't.\n(Không đúng, đây không phải cái mũi.)",
+    explanation: "😞 No, it isn't.\n→ Không phải.",
     hintImage: "👃",
     unscrambledLetters: ["s", "o", "n", "e"],
     oddChoices: ["mouth", "nose", "volcano", "ear"]
@@ -38,7 +38,7 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "Yes, it is.",
-    explanation: "😊 Yes, it is.\n(Đúng rồi, đây là cái miệng.)",
+    explanation: "😊 Yes, it is.\n→ Đúng.",
     hintImage: "👄",
     unscrambledLetters: ["m", "o", "u", "t", "h"],
     oddChoices: ["mouth", "eye", "eraser", "ear"]
@@ -52,7 +52,7 @@ export const lesson2Practice: PracticeQuestion[] = [
     choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
     correctAnswer: "No, it isn't.",
-    explanation: "😞 No, it isn't.\n(Không đúng, đây không phải cái tai.)",
+    explanation: "😞 No, it isn't.\n→ Không phải.",
     hintImage: "👂",
     unscrambledLetters: ["e", "a", "r"],
     oddChoices: ["ear", "mouth", "nose", "dinosaur"]
