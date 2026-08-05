@@ -3,30 +3,44 @@ import { PracticeQuestion } from '../../../types';
 
 // Custom educational vector illustrations using React.createElement SVG
 
-// Issue 2: Old Shoe (dirty, patched, with old grandfather icon beside it)
 const OldShoeSVG = React.createElement('svg', {
   xmlns: 'http://www.w3.org/2000/svg',
   viewBox: '0 0 200 200',
   style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
 }, [
   React.createElement('g', { key: 'shoe-g' }, [
-    // Sole of the shoe
+    // Outer shoe body (brown faded sneaker)
     React.createElement('path', {
-      d: 'M20 130 C20 130 50 75 90 75 C130 75 150 115 180 125 C180 125 180 150 150 150 C120 150 40 150 20 130 Z',
-      fill: '#8B5A2B', // Faded dirty brown
+      d: 'M 25 140 C 25 140, 30 110, 50 100 C 65 92, 80 110, 100 110 C 120 110, 140 85, 160 85 C 175 85, 185 105, 185 125 C 185 140, 180 145, 165 145 C 150 145, 45 145, 25 140 Z',
+      fill: '#8B5A2B', // Faded brown
       stroke: '#5C3A21',
-      strokeWidth: 2,
+      strokeWidth: 2.5,
+      key: 'body'
+    }),
+    // White sole (dirty yellowed/grey white)
+    React.createElement('path', {
+      d: 'M 25 140 Q 105 145, 165 145 C 170 145, 180 143, 182 135 L 184 142 C 184 148, 175 152, 165 152 C 145 152, 45 152, 25 147 Z',
+      fill: '#D1D5DB', // Dirty grey
+      stroke: '#9CA3AF',
+      strokeWidth: 1.5,
       key: 'sole'
     }),
-    // Patched area indicating it is old
-    React.createElement('rect', { x: 50, y: 100, width: 25, height: 15, rx: 2, fill: '#D2B48C', stroke: '#8B5A2B', strokeWidth: 1, transform: 'rotate(15 62 107)', key: 'patch' }),
-    // Stitches on the patch
-    React.createElement('path', { d: 'M55 98 L55 117 M65 98 L65 117 M70 98 L70 117', stroke: '#5C3A21', strokeWidth: 1.5, key: 'stitches' }),
-    // Dirt spots
-    React.createElement('circle', { cx: 120, cy: 110, r: 6, fill: '#4A3525', opacity: 0.6, key: 'dirt1' }),
-    React.createElement('circle', { cx: 140, cy: 125, r: 4, fill: '#4A3525', opacity: 0.6, key: 'dirt2' }),
+    // Laces (old and frayed)
+    React.createElement('path', {
+      d: 'M 90 110 L 105 95 M 100 110 L 115 95 M 110 110 L 125 95',
+      stroke: '#F3F4F6',
+      strokeWidth: 2,
+      key: 'laces'
+    }),
+    // Dirty grey patches on the shoe toe and heel
+    React.createElement('circle', { cx: 160, cy: 110, r: 8, fill: '#4A3525', opacity: 0.6, key: 'dirt1' }),
+    React.createElement('circle', { cx: 50, cy: 120, r: 6, fill: '#4A3525', opacity: 0.6, key: 'dirt2' }),
+    // Patch / Bandage
+    React.createElement('rect', { x: 120, y: 115, width: 22, height: 12, rx: 2, fill: '#D2B48C', stroke: '#8B5A2B', strokeWidth: 1, transform: 'rotate(-10 131 121)', key: 'patch' }),
+    React.createElement('line', { x1: 125, y1: 112, x2: 125, y2: 128, stroke: '#5C3A21', strokeWidth: 1.5, key: 'stitch1' }),
+    React.createElement('line', { x1: 135, y1: 112, x2: 135, y2: 128, stroke: '#5C3A21', strokeWidth: 1.5, key: 'stitch2' }),
     // Grandfather icon 👴 beside the shoe to reinforce "OLD"
-    React.createElement('text', { x: 125, y: 65, fontSize: '40', key: 'old-icon' }, '👴')
+    React.createElement('text', { x: 130, y: 65, fontSize: '40', key: 'old-icon' }, '👴')
   ])
 ]);
 
@@ -78,9 +92,7 @@ const OldBookSVG = React.createElement('svg', {
     }),
     // Tears on the cover
     React.createElement('path', { d: 'M50 60 L70 65 L60 80', fill: 'none', stroke: '#3E2514', strokeWidth: 2, key: 'tear1' }),
-    React.createElement('path', { d: 'M110 120 L125 115 L120 130', fill: 'none', stroke: '#3E2514', strokeWidth: 2, key: 'tear2' }),
-    // Grandfather icon 👴 beside the book to reinforce "OLD"
-    React.createElement('text', { x: 125, y: 75, fontSize: '40', key: 'old-icon' }, '👴')
+    React.createElement('path', { d: 'M110 120 L125 115 L120 130', fill: 'none', stroke: '#3E2514', strokeWidth: 2, key: 'tear2' })
   ])
 ]);
 
