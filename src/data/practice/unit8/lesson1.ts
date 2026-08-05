@@ -1,17 +1,154 @@
+import React from 'react';
 import { PracticeQuestion } from '../../../types';
+
+// Custom educational vector illustrations using React.createElement SVG
+
+// Issue 2: Old Shoe (dirty, patched, with old grandfather icon beside it)
+const OldShoeSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'shoe-g' }, [
+    // Sole of the shoe
+    React.createElement('path', {
+      d: 'M20 130 C20 130 50 75 90 75 C130 75 150 115 180 125 C180 125 180 150 150 150 C120 150 40 150 20 130 Z',
+      fill: '#8B5A2B', // Faded dirty brown
+      stroke: '#5C3A21',
+      strokeWidth: 2,
+      key: 'sole'
+    }),
+    // Patched area indicating it is old
+    React.createElement('rect', { x: 50, y: 100, width: 25, height: 15, rx: 2, fill: '#D2B48C', stroke: '#8B5A2B', strokeWidth: 1, transform: 'rotate(15 62 107)', key: 'patch' }),
+    // Stitches on the patch
+    React.createElement('path', { d: 'M55 98 L55 117 M65 98 L65 117 M70 98 L70 117', stroke: '#5C3A21', strokeWidth: 1.5, key: 'stitches' }),
+    // Dirt spots
+    React.createElement('circle', { cx: 120, cy: 110, r: 6, fill: '#4A3525', opacity: 0.6, key: 'dirt1' }),
+    React.createElement('circle', { cx: 140, cy: 125, r: 4, fill: '#4A3525', opacity: 0.6, key: 'dirt2' }),
+    // Grandfather icon 👴 beside the shoe to reinforce "OLD"
+    React.createElement('text', { x: 125, y: 65, fontSize: '40', key: 'old-icon' }, '👴')
+  ])
+]);
+
+// Issue 3: Very Short Pencil (tiny, heavily used, pencil less than half normal length)
+const ShortPencilSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'pencil-g' }, [
+    // Short pencil body
+    React.createElement('rect', { x: 85, y: 75, width: 30, height: 45, fill: '#FBBF24', stroke: '#D97706', strokeWidth: 2, key: 'body' }),
+    // Stripes
+    React.createElement('line', { x1: 95, y1: 75, x2: 95, y2: 120, stroke: '#D97706', strokeWidth: 2, key: 'stripe1' }),
+    React.createElement('line', { x1: 105, y1: 75, x2: 105, y2: 120, stroke: '#D97706', strokeWidth: 2, key: 'stripe2' }),
+    // Metal band
+    React.createElement('rect', { x: 85, y: 60, width: 30, height: 15, fill: '#9CA3AF', stroke: '#4B5563', strokeWidth: 2, key: 'metal' }),
+    // Worn down pink eraser
+    React.createElement('path', { d: 'M85 60 Q100 53 115 60 Z', fill: '#F472B6', stroke: '#DB2777', strokeWidth: 2, key: 'eraser' }),
+    // Sharpened wood tip
+    React.createElement('path', { d: 'M85 120 L100 145 L115 120 Z', fill: '#FEF3C7', stroke: '#D97706', strokeWidth: 2, key: 'wood' }),
+    // Lead point
+    React.createElement('path', { d: 'M96 138 L100 145 L104 138 Z', fill: '#1F2937', key: 'lead' }),
+    // Pinching hand 🤏 indicator showing small/short
+    React.createElement('text', { x: 130, y: 110, fontSize: '32', key: 'pinch' }, '🤏')
+  ])
+]);
+
+// Issue 4: Old Book (worn cover, faded brown, with grandfather icon beside it)
+const OldBookSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'book-g' }, [
+    // Faded book cover
+    React.createElement('path', {
+      d: 'M40 40 L140 32 Q160 32 160 50 L150 160 Q150 170 130 170 L30 160 Z',
+      fill: '#5C3A21', // Old brown
+      stroke: '#4A301C',
+      strokeWidth: 3,
+      key: 'cover'
+    }),
+    // Yellowed pages at edges
+    React.createElement('path', {
+      d: 'M142 37 L148 37 L138 162 L132 162 Z',
+      fill: '#FEF08A', // Yellowed paper
+      key: 'pages'
+    }),
+    // Tears on the cover
+    React.createElement('path', { d: 'M50 60 L70 65 L60 80', fill: 'none', stroke: '#3E2514', strokeWidth: 2, key: 'tear1' }),
+    React.createElement('path', { d: 'M110 120 L125 115 L120 130', fill: 'none', stroke: '#3E2514', strokeWidth: 2, key: 'tear2' }),
+    // Grandfather icon 👴 beside the book to reinforce "OLD"
+    React.createElement('text', { x: 125, y: 75, fontSize: '40', key: 'old-icon' }, '👴')
+  ])
+]);
+
+// Issue 5: Big Box (enlarged, occupying ~80% of the area)
+const BigBoxSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'box-g' }, [
+    // Massive box occupying 80%+ of the area
+    React.createElement('path', {
+      d: 'M20 55 L100 20 L180 55 L180 165 L100 198 L20 165 Z',
+      fill: '#D97706', // Cardboard brown
+      stroke: '#B45309',
+      strokeWidth: 3,
+      key: 'box-body'
+    }),
+    // Top flaps
+    React.createElement('path', { d: 'M20 55 L100 90 L180 55 L100 20 Z', fill: '#F59E0B', stroke: '#B45309', strokeWidth: 2, key: 'box-top' }),
+    // Vertical line
+    React.createElement('line', { x1: 100, y1: 90, x2: 100, y2: 198, stroke: '#B45309', strokeWidth: 3, key: 'divider' }),
+    // Big label on the side
+    React.createElement('text', { x: 75, y: 135, fontSize: '36', fill: '#FFFFFF', fontWeight: 'bold', key: 'label' }, 'BIG')
+  ])
+]);
+
+// Issue 6: One Long Straight Rope (stretched horizontally from left to right, not rolled/curled/coiled)
+const LongRopeSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'rope-g' }, [
+    // Long straight rope
+    React.createElement('path', {
+      d: 'M10 100 Q 50 95, 100 100 T 190 100',
+      fill: 'none',
+      stroke: '#D97706', // Rope color
+      strokeWidth: 12,
+      strokeLinecap: 'round',
+      key: 'rope-core'
+    }),
+    // Threads
+    React.createElement('path', {
+      d: 'M15 100 L25 97 M35 100 L45 97 M55 100 L65 97 M75 100 L85 97 M95 100 L105 97 M115 100 L125 97 M135 100 L145 97 M155 100 L165 97 M175 100 L185 97',
+      fill: 'none',
+      stroke: '#F59E0B',
+      strokeWidth: 3,
+      key: 'threads'
+    }),
+    // Ends
+    React.createElement('path', { d: 'M6 95 L10 100 L5 105 M194 95 L190 100 L195 105', fill: 'none', stroke: '#B45309', strokeWidth: 2, key: 'ends' })
+  ])
+]);
 
 export const lesson1Practice: PracticeQuestion[] = [
   {
     id: 1,
     type: "multiple_choice",
     question: "Choose the correct description.",
-    image: "👟🩹",
+    image: OldShoeSVG as any,
     vocabulary: "old",
     choices: ["That is an old shoe.", "That is a new shoe.", "That is a big shoe.", "That is a small shoe."],
     options: ["That is an old shoe.", "That is a new shoe.", "That is a big shoe.", "That is a small shoe."],
     correctAnswer: "That is an old shoe.",
     explanation: "old = cũ",
-    hintImage: "👟🩹",
+    hintImage: OldShoeSVG as any,
     unscrambledLetters: ["o", "l", "d"],
     oddChoices: ["old", "new", "big", "dinosaur"],
     activityTitle: "Choose the Correct Answer"
@@ -80,13 +217,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     id: 6,
     type: "multiple_choice",
     question: "Choose the correct description.",
-    image: "🤏✏️",
+    image: ShortPencilSVG as any,
     vocabulary: "short",
     choices: ["It is a short pencil.", "It is a long pencil.", "It is a big pencil.", "It is a small pencil."],
     options: ["It is a short pencil.", "It is a long pencil.", "It is a big pencil.", "It is a small pencil."],
     correctAnswer: "It is a short pencil.",
     explanation: "short = ngắn",
-    hintImage: "🤏✏️",
+    hintImage: ShortPencilSVG as any,
     unscrambledLetters: ["s", "h", "o", "r", "t"],
     oddChoices: ["short", "long", "small", "octopus"],
     activityTitle: "Choose the Correct Answer"
@@ -95,13 +232,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     id: 7,
     type: "multiple_choice",
     question: "Choose the correct description.",
-    image: "📖🕸️",
+    image: OldBookSVG as any,
     vocabulary: "old",
     choices: ["That is an old book.", "That is a new book.", "That is a big book.", "That is a small book."],
     options: ["That is an old book.", "That is a new book.", "That is a big book.", "That is a small book."],
     correctAnswer: "That is an old book.",
     explanation: "old = cũ",
-    hintImage: "📖🕸️",
+    hintImage: OldBookSVG as any,
     unscrambledLetters: ["o", "l", "d"],
     oddChoices: ["old", "new", "short", "volcano"],
     activityTitle: "Choose the Correct Answer"
@@ -125,13 +262,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     id: 9,
     type: "multiple_choice",
     question: "Choose the correct description.",
-    image: "📦 ▫️",
+    image: BigBoxSVG as any,
     vocabulary: "big",
     choices: ["That is a big box.", "That is a small box.", "That is a new box.", "That is an old box."],
     options: ["That is a big box.", "That is a small box.", "That is a new box.", "That is an old box."],
     correctAnswer: "That is a big box.",
     explanation: "big = to",
-    hintImage: "📦 ▫️",
+    hintImage: BigBoxSVG as any,
     unscrambledLetters: ["b", "i", "g"],
     oddChoices: ["big", "small", "long", "hamburger"],
     activityTitle: "Choose the Correct Answer"
@@ -140,13 +277,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     id: 10,
     type: "multiple_choice",
     question: "Choose the correct description.",
-    image: "🧵━━━━",
+    image: LongRopeSVG as any,
     vocabulary: "long",
     choices: ["That is a long rope.", "That is a short rope.", "That is a big rope.", "That is a small rope."],
     options: ["That is a long rope.", "That is a short rope.", "That is a big rope.", "That is a small rope."],
     correctAnswer: "That is a long rope.",
     explanation: "long = dài",
-    hintImage: "🧵━━━━",
+    hintImage: LongRopeSVG as any,
     unscrambledLetters: ["l", "o", "n", "g"],
     oddChoices: ["long", "short", "big", "alien"],
     activityTitle: "Choose the Correct Answer"
