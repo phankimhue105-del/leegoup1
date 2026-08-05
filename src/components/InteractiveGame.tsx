@@ -1542,16 +1542,18 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                   <div>
                     <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">④ Vietnamese Meaning (Nghĩa tiếng Việt)</span>
                     <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 whitespace-pre-line leading-relaxed font-bold">
-                      {getVietnameseTranslation(
-                        renderQuestion?.sentencePattern || renderQuestion?.question || '',
-                        renderQuestion?.targetWord || '',
-                        (() => {
-                          const word = renderQuestion?.targetWord || renderQuestion?.vocabulary || '';
-                          const match = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
-                          return match ? match.meaningVi : renderQuestion?.meaningVi || '';
-                        })(),
-                        renderQuestion?.correctAnswer || ''
-                      )}
+                      {lesson.id === 'u6-l2' && renderQuestion?.id === 5
+                        ? "The ball is under the table.\n↓\nQuả bóng ở dưới cái bàn."
+                        : getVietnameseTranslation(
+                            renderQuestion?.sentencePattern || renderQuestion?.question || '',
+                            renderQuestion?.targetWord || '',
+                            (() => {
+                              const word = renderQuestion?.targetWord || renderQuestion?.vocabulary || '';
+                              const match = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
+                              return match ? match.meaningVi : renderQuestion?.meaningVi || '';
+                            })(),
+                            renderQuestion?.correctAnswer || ''
+                          )}
                     </div>
                   </div>
                 </div>
@@ -1561,7 +1563,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                   <div>
                     <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
                     <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
-                      {lesson.id === 'u7-l1' || lesson.id === 'u7-l3'
+                      {lesson.id === 'u6-l2' && renderQuestion?.id === 5
+                        ? 'under = ở dưới'
+                        : lesson.id === 'u7-l1' || lesson.id === 'u7-l3'
                         ? renderQuestion?.explanation || 'Đáp án đúng.'
                         : simplifyExplanation(getWhyCorrect(renderQuestion), renderQuestion?.targetWord || renderQuestion?.vocabulary)}
                     </div>
@@ -1570,7 +1574,9 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
                   <div>
                     <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">⑤ Vocabulary (Từ vựng bổ ích)</span>
                     <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 whitespace-pre-line">
-                      {getVocabularySection(renderQuestion, vocabList)}
+                      {lesson.id === 'u6-l2' && renderQuestion?.id === 5
+                        ? 'under = ở dưới'
+                        : getVocabularySection(renderQuestion, vocabList)}
                     </div>
                   </div>
                 </div>
