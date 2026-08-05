@@ -254,8 +254,8 @@ const EMOJI_LOOKUP: Record<string, string> = {
   new: '✨',
   big: '🐘',
   small: '🐭',
-  long: '📏',
-  short: '📐',
+  long: '📏━━━━',
+  short: '📏',
   fast: '⚡',
   slow: '🐢',
   noisy: '📢',
@@ -325,6 +325,12 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
     }
     if (wordLower === 'toe') {
       return <div className="text-8xl select-none animate-bounce font-normal">👣</div>;
+    }
+    if (wordLower === 'long') {
+      return <div className="text-8xl select-none animate-bounce font-normal">📏━━━━</div>;
+    }
+    if (wordLower === 'short') {
+      return <div className="text-8xl select-none animate-bounce font-normal">📏</div>;
     }
     return null;
   }, [wordLower]);
