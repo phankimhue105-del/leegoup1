@@ -103,6 +103,15 @@ const cleanTranslation = (text: string): string => {
   return text.trim();
 };
 
+const getU7L3Translation = (answer: string): string => {
+  const ans = (answer || '').trim();
+  if (ans === 'Sure.') return '→ Được chứ.';
+  if (ans === 'Sure. Please come in.') return '→ Được, mời vào.';
+  if (ans === 'Excuse me.') return '→ Xin lỗi.';
+  if (ans === 'Thank you.') return '→ Cảm ơn bạn.';
+  return '→ ' + ans;
+};
+
 const getSentencePattern = (questionText: string, targetWord: string, type?: string): string => {
   const qText = (questionText || '').toLowerCase();
   
@@ -1488,59 +1497,76 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </div>
 
             {/* Teaching Feedback Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
-              {/* Left Column */}
-              <div className="space-y-3">
+            {lesson.id === 'u7-l3' ? (
+              <div className="flex flex-col gap-4 text-xs font-semibold text-slate-700 max-w-md mx-auto w-full">
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">① Correct Answer (Đáp án đúng)</span>
                   <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 text-sm">
                     {renderQuestion?.correctAnswer}
                   </div>
                 </div>
-
                 <div>
-                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">② Sentence Pattern (Mẫu câu)</span>
-                  <div className="p-2.5 bg-indigo-50/50 border border-indigo-100/50 rounded-xl font-extrabold text-indigo-950">
-                    {getSentencePattern(renderQuestion?.sentencePattern || renderQuestion?.question || '', renderQuestion?.targetWord || '', renderQuestion?.type)}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">④ Vietnamese Meaning (Nghĩa tiếng Việt)</span>
-                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 whitespace-pre-line leading-relaxed font-bold">
-                    {getVietnameseTranslation(
-                      renderQuestion?.sentencePattern || renderQuestion?.question || '',
-                      renderQuestion?.targetWord || '',
-                      (() => {
-                        const word = renderQuestion?.targetWord || renderQuestion?.vocabulary || '';
-                        const match = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
-                        return match ? match.meaningVi : renderQuestion?.meaningVi || '';
-                      })(),
-                      renderQuestion?.correctAnswer || ''
-                    )}
+                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">② Vietnamese Meaning (Nghĩa tiếng Việt)</span>
+                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 leading-relaxed font-bold text-sm">
+                    {getU7L3Translation(renderQuestion?.correctAnswer || '')}
                   </div>
                 </div>
               </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
+                {/* Left Column */}
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">① Correct Answer (Đáp án đúng)</span>
+                    <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 text-sm">
+                      {renderQuestion?.correctAnswer}
+                    </div>
+                  </div>
 
-              {/* Right Column */}
-              <div className="space-y-3">
-                <div>
-                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
-                  <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
-                    {lesson.id === 'u7-l1' || lesson.id === 'u7-l3'
-                      ? renderQuestion?.explanation || 'Đáp án đúng.'
-                      : simplifyExplanation(getWhyCorrect(renderQuestion), renderQuestion?.targetWord || renderQuestion?.vocabulary)}
+                  <div>
+                    <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">② Sentence Pattern (Mẫu câu)</span>
+                    <div className="p-2.5 bg-indigo-50/50 border border-indigo-100/50 rounded-xl font-extrabold text-indigo-950">
+                      {getSentencePattern(renderQuestion?.sentencePattern || renderQuestion?.question || '', renderQuestion?.targetWord || '', renderQuestion?.type)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">④ Vietnamese Meaning (Nghĩa tiếng Việt)</span>
+                    <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 whitespace-pre-line leading-relaxed font-bold">
+                      {getVietnameseTranslation(
+                        renderQuestion?.sentencePattern || renderQuestion?.question || '',
+                        renderQuestion?.targetWord || '',
+                        (() => {
+                          const word = renderQuestion?.targetWord || renderQuestion?.vocabulary || '';
+                          const match = vocabList.find(v => v.word.toLowerCase() === word.toLowerCase());
+                          return match ? match.meaningVi : renderQuestion?.meaningVi || '';
+                        })(),
+                        renderQuestion?.correctAnswer || ''
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">⑤ Vocabulary (Từ vựng bổ ích)</span>
-                  <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 whitespace-pre-line">
-                    {getVocabularySection(renderQuestion, vocabList)}
+                {/* Right Column */}
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">③ Why is this correct? (Giải thích)</span>
+                    <div className="p-2.5 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-900 leading-relaxed font-bold">
+                      {lesson.id === 'u7-l1' || lesson.id === 'u7-l3'
+                        ? renderQuestion?.explanation || 'Đáp án đúng.'
+                        : simplifyExplanation(getWhyCorrect(renderQuestion), renderQuestion?.targetWord || renderQuestion?.vocabulary)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">⑤ Vocabulary (Từ vựng bổ ích)</span>
+                    <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-extrabold text-slate-800 whitespace-pre-line">
+                      {getVocabularySection(renderQuestion, vocabList)}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
