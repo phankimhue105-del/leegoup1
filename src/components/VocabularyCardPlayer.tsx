@@ -241,7 +241,7 @@ const EMOJI_LOOKUP: Record<string, string> = {
   finger: '☝️',
   leg: '🦵',
   foot: '🦶',
-  toe: '🦶',
+  toe: '👣',
   eye: '👁️',
   nose: '👃',
   mouth: '👄',
@@ -322,6 +322,9 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
     if (wordLower === 'white') {
       const q = lesson2Practice.find(p => p.vocabulary === 'white');
       return q?.image;
+    }
+    if (wordLower === 'toe') {
+      return <div className="text-8xl select-none animate-bounce font-normal">👣</div>;
     }
     return null;
   }, [wordLower]);
