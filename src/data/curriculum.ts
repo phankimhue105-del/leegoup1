@@ -762,7 +762,7 @@ export const CURRICULUM_UNITS: Unit[] = [
           { number: 1, type: 'repeat_word', instruction: 'Repeat this word aloud!', emoji: '🏊', promptText: 'swim', targetPhrase: 'swim' },
           { number: 2, type: 'read_sentence', instruction: 'Read this sentence aloud!', emoji: '🐇', promptText: 'Kangaroos can hop.', targetPhrase: 'Kangaroos can hop.' },
           { number: 3, type: 'answer_question', instruction: "Answer the teacher's question!", emoji: '🏃', teacherQuestion: 'Can zebras run?', promptText: 'Yes, they can.', targetPhrase: 'Yes, they can.' },
-          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🏊', promptText: 'Penguins can swim.', targetPhrase: 'Penguins can swim.' },
+          { number: 4, type: 'describe_picture', instruction: 'Look at the picture and describe it!', emoji: '🐧🏊', promptText: 'Penguins can swim.', targetPhrase: 'Penguins can swim.' },
           { number: 5, type: 'conversation', instruction: 'Complete the mini conversation!', emoji: '🚶', teacherQuestion: 'Can bears walk?', promptText: 'Yes, they can.', targetPhrase: 'Yes, they can.' }
         ]
       }
