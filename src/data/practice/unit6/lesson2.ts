@@ -56,5 +56,77 @@ export const lesson2Practice: PracticeQuestion[] = [
     hintImage: "🦁🦁",
     unscrambledLetters: ["l", "i", "o", "n"],
     oddChoices: ["lion", "zebra", "alien", "snake"]
+  },
+  {
+    id: 5,
+    type: "multiple_choice",
+    question: "Which one is 'under'?",
+    image: "📦⬇️",
+    vocabulary: "under",
+    choices: ["📦⬇️ (under)", "📦⬆️ (on)", "📦📥 (in)", "📦➡️ (next to)"],
+    options: ["📦⬇️ (under)", "📦⬆️ (on)", "📦📥 (in)", "📦➡️ (next to)"],
+    correctAnswer: "📦⬇️ (under)",
+    explanation: "under = ở dưới",
+    hintImage: "📦⬇️"
+  },
+  {
+    id: 6,
+    type: "multiple_choice",
+    question: "Where is the monkey?",
+    image: "🐒🌳",
+    vocabulary: "in",
+    choices: ["It's in the tree.", "It's under the tree.", "It's on the tree.", "It's next to the tree."],
+    options: ["It's in the tree.", "It's under the tree.", "It's on the tree.", "It's next to the tree."],
+    correctAnswer: "It's in the tree.",
+    explanation: "in = ở trong",
+    hintImage: "🐒🌳"
+  },
+  {
+    id: 7,
+    type: "multiple_choice",
+    question: "Where are the snakes?",
+    image: "🐍🐍🪨",
+    vocabulary: "on",
+    choices: ["They're on the rock.", "They're under the rock.", "They're in the rock.", "They're next to the rock."],
+    options: ["They're on the rock.", "They're under the rock.", "They're in the rock.", "They're next to the rock."],
+    correctAnswer: "They're on the rock.",
+    explanation: "on = ở trên",
+    hintImage: "🐍🐍🪨"
+  },
+  {
+    id: 8,
+    type: "multiple_choice",
+    question: "Where is the bear?",
+    image: "🐻🌳",
+    vocabulary: "under",
+    choices: ["It's under the tree.", "It's in the tree.", "It's on the tree.", "It's next to the tree."],
+    options: ["It's under the tree.", "It's in the tree.", "It's on the tree.", "It's next to the tree."],
+    correctAnswer: "It's under the tree.",
+    explanation: "under = ở dưới",
+    hintImage: "🐻🌳"
+  },
+  {
+    id: 9,
+    type: "multiple_choice",
+    question: "Is the ball under the table?",
+    image: "⚽🪑",
+    vocabulary: "under",
+    choices: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
+    options: ["Yes, it is.", "No, it isn't.", "Yes, they are.", "No, they aren't."],
+    correctAnswer: "Yes, it is.",
+    explanation: "Yes, it is. = Đúng vậy, quả bóng ở dưới cái bàn.",
+    hintImage: "⚽🪑"
+  },
+  {
+    id: 10,
+    type: "multiple_choice",
+    question: "Where is the tiger?",
+    image: "🐅📦",
+    vocabulary: "in",
+    choices: ["It's in the box.", "It's on the box.", "It's under the box.", "It's behind the box."],
+    options: ["It's in the box.", "It's on the box.", "It's under the box.", "It's behind the box."],
+    correctAnswer: "It's in the box.",
+    explanation: "in = ở trong",
+    hintImage: "🐅📦"
   }
 ];
