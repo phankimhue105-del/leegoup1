@@ -41,49 +41,49 @@ export const lesson4Practice: PracticeQuestion[] = [
     id: 4,
     type: "multiple_choice",
     question: "Do you like cookies?",
-    image: "🍪",
+    image: "🍪 😊",
     vocabulary: "cookie",
     choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "Yes, I do.",
     explanation: "Yes, I do. = Có, tớ thích.",
-    hintImage: "🍪"
+    hintImage: "🍪 😊"
   },
   {
     id: 5,
     type: "multiple_choice",
     question: "Do you like bananas?",
-    image: "🍌",
+    image: "🍌 😊",
     vocabulary: "banana",
     choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "Yes, I do.",
     explanation: "Yes, I do. = Có, tớ thích.",
-    hintImage: "🍌"
+    hintImage: "🍌 😊"
   },
   {
     id: 6,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🍕",
+    image: "🍕 😊",
     vocabulary: "pizza",
     choices: ["I like pizza.", "I don't like pizza.", "I like apples.", "I don't like apples."],
     options: ["I like pizza.", "I don't like pizza.", "I like apples.", "I don't like apples."],
     correctAnswer: "I like pizza.",
     explanation: "pizza = bánh pizza",
-    hintImage: "🍕"
+    hintImage: "🍕 😊"
   },
   {
     id: 7,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🍗",
+    image: "🍗 😊",
     vocabulary: "chicken",
     choices: ["I like chicken.", "I don't like chicken.", "I like fish.", "I don't like fish."],
     options: ["I like chicken.", "I don't like chicken.", "I like fish.", "I don't like fish."],
     correctAnswer: "I like chicken.",
     explanation: "chicken = thịt gà",
-    hintImage: "🍗"
+    hintImage: "🍗 😊"
   },
   {
     id: 8,
