@@ -60,8 +60,10 @@ export async function loginUser(username: string, password: string): Promise<Use
   try {
     const response = await fetch(API_URL, {
       method: "POST",
+      mode: "cors",
+      redirect: "follow",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain"
       },
       body: requestBodyStr
     });
@@ -150,8 +152,10 @@ export async function getProgress(username: string): Promise<ProgressInfo> {
 
   const response = await fetch(API_URL, {
     method: "POST",
+    mode: "cors",
+    redirect: "follow",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "text/plain"
     },
     body: JSON.stringify(payload)
   });
@@ -187,8 +191,10 @@ export async function updateProgress(username: string, stars: number, progress: 
   try {
     const response = await fetch(API_URL, {
       method: "POST",
+      mode: "cors",
+      redirect: "follow",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain"
       },
       body: JSON.stringify(payload)
     });
