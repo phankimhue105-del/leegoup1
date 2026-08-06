@@ -31,6 +31,8 @@ import { checkup1Practice } from './data/practice/checkup1';
 import { checkup2Practice } from './data/practice/checkup2';
 import { checkup3Practice } from './data/practice/checkup3';
 import { checkup4Practice } from './data/practice/checkup4';
+import LoginPage from './pages/LoginPage';
+import { updateProgress, UserInfo, ProgressInfo } from './services/googleApiService';
 
 
 
@@ -165,10 +167,93 @@ function getModelPatternInfo(unitNumber: number, lessonNumber: number, lesson: L
   }
 }
 
+function parseProgressString(progressStr: string) {
+  const completedCount = parseInt((progressStr || '').split('/')[0]) || 0;
+  const completedLessonIds: string[] = [];
+  const completedUnitIds: string[] = [];
+  
+  const allLessons: Lesson[] = [];
+  CURRICULUM_UNITS.forEach(unit => {
+    unit.lessons.forEach(lesson => {
+      allLessons.push(lesson);
+    });
+  });
+  
+  for (let i = 0; i < Math.min(completedCount, allLessons.length); i++) {
+    completedLessonIds.push(allLessons[i].id);
+  }
+  
+  CURRICULUM_UNITS.forEach(unit => {
+    const unitLessonIds = unit.lessons.map(l => l.id);
+    const allUnitLessonsCompleted = unitLessonIds.every(id => completedLessonIds.includes(id));
+    if (allUnitLessonsCompleted) {
+      completedUnitIds.push(unit.id);
+    }
+  });
+  
+  if (completedUnitIds.includes('unit-1') && completedUnitIds.includes('unit-2')) {
+    completedUnitIds.push('checkup-1');
+  }
+  if (completedUnitIds.includes('unit-3') && completedUnitIds.includes('unit-4')) {
+    completedUnitIds.push('checkup-2');
+  }
+  if (completedUnitIds.includes('unit-5') && completedUnitIds.includes('unit-6')) {
+    completedUnitIds.push('checkup-3');
+  }
+  if (completedUnitIds.includes('unit-7') && completedUnitIds.includes('unit-8')) {
+    completedUnitIds.push('checkup-4');
+  }
+
+  let currentUnit = CURRICULUM_UNITS[0];
+  let currentLesson = CURRICULUM_UNITS[0].lessons[0];
+  
+  if (completedCount > 0 && completedCount < allLessons.length) {
+    const currentLessonObj = allLessons[completedCount];
+    const unitObj = CURRICULUM_UNITS.find(u => u.lessons.some(l => l.id === currentLessonObj.id));
+    if (unitObj) {
+      currentUnit = unitObj;
+      currentLesson = currentLessonObj;
+    }
+  } else if (completedCount >= allLessons.length) {
+    currentUnit = CURRICULUM_UNITS[CURRICULUM_UNITS.length - 1];
+    currentLesson = currentUnit.lessons[currentUnit.lessons.length - 1];
+  }
+  
+  return {
+    completedLessonIds,
+    completedUnitIds,
+    currentUnit,
+    currentLesson
+  };
+}
+
 export default function App() {
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(() => {
+    const saved = localStorage.getItem('leego_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
   // Curriculum state
-  const [currentUnit, setCurrentUnit] = useState<Unit>(CURRICULUM_UNITS[0]);
-  const [currentLesson, setCurrentLesson] = useState<Lesson>(CURRICULUM_UNITS[0].lessons[0]);
+  const [currentUnit, setCurrentUnit] = useState<Unit>(() => {
+    const savedProgress = localStorage.getItem('leego_progress');
+    if (savedProgress) {
+      const progInfo: ProgressInfo = JSON.parse(savedProgress);
+      const parsed = parseProgressString(progInfo.progress);
+      return parsed.currentUnit;
+    }
+    return CURRICULUM_UNITS[0];
+  });
+  
+  const [currentLesson, setCurrentLesson] = useState<Lesson>(() => {
+    const savedProgress = localStorage.getItem('leego_progress');
+    if (savedProgress) {
+      const progInfo: ProgressInfo = JSON.parse(savedProgress);
+      const parsed = parseProgressString(progInfo.progress);
+      return parsed.currentLesson;
+    }
+    return CURRICULUM_UNITS[0].lessons[0];
+  });
+  
   const [currentStage, setCurrentStage] = useState<Stage>('vocabulary');
   const [lastPracticeScore, setLastPracticeScore] = useState<number>(100);
   const [lastSpeakingScore, setLastSpeakingScore] = useState<number>(90);
@@ -179,17 +264,50 @@ export default function App() {
   const [checkUpUnitB, setCheckUpUnitB] = useState<Unit | null>(null);
 
   // Gamification progress state
-  const [progress, setProgress] = useState<StudentProgress>({
-    stars: 12,
-    badges: ['First Step', 'School Star'],
-    completedLessonIds: [],
-    completedUnitIds: [],
-    speakingScoreAvg: 90,
-    dailyStreak: 3,
-    currentUnitId: CURRICULUM_UNITS[0].id,
-    currentLessonId: CURRICULUM_UNITS[0].lessons[0].id,
-    currentStage: 'vocabulary',
+  const [progress, setProgress] = useState<StudentProgress>(() => {
+    const savedProgress = localStorage.getItem('leego_progress');
+    if (savedProgress) {
+      const progInfo: ProgressInfo = JSON.parse(savedProgress);
+      const parsed = parseProgressString(progInfo.progress);
+      return {
+        stars: progInfo.stars,
+        badges: ['First Step', 'School Star'],
+        completedLessonIds: parsed.completedLessonIds,
+        completedUnitIds: parsed.completedUnitIds,
+        speakingScoreAvg: 90,
+        dailyStreak: 3,
+        currentUnitId: parsed.currentUnit.id,
+        currentLessonId: parsed.currentLesson.id,
+        currentStage: 'vocabulary',
+      };
+    }
+    return {
+      stars: 12,
+      badges: ['First Step', 'School Star'],
+      completedLessonIds: [],
+      completedUnitIds: [],
+      speakingScoreAvg: 90,
+      dailyStreak: 3,
+      currentUnitId: CURRICULUM_UNITS[0].id,
+      currentLessonId: CURRICULUM_UNITS[0].lessons[0].id,
+      currentStage: 'vocabulary',
+    };
   });
+
+  // Automatically synchronize progress to Google Apps Script Web App
+  useEffect(() => {
+    if (!currentUser) return;
+    const completedCount = progress.completedLessonIds.length;
+    const progressStr = `${completedCount}/32`;
+    updateProgress(currentUser.username, progress.stars, progressStr);
+    
+    const progressInfo: ProgressInfo = {
+      stars: progress.stars,
+      progress: progressStr,
+      className: currentUser.className
+    };
+    localStorage.setItem('leego_progress', JSON.stringify(progressInfo));
+  }, [progress.stars, progress.completedLessonIds, currentUser]);
 
   // UI Modals
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -489,8 +607,61 @@ export default function App() {
     CURRICULUM_UNITS[currentUnit.number - 1]?.lessons[currentLesson.number - 1]?.practiceQuestions
   );
 
+  if (!currentUser) {
+    return (
+      <LoginPage
+        onLoginSuccess={(user, prog) => {
+          setCurrentUser(user);
+          const parsed = parseProgressString(prog.progress);
+          setProgress({
+            stars: prog.stars,
+            badges: ['First Step', 'School Star'],
+            completedLessonIds: parsed.completedLessonIds,
+            completedUnitIds: parsed.completedUnitIds,
+            speakingScoreAvg: 90,
+            dailyStreak: 3,
+            currentUnitId: parsed.currentUnit.id,
+            currentLessonId: parsed.currentLesson.id,
+            currentStage: 'vocabulary',
+          });
+          setCurrentUnit(parsed.currentUnit);
+          setCurrentLesson(parsed.currentLesson);
+          setCurrentStage('vocabulary');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col font-sans">
+      {/* Student Profile User Header Bar */}
+      <div className="bg-slate-900 text-white px-4 py-2.5 text-xs flex flex-wrap items-center justify-between gap-4 font-bold border-b border-slate-800 select-none">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span>👤</span>
+            <span>Student: <strong className="text-white font-extrabold text-sm">{currentUser.studentName}</strong></span>
+          </span>
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span>🏫</span>
+            <span>Class: <strong className="text-indigo-400 font-extrabold text-sm">{currentUser.className}</strong></span>
+          </span>
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span>⭐</span>
+            <span>Stars: <strong className="text-yellow-400 font-extrabold text-sm">{progress.stars}</strong></span>
+          </span>
+        </div>
+        <button
+          onClick={() => {
+            soundFX.playClick();
+            localStorage.removeItem('leego_user');
+            localStorage.removeItem('leego_progress');
+            setCurrentUser(null);
+          }}
+          className="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition-all active:scale-95 text-[10px] font-black uppercase tracking-wider"
+        >
+          Logout
+        </button>
+      </div>
       {/* Lesson Routine Header */}
       <LessonFlowHeader
         currentUnit={currentUnitToUse}
