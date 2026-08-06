@@ -51,25 +51,20 @@ export async function loginUser(username: string, password: string): Promise<Use
       const isActive = statusStr === "active";
       
       // Respect the server's validation response
-      if (apiResponse.success === true) {
-        if (isActive) {
-          return {
-            username: apiResponse.username || username,
-            studentName: apiResponse.studentName || "Nguyễn Văn A",
-            className: apiResponse.className || "Star 1",
-            expireDate: apiResponse.expireDate || "2026-12-31",
-            status: "active"
-          };
-        } else {
-          throw new Error("This account is inactive. Please contact your teacher.");
-        }
+      if (apiResponse.success === true && isActive) {
+        return {
+          username: apiResponse.username || username,
+          studentName: apiResponse.studentName || "Nguyễn Văn A",
+          className: apiResponse.className || "Star 1",
+          expireDate: apiResponse.expireDate || "2026-12-31",
+          status: "active"
+        };
       } else {
-        // success === false
-        const msg = apiResponse.message || "";
-        if (msg.toLowerCase().includes("inactive") || statusStr === "inactive") {
+        // If status is inactive or success is false
+        if (statusStr === "inactive" || (apiResponse.message && apiResponse.message.toLowerCase().includes("inactive"))) {
           throw new Error("This account is inactive. Please contact your teacher.");
         }
-        throw new Error(msg || "Incorrect username or password.");
+        throw new Error(apiResponse.message || "Incorrect username or password.");
       }
     }
   }
