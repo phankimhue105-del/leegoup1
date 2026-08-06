@@ -14,33 +14,6 @@ export interface ProgressInfo {
   className: string;
 }
 
-export class AuthError extends Error {
-  url: string;
-  requestBody: string;
-  httpStatus: number;
-  responseBody: string;
-  parsedJson: any;
-  originalError: string;
-
-  constructor(message: string, details: {
-    url: string;
-    requestBody: string;
-    httpStatus: number;
-    responseBody: string;
-    parsedJson: any;
-    originalError: string;
-  }) {
-    super(message);
-    this.name = "AuthError";
-    this.url = details.url;
-    this.requestBody = details.requestBody;
-    this.httpStatus = details.httpStatus;
-    this.responseBody = details.responseBody;
-    this.parsedJson = details.parsedJson;
-    this.originalError = details.originalError;
-  }
-}
-
 export async function loginUser(username: string, password: string): Promise<UserInfo> {
   const cleanUsername = username.trim();
   const cleanPassword = password.trim();
@@ -49,106 +22,6 @@ export async function loginUser(username: string, password: string): Promise<Use
     username: cleanUsername,
     password: cleanPassword
   };
-
-  const requestBodyStr = JSON.stringify(payload);
-  console.log("LOGIN REQUEST", requestBodyStr);
-
-  let httpStatus = 0;
-  let responseBodyStr = "";
-  let parsedJson: any = null;
-
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      mode: "cors",
-      redirect: "follow",
-      headers: {
-        "Content-Type": "text/plain"
-      },
-      body: requestBodyStr
-    });
-
-    httpStatus = response.status;
-    responseBodyStr = await response.text();
-    console.log("LOGIN RESPONSE RAW", responseBodyStr);
-
-    try {
-      parsedJson = JSON.parse(responseBodyStr);
-      console.log("LOGIN RESPONSE PARSED JSON", JSON.stringify(parsedJson));
-    } catch (e: any) {
-      throw new AuthError("Failed to parse server response.", {
-        url: API_URL,
-        requestBody: requestBodyStr,
-        httpStatus,
-        responseBody: responseBodyStr,
-        parsedJson: null,
-        originalError: e.message || String(e)
-      });
-    }
-
-    if (!response.ok) {
-      throw new AuthError("Server returned HTTP error status.", {
-        url: API_URL,
-        requestBody: requestBodyStr,
-        httpStatus,
-        responseBody: responseBodyStr,
-        parsedJson,
-        originalError: `HTTP status: ${response.status}`
-      });
-    }
-
-    const status = parsedJson.status ? String(parsedJson.status).trim().toLowerCase() : "";
-    const success = parsedJson.success === true;
-
-    if (success && status === "active") {
-      return {
-        username: parsedJson.username || cleanUsername,
-        studentName: parsedJson.studentName,
-        className: parsedJson.className,
-        expireDate: parsedJson.expireDate,
-        status: parsedJson.status
-      };
-    }
-
-    const message = parsedJson.message ? String(parsedJson.message) : "";
-    let errMsg = "Incorrect username or password.";
-    if (message.toLowerCase().includes("inactive") || status === "inactive") {
-      errMsg = "This account is inactive. Please contact your teacher.";
-    } else if (message) {
-      errMsg = message;
-    }
-
-    throw new AuthError(errMsg, {
-      url: API_URL,
-      requestBody: requestBodyStr,
-      httpStatus,
-      responseBody: responseBodyStr,
-      parsedJson,
-      originalError: message || "Incorrect username or password."
-    });
-
-  } catch (err: any) {
-    if (err instanceof AuthError) {
-      throw err;
-    }
-    throw new AuthError(err.message || String(err), {
-      url: API_URL,
-      requestBody: requestBodyStr,
-      httpStatus,
-      responseBody: responseBodyStr,
-      parsedJson,
-      originalError: err.message || String(err)
-    });
-  }
-}
-
-export async function getProgress(username: string): Promise<ProgressInfo> {
-  const payload = {
-    action: "getProgress",
-    username: username.trim()
-  };
-
-  console.log("GET PROGRESS REQUEST", JSON.stringify(payload));
 
   const response = await fetch(API_URL, {
     method: "POST",
@@ -161,11 +34,60 @@ export async function getProgress(username: string): Promise<ProgressInfo> {
   });
 
   if (!response.ok) {
-    throw new Error("HTTP error: " + response.status);
+    throw new Error("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
+  }
+
+  const responseBodyStr = await response.text();
+  let parsedJson: any = null;
+
+  try {
+    parsedJson = JSON.parse(responseBodyStr);
+  } catch (e) {
+    throw new Error("Sai cấu trúc dữ liệu phản hồi từ máy chủ.");
+  }
+
+  const status = parsedJson.status ? String(parsedJson.status).trim().toLowerCase() : "";
+  const success = parsedJson.success === true;
+
+  if (success && status === "active") {
+    return {
+      username: parsedJson.username || cleanUsername,
+      studentName: parsedJson.studentName,
+      className: parsedJson.className,
+      expireDate: parsedJson.expireDate,
+      status: parsedJson.status
+    };
+  }
+
+  const message = parsedJson.message ? String(parsedJson.message) : "";
+  if (message.toLowerCase().includes("inactive") || status === "inactive") {
+    throw new Error("Tài khoản chưa được kích hoạt. Vui lòng liên hệ giáo viên.");
+  }
+  
+  throw new Error("Sai tên đăng nhập hoặc mật khẩu.");
+}
+
+export async function getProgress(username: string): Promise<ProgressInfo> {
+  const payload = {
+    action: "getProgress",
+    username: username.trim()
+  };
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    mode: "cors",
+    redirect: "follow",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error("Không thể tải thông tin tiến trình từ máy chủ.");
   }
 
   const data = await response.json();
-  console.log("GET PROGRESS RESPONSE", JSON.stringify(data));
 
   if (data && data.success === true) {
     return {
@@ -175,7 +97,7 @@ export async function getProgress(username: string): Promise<ProgressInfo> {
     };
   }
 
-  throw new Error(data?.message || "Failed to load progress.");
+  throw new Error(data?.message || "Không thể tải thông tin tiến trình.");
 }
 
 export async function updateProgress(username: string, stars: number, progress: string): Promise<boolean> {
@@ -185,8 +107,6 @@ export async function updateProgress(username: string, stars: number, progress: 
     stars: stars,
     progress: progress
   };
-
-  console.log("UPDATE PROGRESS REQUEST", JSON.stringify(payload));
 
   try {
     const response = await fetch(API_URL, {
@@ -204,8 +124,6 @@ export async function updateProgress(username: string, stars: number, progress: 
     }
 
     const data = await response.json();
-    console.log("UPDATE PROGRESS RESPONSE", JSON.stringify(data));
-
     return !!(data && data.success === true);
   } catch (error) {
     console.error(error);
