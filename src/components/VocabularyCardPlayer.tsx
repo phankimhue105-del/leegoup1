@@ -448,6 +448,11 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
           <h2 className="text-4xl font-black text-slate-900 tracking-tight capitalize select-all">
             {currentItem.word}
           </h2>
+          {(currentItem.id === 'v10' || currentItem.id === 'v11' || currentItem.id === 'v12' || currentItem.id === 'v13') && currentItem.meaningVi && (
+            <p className="text-2xl font-bold text-slate-600 mt-1 select-none">
+              {currentItem.meaningVi}
+            </p>
+          )}
           <p className="text-base font-bold text-red-500 tracking-wide">
             {pronunciation}
           </p>
