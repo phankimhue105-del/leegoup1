@@ -14,151 +14,152 @@ export interface ProgressInfo {
   className: string;
 }
 
-async function apiPost(payload: any) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {}
-  });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  return await response.json();
-}
-
 export async function loginUser(username: string, password: string): Promise<UserInfo> {
+  const cleanUsername = username.trim();
+  const cleanPassword = password.trim();
+
+  console.log("Using Google Apps Script");
+  console.log("No fallback");
+  console.log("No mock database");
+
+  console.log("========== LOGIN REQUEST ==========");
+  console.log(`username: ${cleanUsername}`);
+  console.log(`password: ${cleanPassword}`);
+
+  let httpStatus: number = 0;
+  let rawText: string = "";
   let apiResponse: any = null;
-  let networkFailed = false;
-  
+
   try {
-    apiResponse = await apiPost({
-      action: "login",
-      username,
-      password
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: "login",
+        username: cleanUsername,
+        password: cleanPassword
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
-  } catch (error) {
-    networkFailed = true;
-  }
 
-  // If the API executed successfully and returned a response
-  if (!networkFailed && apiResponse) {
-    // Check if the server response has a script reference error
-    if (apiResponse.message && apiResponse.message.includes('ReferenceError')) {
-      networkFailed = true;
-    } else {
-      // Parse status correctly ignoring leading/trailing spaces and case
-      const statusStr = apiResponse.status ? String(apiResponse.status).trim().toLowerCase() : "";
-      const isActive = statusStr === "active";
-      
-      // Respect the server's validation response
-      if (apiResponse.success === true && isActive) {
-        return {
-          username: apiResponse.username || username,
-          studentName: apiResponse.studentName || "Nguyễn Văn A",
-          className: apiResponse.className || "Star 1",
-          expireDate: apiResponse.expireDate || "2026-12-31",
-          status: "active"
-        };
-      } else {
-        // If status is inactive or success is false
-        if (statusStr === "inactive" || (apiResponse.message && apiResponse.message.toLowerCase().includes("inactive"))) {
-          throw new Error("This account is inactive. Please contact your teacher.");
-        }
-        throw new Error(apiResponse.message || "Incorrect username or password.");
-      }
-    }
-  }
-
-  // Fallback database for local testing / network/script execution failures
-  if (networkFailed) {
-    const mockSheetRows = [
-      { username: "up1001", password: "lg101", studentName: "Nguyễn Văn A", status: "active", expireDate: "2026-12-31", className: "Star 1" },
-      { username: "up1002", password: "lg102", studentName: "Trần Văn B", status: "inactive", expireDate: "2026-12-31", className: "Star 1" },
-      { username: "up1003", password: "lg103", studentName: "Lê Văn C", status: "active", expireDate: "2026-12-31", className: "Star 1" }
-    ];
-
-    const inputUser = username.trim().toLowerCase();
-    const inputPass = password.trim();
-    let matchedRow = null;
-
-    // 1. Loop through every row
-    for (let i = 0; i < mockSheetRows.length; i++) {
-      const row = mockSheetRows[i];
-      // 2. Find matching username and password
-      if (row.username.trim().toLowerCase() === inputUser && row.password.trim() === inputPass) {
-        matchedRow = row;
-        break; // Found matching row, break out of loop
-      }
+    httpStatus = response.status;
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // 3. Perform decision after the loop is complete
-    if (matchedRow) {
-      // 4. Check status only after matching username + password
-      const status = matchedRow.status.trim().toLowerCase();
-      if (status === "active") {
-        return {
-          username: matchedRow.username,
-          studentName: matchedRow.studentName,
-          className: matchedRow.className,
-          expireDate: matchedRow.expireDate,
-          status: "active"
-        };
-      } else {
-        throw new Error("This account is inactive. Please contact your teacher.");
-      }
-    } else {
-      // If no row matches
-      throw new Error("Incorrect username or password.");
+    rawText = await response.text();
+    console.log("========== RESPONSE ==========");
+    console.log(`HTTP Status: ${httpStatus}`);
+    console.log(`Raw Response: ${rawText}`);
+
+    try {
+      apiResponse = JSON.parse(rawText);
+      console.log("Parsed JSON:", JSON.stringify(apiResponse, null, 2));
+    } catch (parseError) {
+      console.error("JSON parsing failed:", parseError);
+      throw new Error("Failed to parse server response.");
     }
+  } catch (networkError: any) {
+    console.error("Network or execution failure:", networkError);
+    throw new Error(networkError.message || "Failed to communicate with authentication server.");
   }
 
-  throw new Error("Incorrect username or password.");
+  if (!apiResponse) {
+    throw new Error("Empty response from server.");
+  }
+
+  // Extract properties
+  const successVal = apiResponse.success;
+  const statusStr = apiResponse.status ? String(apiResponse.status).trim().toLowerCase() : "";
+  const messageVal = apiResponse.message || "";
+  const studentNameVal = apiResponse.studentName;
+  const classNameVal = apiResponse.className;
+  const expireDateVal = apiResponse.expireDate;
+
+  console.log(`success: ${successVal}`);
+  console.log(`status: ${statusStr}`);
+  console.log(`message: ${messageVal}`);
+  console.log(`studentName: ${studentNameVal}`);
+  console.log(`className: ${classNameVal}`);
+
+  // Validation checks
+  if (successVal !== true) {
+    throw new Error(messageVal || "Incorrect username or password.");
+  }
+
+  if (statusStr !== "active") {
+    throw new Error("This account is inactive. Please contact your teacher.");
+  }
+
+  // Ensure required fields exist in the response
+  if (studentNameVal === undefined || classNameVal === undefined || expireDateVal === undefined) {
+    throw new Error("Invalid user record: missing required user information fields from Google Sheet.");
+  }
+
+  return {
+    username: apiResponse.username || cleanUsername,
+    studentName: studentNameVal,
+    className: classNameVal,
+    expireDate: expireDateVal,
+    status: statusStr
+  };
 }
 
 export async function getProgress(username: string): Promise<ProgressInfo> {
-  try {
-    const data = await apiPost({
+  const cleanUsername = username.trim();
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify({
       action: "getProgress",
-      username
-    });
-    
-    if (data && data.success) {
-      return {
-        stars: Number(data.stars) || 0,
-        progress: data.progress || "0/32",
-        className: data.className || "Star 1"
-      };
+      username: cleanUsername
+    }),
+    headers: {
+      'Content-Type': 'application/json'
     }
-    
-    if (data && data.message && data.message.includes('ReferenceError')) {
-      // Fallback below
-    } else {
-      throw new Error(data?.message || "Failed to load progress.");
-    }
-  } catch (error) {
-    // Fallback below
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  const lowerUser = username.trim().toLowerCase();
-  if (lowerUser === 'up1001') {
-    return { stars: 120, progress: "18/32", className: "Star 1" };
-  } else if (lowerUser === 'up1002') {
-    return { stars: 0, progress: "0/32", className: "Star 1" };
-  } else if (lowerUser === 'up1003') {
-    return { stars: 50, progress: "5/32", className: "Star 1" };
+  const data = await response.json();
+  if (data && data.success) {
+    if (data.progress === undefined || data.stars === undefined || data.className === undefined) {
+      throw new Error("Invalid progress record: missing required progress fields from Google Sheet.");
+    }
+    return {
+      stars: Number(data.stars),
+      progress: String(data.progress),
+      className: String(data.className)
+    };
   }
 
-  throw new Error("Failed to load progress.");
+  throw new Error(data?.message || "Failed to load progress.");
 }
 
 export async function updateProgress(username: string, stars: number, progress: string): Promise<boolean> {
   try {
-    const data = await apiPost({
-      action: "updateProgress",
-      username,
-      stars,
-      progress
+    const cleanUsername = username.trim();
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: "updateProgress",
+        username: cleanUsername,
+        stars,
+        progress
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const data = await response.json();
     return !!(data && data.success);
   } catch (error) {
     console.error("Failed to update progress:", error);
