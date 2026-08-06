@@ -46,22 +46,27 @@ export async function loginUser(username: string, password: string): Promise<Use
     if (apiResponse.message && apiResponse.message.includes('ReferenceError')) {
       networkFailed = true;
     } else {
+      // Parse status correctly ignoring leading/trailing spaces and case
+      const statusStr = apiResponse.status ? String(apiResponse.status).trim().toLowerCase() : "";
+      const isActive = statusStr === "active";
+      
       // Respect the server's validation response
       if (apiResponse.success === true) {
-        if (apiResponse.status !== 'active') {
+        if (isActive) {
+          return {
+            username: apiResponse.username || username,
+            studentName: apiResponse.studentName || "Nguyễn Văn A",
+            className: apiResponse.className || "Star 1",
+            expireDate: apiResponse.expireDate || "2026-12-31",
+            status: "active"
+          };
+        } else {
           throw new Error("This account is inactive. Please contact your teacher.");
         }
-        return {
-          username: apiResponse.username || username,
-          studentName: apiResponse.studentName || "Nguyễn Văn A",
-          className: apiResponse.className || "Star 1",
-          expireDate: apiResponse.expireDate || "2026-12-31",
-          status: apiResponse.status || "active"
-        };
       } else {
         // success === false
         const msg = apiResponse.message || "";
-        if (msg.toLowerCase().includes("inactive") || apiResponse.status === "inactive") {
+        if (msg.toLowerCase().includes("inactive") || statusStr === "inactive") {
           throw new Error("This account is inactive. Please contact your teacher.");
         }
         throw new Error(msg || "Incorrect username or password.");
