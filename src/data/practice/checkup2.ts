@@ -29,13 +29,13 @@ export const checkup2Practice: PracticeQuestion[] = [
     id: 3,
     type: "multiple_choice",
     question: "Do you like fish?",
-    image: "🐟",
+    image: "🐟 😊",
     vocabulary: "fish",
     choices: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, I do.", "No, I don't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "Yes, I do.",
-    explanation: "Yes, I do.",
-    hintImage: "🐟"
+    explanation: "Yes, I do. = Có.",
+    hintImage: "🐟 😊"
   },
   {
     id: 4,
@@ -118,7 +118,7 @@ export const checkup2Practice: PracticeQuestion[] = [
     choices: ["Yes, I do.", "Yes, it is.", "No, it isn't.", "No, they aren't."],
     options: ["Yes, I do.", "Yes, it is.", "No, it isn't.", "No, they aren't."],
     correctAnswer: "Yes, I do.",
-    explanation: "Yes, I do.",
+    explanation: "Yes, I do. = Có.",
     hintImage: "🍎"
   }
 ];
