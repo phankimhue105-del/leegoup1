@@ -1497,7 +1497,7 @@ export const InteractiveGame: React.FC<Props> = ({ lesson, onCorrectAnswer, onGa
             </div>
 
             {/* Teaching Feedback Content */}
-            {lesson.id === 'u8-l4' || lesson.id === 'u6-l1' || lesson.id === 'u6-l3' || lesson.id === 'u5-l1' || lesson.id === 'u5-l3' || lesson.id === 'u5-l4' ? (
+            {lesson.id === 'u8-l4' || lesson.id === 'u6-l1' || lesson.id === 'u6-l3' || lesson.id === 'u5-l1' || lesson.id === 'u5-l3' || lesson.id === 'u5-l4' || lesson.id === 'u4-l3' || lesson.id === 'u4-l4' ? (
               <div className="flex flex-col gap-4 text-xs font-semibold text-slate-700 max-w-md mx-auto w-full">
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">① Correct Answer (Đáp án đúng)</span>
