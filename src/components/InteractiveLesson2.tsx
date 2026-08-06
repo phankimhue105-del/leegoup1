@@ -262,7 +262,7 @@ export const InteractiveLesson2: React.FC<Props> = ({ lesson, onCorrectAnswer, o
               </button>
             </div>
 
-            {lesson.id !== 'u7-l2' && lesson.id !== 'u5-l2' && (
+            {lesson.id !== 'u7-l2' && lesson.id !== 'u5-l2' && lesson.id !== 'u2-l2' && (
               <div className="space-y-3 text-xs font-semibold text-slate-700">
                 <div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-wider block mb-0.5">Explanation (Giải thích)</span>
