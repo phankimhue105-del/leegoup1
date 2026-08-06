@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser, getProgress, UserInfo, ProgressInfo } from '../services/googleApiService';
 import { soundFX } from '../utils/soundEffects';
-import { Sparkles, User, Lock, Loader2, AlertCircle } from 'lucide-react';
+import { Sparkles, User, Lock, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface Props {
   onLoginSuccess: (user: UserInfo, progress: ProgressInfo) => void;
@@ -10,6 +10,7 @@ interface Props {
 export default function LoginPage({ onLoginSuccess }: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -33,9 +34,7 @@ export default function LoginPage({ onLoginSuccess }: Props) {
         soundFX.playCorrect();
       } catch (err) {}
 
-      // Save to localStorage
-      localStorage.setItem('leego_user', JSON.stringify(userInfo));
-      localStorage.setItem('leego_progress', JSON.stringify(progressInfo));
+
 
       // Trigger callback
       onLoginSuccess(userInfo, progressInfo);
@@ -123,14 +122,21 @@ export default function LoginPage({ onLoginSuccess }: Props) {
                 <Lock className="w-5 h-5" />
               </div>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 disabled={loading}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
-                className="w-full bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:bg-white text-slate-800 font-extrabold placeholder-slate-400 text-base px-11 py-3.5 rounded-2xl outline-none transition-all duration-200 disabled:opacity-50"
+                className="w-full bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:bg-white text-slate-800 font-extrabold placeholder-slate-400 text-base pl-11 pr-12 py-3.5 rounded-2xl outline-none transition-all duration-200 disabled:opacity-50"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors select-none"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
