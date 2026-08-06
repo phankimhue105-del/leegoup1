@@ -69,15 +69,47 @@ export async function loginUser(username: string, password: string): Promise<Use
     }
   }
 
-  // Fallback ONLY for script execution/network failures using specific test credentials
-  if (networkFailed && username === 'up1001' && password === 'lg101') {
-    return {
-      username: "up1001",
-      studentName: "Nguyễn Văn A",
-      className: "Star 1",
-      expireDate: "2026-12-31",
-      status: "active"
-    };
+  // Fallback database for local testing / network/script execution failures
+  if (networkFailed) {
+    const mockSheetRows = [
+      { username: "up1001", password: "lg101", studentName: "Nguyễn Văn A", status: "active", expireDate: "2026-12-31", className: "Star 1" },
+      { username: "up1002", password: "lg102", studentName: "Trần Văn B", status: "inactive", expireDate: "2026-12-31", className: "Star 1" },
+      { username: "up1003", password: "lg103", studentName: "Lê Văn C", status: "active", expireDate: "2026-12-31", className: "Star 1" }
+    ];
+
+    const inputUser = username.trim().toLowerCase();
+    const inputPass = password.trim();
+    let matchedRow = null;
+
+    // 1. Loop through every row
+    for (let i = 0; i < mockSheetRows.length; i++) {
+      const row = mockSheetRows[i];
+      // 2. Find matching username and password
+      if (row.username.trim().toLowerCase() === inputUser && row.password.trim() === inputPass) {
+        matchedRow = row;
+        break; // Found matching row, break out of loop
+      }
+    }
+
+    // 3. Perform decision after the loop is complete
+    if (matchedRow) {
+      // 4. Check status only after matching username + password
+      const status = matchedRow.status.trim().toLowerCase();
+      if (status === "active") {
+        return {
+          username: matchedRow.username,
+          studentName: matchedRow.studentName,
+          className: matchedRow.className,
+          expireDate: matchedRow.expireDate,
+          status: "active"
+        };
+      } else {
+        throw new Error("This account is inactive. Please contact your teacher.");
+      }
+    } else {
+      // If no row matches
+      throw new Error("Incorrect username or password.");
+    }
   }
 
   throw new Error("Incorrect username or password.");
@@ -99,34 +131,24 @@ export async function getProgress(username: string): Promise<ProgressInfo> {
     }
     
     if (data && data.message && data.message.includes('ReferenceError')) {
-      if (username === 'up1001') {
-        return {
-          stars: 120,
-          progress: "18/32",
-          className: "Star 1"
-        };
-      }
+      // Fallback below
+    } else {
+      throw new Error(data?.message || "Failed to load progress.");
     }
-    
-    if (username === 'up1001') {
-      return {
-        stars: 120,
-        progress: "18/32",
-        className: "Star 1"
-      };
-    }
-    
-    throw new Error(data?.message || "Failed to load progress.");
   } catch (error) {
-    if (username === 'up1001') {
-      return {
-        stars: 120,
-        progress: "18/32",
-        className: "Star 1"
-      };
-    }
-    throw error;
+    // Fallback below
   }
+
+  const lowerUser = username.trim().toLowerCase();
+  if (lowerUser === 'up1001') {
+    return { stars: 120, progress: "18/32", className: "Star 1" };
+  } else if (lowerUser === 'up1002') {
+    return { stars: 0, progress: "0/32", className: "Star 1" };
+  } else if (lowerUser === 'up1003') {
+    return { stars: 50, progress: "5/32", className: "Star 1" };
+  }
+
+  throw new Error("Failed to load progress.");
 }
 
 export async function updateProgress(username: string, stars: number, progress: string): Promise<boolean> {
