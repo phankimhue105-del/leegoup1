@@ -7,9 +7,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Which one is a puzzle?",
     image: "❓",
     vocabulary: "puzzle",
-    choices: ["🧩🧩", "🃏🃏", "🧱🧱", "🎮🎮"],
-    options: ["🧩🧩", "🃏🃏", "🧱🧱", "🎮🎮"],
-    correctAnswer: "🧩🧩",
+    choices: ["🧩", "🃏", "🧱", "🎮"],
+    options: ["🧩", "🃏", "🧱", "🎮"],
+    correctAnswer: "🧩",
     explanation: "puzzle = trò chơi ghép hình",
     hintImage: "❓"
   },
@@ -31,9 +31,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Which one is a ball?",
     image: "❓",
     vocabulary: "ball",
-    choices: ["⚽⚽", "🚗🚗", "🪁🪁", "🪆🪆"],
-    options: ["⚽⚽", "🚗🚗", "🪁🪁", "🪆🪆"],
-    correctAnswer: "⚽⚽",
+    choices: ["⚽", "🚗", "🪁", "🧸"],
+    options: ["⚽", "🚗", "🪁", "🧸"],
+    correctAnswer: "⚽",
     explanation: "ball = quả bóng",
     hintImage: "❓"
   },
@@ -77,13 +77,13 @@ export const lesson4Practice: PracticeQuestion[] = [
     id: 7,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🪆🪆",
+    image: "🧸🧸",
     vocabulary: "dolls",
     choices: ["Two dolls.", "One doll.", "Three dolls.", "Four dolls."],
     options: ["Two dolls.", "One doll.", "Three dolls.", "Four dolls."],
     correctAnswer: "Two dolls.",
     explanation: "two dolls = hai con búp bê",
-    hintImage: "🪆🪆"
+    hintImage: "🧸🧸"
   },
   {
     id: 8,
@@ -115,9 +115,9 @@ export const lesson4Practice: PracticeQuestion[] = [
     question: "Choose the different item.",
     image: "❓",
     vocabulary: "two",
-    choices: ["🧩🧩", "🃏🃏", "🧱🧱", "2️⃣2️⃣"],
-    options: ["🧩🧩", "🃏🃏", "🧱🧱", "2️⃣2️⃣"],
-    correctAnswer: "2️⃣2️⃣",
+    choices: ["🧩", "🃏", "🧱", "2️⃣"],
+    options: ["🧩", "🃏", "🧱", "2️⃣"],
+    correctAnswer: "2️⃣",
     explanation: "two = số 2",
     hintImage: "❓"
   }
