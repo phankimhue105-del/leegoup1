@@ -1,4 +1,34 @@
+import React from 'react';
 import { PracticeQuestion, SpeakingTask } from '../../types';
+
+const MonkeyInTreeSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'monkey-tree-scene' }, [
+    // Tree trunk
+    React.createElement('rect', { x: 90, y: 110, width: 20, height: 60, fill: '#78350F', key: 'trunk' }),
+    // Green canopy
+    React.createElement('circle', { cx: 100, cy: 75, r: 60, fill: '#10B981', key: 'leaves' }),
+    React.createElement('circle', { cx: 70, cy: 60, r: 40, fill: '#059669', key: 'leaves-left' }),
+    React.createElement('circle', { cx: 130, cy: 60, r: 40, fill: '#059669', key: 'leaves-right' }),
+    // Monkey head sitting INSIDE the leaves
+    React.createElement('g', { transform: 'translate(80, 50)', key: 'monkey' }, [
+      React.createElement('circle', { cx: 5, cy: 20, r: 8, fill: '#8B5A2B', key: 'ear-l' }),
+      React.createElement('circle', { cx: 5, cy: 20, r: 4, fill: '#FBCFE8', key: 'ear-li' }),
+      React.createElement('circle', { cx: 35, cy: 20, r: 8, fill: '#8B5A2B', key: 'ear-r' }),
+      React.createElement('circle', { cx: 35, cy: 20, r: 4, fill: '#FBCFE8', key: 'ear-ri' }),
+      React.createElement('circle', { cx: 20, cy: 20, r: 15, fill: '#8B5A2B', key: 'head' }),
+      React.createElement('ellipse', { cx: 20, cy: 23, rx: 11, ry: 9, fill: '#FED7AA', key: 'face' }),
+      React.createElement('circle', { cx: 16, cy: 19, r: 2, fill: '#000000', key: 'eye-l' }),
+      React.createElement('circle', { cx: 24, cy: 19, r: 2, fill: '#000000', key: 'eye-r' }),
+      React.createElement('path', { d: 'M17 26 Q20 29 23 26', fill: 'none', stroke: '#000000', strokeWidth: 1.5, key: 'smile' })
+    ]),
+    // Floor
+    React.createElement('line', { x1: 20, y1: 170, x2: 180, y2: 170, stroke: '#9CA3AF', strokeWidth: 2, key: 'floor' })
+  ])
+]);
 
 export const checkup3Practice: PracticeQuestion[] = [
   {
@@ -34,7 +64,7 @@ export const checkup3Practice: PracticeQuestion[] = [
     choices: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, I can.", "No, I can't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "Yes, I can.",
-    explanation: "Yes, I can.",
+    explanation: "Yes, I can. = Có.",
     hintImage: "🕷️"
   },
   {
@@ -46,7 +76,7 @@ export const checkup3Practice: PracticeQuestion[] = [
     choices: ["Yes, they can.", "No, they can't.", "Yes, it is.", "No, it isn't."],
     options: ["Yes, they can.", "No, they can't.", "Yes, it is.", "No, it isn't."],
     correctAnswer: "No, they can't.",
-    explanation: "No, they can't.",
+    explanation: "No, they can't. = Không.",
     hintImage: "🐍"
   },
   {
@@ -65,13 +95,13 @@ export const checkup3Practice: PracticeQuestion[] = [
     id: 6,
     type: "multiple_choice",
     question: "Choose the correct sentence.",
-    image: "🐒🌳",
+    image: MonkeyInTreeSVG as any,
     vocabulary: "monkey",
     choices: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
     options: ["The monkey is in the tree.", "The monkey is under the tree.", "The monkey is on the rock.", "The monkey is in the river."],
     correctAnswer: "The monkey is in the tree.",
-    explanation: "in the tree = ở trên cây",
-    hintImage: "🐒🌳"
+    explanation: "in the tree = ở trong cây",
+    hintImage: MonkeyInTreeSVG as any
   },
   {
     id: 7,
@@ -118,7 +148,7 @@ export const checkup3Practice: PracticeQuestion[] = [
     choices: ["Sure.", "Yes, I do.", "No, I don't.", "Thank you."],
     options: ["Sure.", "Yes, I do.", "No, I don't.", "Thank you."],
     correctAnswer: "Sure.",
-    explanation: "Sure.",
+    explanation: "Sure. = Chắc chắn rồi.",
     hintImage: "💬"
   }
 ];
