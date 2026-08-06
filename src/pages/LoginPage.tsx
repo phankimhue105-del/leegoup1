@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loginUser, getProgress, UserInfo, ProgressInfo } from '../services/googleApiService';
+import { loginUser, getProgress, UserInfo, ProgressInfo, AuthError } from '../services/googleApiService';
 import { soundFX } from '../utils/soundEffects';
 import { Sparkles, User, Lock, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
@@ -13,6 +13,14 @@ export default function LoginPage({ onLoginSuccess }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [debugDetails, setDebugDetails] = useState<{
+    url: string;
+    httpStatus: number;
+    requestBody: string;
+    responseBody: string;
+    parsedJson: any;
+    originalError: string;
+  } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +29,7 @@ export default function LoginPage({ onLoginSuccess }: Props) {
     soundFX.playClick();
     setLoading(true);
     setErrorMsg(null);
+    setDebugDetails(null);
 
     try {
       // Step 1: Login user
@@ -34,13 +43,25 @@ export default function LoginPage({ onLoginSuccess }: Props) {
         soundFX.playCorrect();
       } catch (err) {}
 
-
-
       // Trigger callback
       onLoginSuccess(userInfo, progressInfo);
     } catch (error: any) {
       console.error("Login process failed:", error);
       setErrorMsg(error.message || "Incorrect username or password.");
+      
+      if (error.url !== undefined) {
+        setDebugDetails({
+          url: error.url,
+          httpStatus: error.httpStatus,
+          requestBody: error.requestBody,
+          responseBody: error.responseBody,
+          parsedJson: error.parsedJson,
+          originalError: error.originalError
+        });
+      } else {
+        setDebugDetails(null);
+      }
+
       try {
         soundFX.playIncorrect();
       } catch (err) {}
@@ -81,7 +102,10 @@ export default function LoginPage({ onLoginSuccess }: Props) {
               <p className="text-xs text-rose-600 mt-0.5">{errorMsg}</p>
             </div>
             <button 
-              onClick={() => setErrorMsg(null)}
+              onClick={() => {
+                setErrorMsg(null);
+                setDebugDetails(null);
+              }}
               className="text-rose-400 hover:text-rose-600 font-bold px-1"
             >
               ✕
@@ -157,6 +181,58 @@ export default function LoginPage({ onLoginSuccess }: Props) {
           </button>
         </form>
 
+        {/* Debug Panel */}
+        {debugDetails && (
+          <div className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-4 rounded-2xl mt-6 text-left text-xs font-mono max-h-[300px] overflow-auto shadow-inner relative z-20">
+            <div className="flex justify-between items-center mb-2.5 pb-1.5 border-b border-slate-700">
+              <span className="text-rose-400 font-bold uppercase tracking-wider text-[10px]">⚠️ Connection Debug Info</span>
+              <button 
+                onClick={() => setDebugDetails(null)}
+                className="text-slate-400 hover:text-white font-bold text-sm px-1"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              <div>
+                <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">API URL:</span>
+                <span className="text-blue-400 break-all select-all">{debugDetails.url}</span>
+              </div>
+
+              <div className="flex gap-4">
+                <div>
+                  <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">HTTP Status:</span>
+                  <span className={`font-bold ${debugDetails.httpStatus >= 200 && debugDetails.httpStatus < 300 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {debugDetails.httpStatus || "N/A"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">Error Message:</span>
+                  <span className="text-rose-400 font-bold">{debugDetails.originalError || "None"}</span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">Request Body:</span>
+                <pre className="bg-slate-950 p-2 rounded-lg border border-slate-800 break-all select-all whitespace-pre-wrap">{debugDetails.requestBody}</pre>
+              </div>
+
+              <div>
+                <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">Response Body (Raw):</span>
+                <pre className="bg-slate-950 p-2 rounded-lg border border-slate-800 break-all select-all whitespace-pre-wrap">{debugDetails.responseBody || "[Empty]"}</pre>
+              </div>
+
+              <div>
+                <span className="text-slate-400 block font-bold text-[10px] uppercase mb-0.5">Parsed JSON:</span>
+                <pre className="bg-slate-950 p-2 rounded-lg border border-slate-800 break-all select-all whitespace-pre-wrap">
+                  {debugDetails.parsedJson ? JSON.stringify(debugDetails.parsedJson, null, 2) : "[Failed to Parse]"}
+                </pre>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Info Footer */}
         <p className="text-[10px] text-slate-400 font-bold mt-8 text-center">
           Secure Login via Google Apps Script Web App
@@ -165,3 +241,4 @@ export default function LoginPage({ onLoginSuccess }: Props) {
     </div>
   );
 }
+
