@@ -3,7 +3,7 @@ import { Volume2, ChevronLeft, ChevronRight, Sparkles, Languages } from 'lucide-
 import { VocabularyItem } from '../types';
 import { speakText } from '../utils/ttsPlayer';
 import { soundFX } from '../utils/soundEffects';
-import { lesson1Practice } from '../data/practice/unit2/lesson1';
+import { lesson1Practice, TapeSVG } from '../data/practice/unit2/lesson1';
 import { lesson2Practice } from '../data/practice/unit2/lesson2';
 
 interface Props {
@@ -347,6 +347,9 @@ export const VocabularyCardPlayer: React.FC<Props> = ({ vocabulary, onCompleted,
           <text x={120} y={75} fontSize={30}>🤏</text>
         </svg>
       );
+    }
+    if (wordLower === 'tape') {
+      return TapeSVG;
     }
     return null;
   }, [wordLower]);
