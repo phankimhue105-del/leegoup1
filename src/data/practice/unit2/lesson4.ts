@@ -1,4 +1,31 @@
+import React from 'react';
 import { PracticeQuestion } from '../../../types';
+
+const BlueYellowSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'mix1' }, [
+    React.createElement('circle', { cx: 60, cy: 100, r: 35, fill: '#3B82F6', opacity: 0.8, key: 'blue' }),
+    React.createElement('text', { x: 95, y: 110, fontSize: 30, textAnchor: 'middle', fill: '#4B5563', fontWeight: 'bold', key: 'plus' }, '+'),
+    React.createElement('circle', { cx: 140, cy: 100, r: 35, fill: '#F59E0B', opacity: 0.8, key: 'yellow' }),
+    React.createElement('text', { x: 100, y: 165, fontSize: 18, textAnchor: 'middle', fill: '#1F2937', fontWeight: 'bold', key: 'label' }, 'make... ?')
+  ])
+]);
+
+const RedWhiteSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'mix2' }, [
+    React.createElement('circle', { cx: 60, cy: 100, r: 35, fill: '#EF4444', opacity: 0.8, key: 'red' }),
+    React.createElement('text', { x: 95, y: 110, fontSize: 30, textAnchor: 'middle', fill: '#4B5563', fontWeight: 'bold', key: 'plus' }, '+'),
+    React.createElement('circle', { cx: 140, cy: 100, r: 35, fill: '#FFFFFF', stroke: '#D1D5DB', strokeWidth: 2, opacity: 0.8, key: 'white' }),
+    React.createElement('text', { x: 100, y: 165, fontSize: 18, textAnchor: 'middle', fill: '#1F2937', fontWeight: 'bold', key: 'label' }, 'make... ?')
+  ])
+]);
 
 export const lesson4Practice: PracticeQuestion[] = [
   {
@@ -100,25 +127,25 @@ export const lesson4Practice: PracticeQuestion[] = [
   {
     id: 9,
     type: "multiple_choice",
-    question: "This is ______.",
-    image: "🧶",
-    vocabulary: "yarn",
-    choices: ["yarn", "glue", "tape", "paper"],
-    options: ["yarn", "glue", "tape", "paper"],
-    correctAnswer: "yarn",
-    explanation: "yarn = cuộn len",
-    hintImage: "🧶"
+    question: "Blue and yellow make...",
+    image: BlueYellowSVG as any,
+    vocabulary: "green",
+    choices: ["Green", "Pink", "Red", "Black"],
+    options: ["Green", "Pink", "Red", "Black"],
+    correctAnswer: "Green",
+    explanation: "None",
+    hintImage: BlueYellowSVG as any
   },
   {
     id: 10,
     type: "multiple_choice",
-    question: "Choose the different item.",
-    image: "❓",
-    vocabulary: "paint",
-    choices: ["🟢", "🟣", "🌸", "🎨"],
-    options: ["🟢", "🟣", "🌸", "🎨"],
-    correctAnswer: "🎨",
-    explanation: "paint = màu vẽ",
-    hintImage: "❓"
+    question: "Red and white make...",
+    image: RedWhiteSVG as any,
+    vocabulary: "pink",
+    choices: ["Pink", "Green", "Blue", "Brown"],
+    options: ["Pink", "Green", "Blue", "Brown"],
+    correctAnswer: "Pink",
+    explanation: "None",
+    hintImage: RedWhiteSVG as any
   }
 ];
