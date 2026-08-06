@@ -7,13 +7,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What can you see?",
     image: "🌸",
     vocabulary: "flower",
-    choices: ["I can see a lake.", "I can see a river.", "I can see a flower.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a river.", "I can see a flower.", "I can see a hill."],
+    choices: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a hill."],
+    options: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a hill."],
     correctAnswer: "I can see a flower.",
     explanation: "flower = bông hoa",
     hintImage: "🌸",
-    unscrambledLetters: ["o", "r", "w", "e", "l", "f"],
-    oddChoices: ["dinosaur", "river", "hill", "flower"]
+    unscrambledLetters: ["w", "r", "f", "e", "o", "l"],
+    oddChoices: ["spaceship", "tree", "hill", "flower"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 2,
@@ -21,13 +22,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🌸",
     vocabulary: "flower",
-    choices: ["I can see a lake.", "I can see a river.", "I can see a flower.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a river.", "I can see a flower.", "I can see a hill."],
+    choices: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a hill."],
+    options: ["I can see a flower.", "I can see a tree.", "I can see a rock.", "I can see a hill."],
     correctAnswer: "I can see a flower.",
     explanation: "flower = bông hoa",
     hintImage: "🌸",
-    unscrambledLetters: ["o", "r", "w", "e", "l", "f"],
-    oddChoices: ["dinosaur", "river", "hill", "flower"]
+    unscrambledLetters: ["w", "r", "f", "e", "o", "l"],
+    oddChoices: ["spaceship", "tree", "hill", "flower"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 3,
@@ -35,13 +37,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What can you see?",
     image: "🌳",
     vocabulary: "tree",
-    choices: ["I can see a lake.", "I can see a river.", "I can see a tree.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a river.", "I can see a tree.", "I can see a hill."],
+    choices: ["I can see a tree.", "I can see a flower.", "I can see a rock.", "I can see a hill."],
+    options: ["I can see a tree.", "I can see a flower.", "I can see a rock.", "I can see a hill."],
     correctAnswer: "I can see a tree.",
     explanation: "tree = cây",
     hintImage: "🌳",
-    unscrambledLetters: ["e", "e", "r", "t"],
-    oddChoices: ["dinosaur", "river", "hill", "tree"]
+    unscrambledLetters: ["t", "e", "r", "e"],
+    oddChoices: ["hamburger", "flower", "tree", "hill"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 4,
@@ -49,13 +52,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🌳",
     vocabulary: "tree",
-    choices: ["I can see a lake.", "I can see a river.", "I can see a tree.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a river.", "I can see a tree.", "I can see a hill."],
+    choices: ["I can see a tree.", "I can see a flower.", "I can see a rock.", "I can see a hill."],
+    options: ["I can see a tree.", "I can see a flower.", "I can see a rock.", "I can see a hill."],
     correctAnswer: "I can see a tree.",
     explanation: "tree = cây",
     hintImage: "🌳",
-    unscrambledLetters: ["e", "e", "r", "t"],
-    oddChoices: ["dinosaur", "river", "hill", "tree"]
+    unscrambledLetters: ["t", "e", "r", "e"],
+    oddChoices: ["hamburger", "flower", "tree", "hill"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 5,
@@ -63,13 +67,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What can you see?",
     image: "🪨",
     vocabulary: "rock",
-    choices: ["I can see a river.", "I can see a rock.", "I can see a lake.", "I can see a hill."],
-    options: ["I can see a river.", "I can see a rock.", "I can see a lake.", "I can see a hill."],
+    choices: ["I can see a rock.", "I can see a hill.", "I can see a tree.", "I can see a flower."],
+    options: ["I can see a rock.", "I can see a hill.", "I can see a tree.", "I can see a flower."],
     correctAnswer: "I can see a rock.",
     explanation: "rock = hòn đá",
     hintImage: "🪨",
-    unscrambledLetters: ["o", "k", "c", "r"],
-    oddChoices: ["lake", "rock", "spaceship", "tree"]
+    unscrambledLetters: ["c", "r", "k", "o"],
+    oddChoices: ["river", "flower", "rock", "hamburger"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 6,
@@ -77,13 +82,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🪨",
     vocabulary: "rock",
-    choices: ["I can see a lake.", "I can see a river.", "I can see a rock.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a river.", "I can see a rock.", "I can see a hill."],
+    choices: ["I can see a rock.", "I can see a hill.", "I can see a tree.", "I can see a flower."],
+    options: ["I can see a rock.", "I can see a hill.", "I can see a tree.", "I can see a flower."],
     correctAnswer: "I can see a rock.",
     explanation: "rock = hòn đá",
     hintImage: "🪨",
-    unscrambledLetters: ["o", "k", "c", "r"],
-    oddChoices: ["lake", "rock", "spaceship", "tree"]
+    unscrambledLetters: ["c", "r", "k", "o"],
+    oddChoices: ["river", "flower", "rock", "hamburger"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 7,
@@ -91,13 +97,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What can you see?",
     image: "🏞️",
     vocabulary: "river",
-    choices: ["I can see a lake.", "I can see a rock.", "I can see a river.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a rock.", "I can see a river.", "I can see a hill."],
+    choices: ["I can see a river.", "I can see a lake.", "I can see a hill.", "I can see a rock."],
+    options: ["I can see a river.", "I can see a lake.", "I can see a hill.", "I can see a rock."],
     correctAnswer: "I can see a river.",
     explanation: "river = dòng sông",
     hintImage: "🏞️",
-    unscrambledLetters: ["i", "r", "e", "v", "r"],
-    oddChoices: ["lake", "river", "spaceship", "tree"]
+    unscrambledLetters: ["v", "r", "e", "r", "i"],
+    oddChoices: ["rock", "flower", "river", "hamburger"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 8,
@@ -105,13 +112,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🏞️",
     vocabulary: "river",
-    choices: ["I can see a lake.", "I can see a rock.", "I can see a river.", "I can see a hill."],
-    options: ["I can see a lake.", "I can see a rock.", "I can see a river.", "I can see a hill."],
+    choices: ["I can see a river.", "I can see a lake.", "I can see a hill.", "I can see a rock."],
+    options: ["I can see a river.", "I can see a lake.", "I can see a hill.", "I can see a rock."],
     correctAnswer: "I can see a river.",
     explanation: "river = dòng sông",
     hintImage: "🏞️",
-    unscrambledLetters: ["i", "r", "e", "v", "r"],
-    oddChoices: ["lake", "river", "spaceship", "tree"]
+    unscrambledLetters: ["v", "r", "e", "r", "i"],
+    oddChoices: ["rock", "flower", "river", "hamburger"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 9,
@@ -119,13 +127,14 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What can you see?",
     image: "⛰️",
     vocabulary: "hill",
-    choices: ["I can see a lake.", "I can see a rock.", "I can see a hill.", "I can see a river."],
-    options: ["I can see a lake.", "I can see a rock.", "I can see a hill.", "I can see a river."],
+    choices: ["I can see a hill.", "I can see a rock.", "I can see a tree.", "I can see a flower."],
+    options: ["I can see a hill.", "I can see a rock.", "I can see a tree.", "I can see a flower."],
     correctAnswer: "I can see a hill.",
     explanation: "hill = ngọn đồi",
     hintImage: "⛰️",
-    unscrambledLetters: ["h", "l", "l", "i"],
-    oddChoices: ["lake", "spaceship", "hill", "flower"]
+    unscrambledLetters: ["l", "i", "h", "l"],
+    oddChoices: ["hill", "tree", "guitar", "flower"],
+    activityTitle: "Choose the Correct Answer"
   },
   {
     id: 10,
@@ -133,12 +142,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     question: "What is it?",
     image: "🌅",
     vocabulary: "lake",
-    choices: ["I can see a hill.", "I can see a rock.", "I can see a lake.", "I can see a river."],
-    options: ["I can see a hill.", "I can see a rock.", "I can see a lake.", "I can see a river."],
+    choices: ["I can see a lake.", "I can see a river.", "I can see a hill.", "I can see a rock."],
+    options: ["I can see a lake.", "I can see a river.", "I can see a hill.", "I can see a rock."],
     correctAnswer: "I can see a lake.",
     explanation: "lake = hồ nước",
     hintImage: "🌅",
-    unscrambledLetters: ["l", "k", "e", "a"],
-    oddChoices: ["hill", "spaceship", "lake", "flower"]
+    unscrambledLetters: ["a", "k", "e", "l"],
+    oddChoices: ["rock", "guitar", "lake", "tree"],
+    activityTitle: "Choose the Correct Answer"
   }
 ];
