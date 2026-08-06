@@ -1,6 +1,39 @@
 import React from 'react';
 import { PracticeQuestion } from '../../../types';
 
+export const TapeSVG = React.createElement('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  viewBox: '0 0 200 200',
+  style: { width: '100%', height: '100%', maxHeight: '140px', display: 'block', margin: 'auto' }
+}, [
+  React.createElement('g', { key: 'tape-g' }, [
+    React.createElement('circle', { cx: 100, cy: 100, r: 60, fill: '#FEF3C7', stroke: '#F59E0B', strokeWidth: 3, key: 'outer' }),
+    React.createElement('circle', { cx: 100, cy: 100, r: 28, fill: '#FFFFFF', stroke: '#EF4444', strokeWidth: 3, key: 'inner-hole' }),
+    React.createElement('path', {
+      d: 'M 148 68 L 180 68 L 180 82',
+      fill: '#FEF3C7',
+      stroke: '#F59E0B',
+      strokeWidth: 2,
+      key: 'tape-pull'
+    }),
+    React.createElement('path', {
+      d: 'M 180 82 L 176 85 L 180 88 L 176 91 L 180 94',
+      fill: 'none',
+      stroke: '#EF4444',
+      strokeWidth: 2,
+      key: 'teeth'
+    }),
+    React.createElement('path', {
+      d: 'M 75 145 C 75 145, 90 165, 120 165 C 150 165, 165 140, 165 110',
+      fill: 'none',
+      stroke: '#3B82F6',
+      strokeWidth: 5,
+      strokeLinecap: 'round',
+      key: 'dispenser'
+    })
+  ])
+]);
+
 const ChalkSVG = React.createElement('svg', {
   xmlns: 'http://www.w3.org/2000/svg',
   viewBox: '0 0 200 200',
@@ -181,13 +214,13 @@ export const lesson1Practice: PracticeQuestion[] = [
     id: 10,
     type: "multiple_choice",
     question: "What is it?",
-    image: "🩹",
+    image: TapeSVG as any,
     vocabulary: "tape",
     choices: ["This is glue.", "This is chalk.", "This is tape.", "This is yarn."],
     options: ["This is glue.", "This is chalk.", "This is tape.", "This is yarn."],
     correctAnswer: "This is tape.",
     explanation: "tape = băng dính",
-    hintImage: "🩹",
+    hintImage: TapeSVG as any,
     unscrambledLetters: ["a", "p", "e", "t"],
     oddChoices: ["tape", "paper", "volcano", "chalk"],
     activityTitle: "Choose the Correct Answer"
