@@ -228,32 +228,11 @@ function parseProgressString(progressStr: string) {
 }
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState<UserInfo | null>(() => {
-    const saved = localStorage.getItem('leego_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
 
   // Curriculum state
-  const [currentUnit, setCurrentUnit] = useState<Unit>(() => {
-    const savedProgress = localStorage.getItem('leego_progress');
-    if (savedProgress) {
-      const progInfo: ProgressInfo = JSON.parse(savedProgress);
-      const parsed = parseProgressString(progInfo.progress);
-      return parsed.currentUnit;
-    }
-    return CURRICULUM_UNITS[0];
-  });
-  
-  const [currentLesson, setCurrentLesson] = useState<Lesson>(() => {
-    const savedProgress = localStorage.getItem('leego_progress');
-    if (savedProgress) {
-      const progInfo: ProgressInfo = JSON.parse(savedProgress);
-      const parsed = parseProgressString(progInfo.progress);
-      return parsed.currentLesson;
-    }
-    return CURRICULUM_UNITS[0].lessons[0];
-  });
-  
+  const [currentUnit, setCurrentUnit] = useState<Unit>(CURRICULUM_UNITS[0]);
+  const [currentLesson, setCurrentLesson] = useState<Lesson>(CURRICULUM_UNITS[0].lessons[0]);
   const [currentStage, setCurrentStage] = useState<Stage>('vocabulary');
   const [lastPracticeScore, setLastPracticeScore] = useState<number>(100);
   const [lastSpeakingScore, setLastSpeakingScore] = useState<number>(90);
@@ -264,34 +243,16 @@ export default function App() {
   const [checkUpUnitB, setCheckUpUnitB] = useState<Unit | null>(null);
 
   // Gamification progress state
-  const [progress, setProgress] = useState<StudentProgress>(() => {
-    const savedProgress = localStorage.getItem('leego_progress');
-    if (savedProgress) {
-      const progInfo: ProgressInfo = JSON.parse(savedProgress);
-      const parsed = parseProgressString(progInfo.progress);
-      return {
-        stars: progInfo.stars,
-        badges: ['First Step', 'School Star'],
-        completedLessonIds: parsed.completedLessonIds,
-        completedUnitIds: parsed.completedUnitIds,
-        speakingScoreAvg: 90,
-        dailyStreak: 3,
-        currentUnitId: parsed.currentUnit.id,
-        currentLessonId: parsed.currentLesson.id,
-        currentStage: 'vocabulary',
-      };
-    }
-    return {
-      stars: 12,
-      badges: ['First Step', 'School Star'],
-      completedLessonIds: [],
-      completedUnitIds: [],
-      speakingScoreAvg: 90,
-      dailyStreak: 3,
-      currentUnitId: CURRICULUM_UNITS[0].id,
-      currentLessonId: CURRICULUM_UNITS[0].lessons[0].id,
-      currentStage: 'vocabulary',
-    };
+  const [progress, setProgress] = useState<StudentProgress>({
+    stars: 12,
+    badges: ['First Step', 'School Star'],
+    completedLessonIds: [],
+    completedUnitIds: [],
+    speakingScoreAvg: 90,
+    dailyStreak: 3,
+    currentUnitId: CURRICULUM_UNITS[0].id,
+    currentLessonId: CURRICULUM_UNITS[0].lessons[0].id,
+    currentStage: 'vocabulary',
   });
 
   // Automatically synchronize progress to Google Apps Script Web App
@@ -300,13 +261,6 @@ export default function App() {
     const completedCount = progress.completedLessonIds.length;
     const progressStr = `${completedCount}/32`;
     updateProgress(currentUser.username, progress.stars, progressStr);
-    
-    const progressInfo: ProgressInfo = {
-      stars: progress.stars,
-      progress: progressStr,
-      className: currentUser.className
-    };
-    localStorage.setItem('leego_progress', JSON.stringify(progressInfo));
   }, [progress.stars, progress.completedLessonIds, currentUser]);
 
   // UI Modals
@@ -653,8 +607,6 @@ export default function App() {
         <button
           onClick={() => {
             soundFX.playClick();
-            localStorage.removeItem('leego_user');
-            localStorage.removeItem('leego_progress');
             setCurrentUser(null);
           }}
           className="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition-all active:scale-95 text-[10px] font-black uppercase tracking-wider"
