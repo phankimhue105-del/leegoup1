@@ -14,49 +14,130 @@ export interface ProgressInfo {
   className: string;
 }
 
+export class AuthError extends Error {
+  url: string;
+  requestBody: string;
+  httpStatus: number;
+  responseBody: string;
+  parsedJson: any;
+  originalError: string;
+
+  constructor(message: string, details: {
+    url: string;
+    requestBody: string;
+    httpStatus: number;
+    responseBody: string;
+    parsedJson: any;
+    originalError: string;
+  }) {
+    super(message);
+    this.name = "AuthError";
+    this.url = details.url;
+    this.requestBody = details.requestBody;
+    this.httpStatus = details.httpStatus;
+    this.responseBody = details.responseBody;
+    this.parsedJson = details.parsedJson;
+    this.originalError = details.originalError;
+  }
+}
+
 export async function loginUser(username: string, password: string): Promise<UserInfo> {
+  const cleanUsername = username.trim();
+  const cleanPassword = password.trim();
   const payload = {
     action: "login",
-    username: username.trim(),
-    password: password.trim()
+    username: cleanUsername,
+    password: cleanPassword
   };
 
-  console.log("LOGIN REQUEST", JSON.stringify(payload));
+  const requestBodyStr = JSON.stringify(payload);
+  console.log("LOGIN REQUEST", requestBodyStr);
 
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  let httpStatus = 0;
+  let responseBodyStr = "";
+  let parsedJson: any = null;
 
-  if (!response.ok) {
-    throw new Error("HTTP error: " + response.status);
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: requestBodyStr
+    });
+
+    httpStatus = response.status;
+    responseBodyStr = await response.text();
+    console.log("LOGIN RESPONSE RAW", responseBodyStr);
+
+    try {
+      parsedJson = JSON.parse(responseBodyStr);
+      console.log("LOGIN RESPONSE PARSED JSON", JSON.stringify(parsedJson));
+    } catch (e: any) {
+      throw new AuthError("Failed to parse server response.", {
+        url: API_URL,
+        requestBody: requestBodyStr,
+        httpStatus,
+        responseBody: responseBodyStr,
+        parsedJson: null,
+        originalError: e.message || String(e)
+      });
+    }
+
+    if (!response.ok) {
+      throw new AuthError("Server returned HTTP error status.", {
+        url: API_URL,
+        requestBody: requestBodyStr,
+        httpStatus,
+        responseBody: responseBodyStr,
+        parsedJson,
+        originalError: `HTTP status: ${response.status}`
+      });
+    }
+
+    const status = parsedJson.status ? String(parsedJson.status).trim().toLowerCase() : "";
+    const success = parsedJson.success === true;
+
+    if (success && status === "active") {
+      return {
+        username: parsedJson.username || cleanUsername,
+        studentName: parsedJson.studentName,
+        className: parsedJson.className,
+        expireDate: parsedJson.expireDate,
+        status: parsedJson.status
+      };
+    }
+
+    const message = parsedJson.message ? String(parsedJson.message) : "";
+    let errMsg = "Incorrect username or password.";
+    if (message.toLowerCase().includes("inactive") || status === "inactive") {
+      errMsg = "This account is inactive. Please contact your teacher.";
+    } else if (message) {
+      errMsg = message;
+    }
+
+    throw new AuthError(errMsg, {
+      url: API_URL,
+      requestBody: requestBodyStr,
+      httpStatus,
+      responseBody: responseBodyStr,
+      parsedJson,
+      originalError: message || "Incorrect username or password."
+    });
+
+  } catch (err: any) {
+    if (err instanceof AuthError) {
+      throw err;
+    }
+    throw new AuthError(err.message || String(err), {
+      url: API_URL,
+      requestBody: requestBodyStr,
+      httpStatus,
+      responseBody: responseBodyStr,
+      parsedJson,
+      originalError: err.message || String(err)
+    });
   }
-
-  const data = await response.json();
-  console.log("LOGIN RESPONSE", JSON.stringify(data));
-
-  const status = data.status ? String(data.status).trim().toLowerCase() : "";
-  const success = data.success === true;
-
-  if (success && status === "active") {
-    return {
-      username: data.username || username.trim(),
-      studentName: data.studentName,
-      className: data.className,
-      expireDate: data.expireDate,
-      status: data.status
-    };
-  }
-
-  const message = data.message ? String(data.message).toLowerCase() : "";
-  if (message.includes("inactive") || status === "inactive") {
-    throw new Error("This account is inactive. Please contact your teacher.");
-  }
-  
-  throw new Error("Incorrect username or password.");
 }
 
 export async function getProgress(username: string): Promise<ProgressInfo> {
