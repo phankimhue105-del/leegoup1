@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbx4R-ZCIy8S25MYon22zVdmZri4-tJBk6NpwxXSIjwwTRwtr2geSAtJ2wsJty1bIpnVdQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbztxN9UxGUoAYilPnBrgIrba8wvplf8jNfgc4btDvu-d-GV3kodKWO1BFeWzNlfCMPtlg/exec';
 
 export interface UserInfo {
   username: string;
@@ -15,124 +15,78 @@ export interface ProgressInfo {
 }
 
 export async function loginUser(username: string, password: string): Promise<UserInfo> {
-  const cleanUsername = username.trim();
-  const cleanPassword = password.trim();
-
-  console.log("Using Google Apps Script");
-  console.log("No fallback");
-  console.log("No mock database");
-
-  console.log("========== LOGIN REQUEST ==========");
-  console.log(`username: ${cleanUsername}`);
-  console.log(`password: ${cleanPassword}`);
-
-  let httpStatus: number = 0;
-  let rawText: string = "";
-  let apiResponse: any = null;
-
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: "login",
-        username: cleanUsername,
-        password: cleanPassword
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    httpStatus = response.status;
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    rawText = await response.text();
-    console.log("========== RESPONSE ==========");
-    console.log(`HTTP Status: ${httpStatus}`);
-    console.log(`Raw Response: ${rawText}`);
-
-    try {
-      apiResponse = JSON.parse(rawText);
-      console.log("Parsed JSON:", JSON.stringify(apiResponse, null, 2));
-    } catch (parseError) {
-      console.error("JSON parsing failed:", parseError);
-      throw new Error("Failed to parse server response.");
-    }
-  } catch (networkError: any) {
-    console.error("Network or execution failure:", networkError);
-    throw new Error(networkError.message || "Failed to communicate with authentication server.");
-  }
-
-  if (!apiResponse) {
-    throw new Error("Empty response from server.");
-  }
-
-  // Extract properties
-  const successVal = apiResponse.success;
-  const statusStr = apiResponse.status ? String(apiResponse.status).trim().toLowerCase() : "";
-  const messageVal = apiResponse.message || "";
-  const studentNameVal = apiResponse.studentName;
-  const classNameVal = apiResponse.className;
-  const expireDateVal = apiResponse.expireDate;
-
-  console.log(`success: ${successVal}`);
-  console.log(`status: ${statusStr}`);
-  console.log(`message: ${messageVal}`);
-  console.log(`studentName: ${studentNameVal}`);
-  console.log(`className: ${classNameVal}`);
-
-  // Validation checks
-  if (successVal !== true) {
-    throw new Error(messageVal || "Incorrect username or password.");
-  }
-
-  if (statusStr !== "active") {
-    throw new Error("This account is inactive. Please contact your teacher.");
-  }
-
-  // Ensure required fields exist in the response
-  if (studentNameVal === undefined || classNameVal === undefined || expireDateVal === undefined) {
-    throw new Error("Invalid user record: missing required user information fields from Google Sheet.");
-  }
-
-  return {
-    username: apiResponse.username || cleanUsername,
-    studentName: studentNameVal,
-    className: classNameVal,
-    expireDate: expireDateVal,
-    status: statusStr
+  const payload = {
+    action: "login",
+    username: username.trim(),
+    password: password.trim()
   };
-}
 
-export async function getProgress(username: string): Promise<ProgressInfo> {
-  const cleanUsername = username.trim();
+  console.log("LOGIN REQUEST", JSON.stringify(payload));
+
   const response = await fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      action: "getProgress",
-      username: cleanUsername
-    }),
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    throw new Error("HTTP error: " + response.status);
   }
 
   const data = await response.json();
-  if (data && data.success) {
-    if (data.progress === undefined || data.stars === undefined || data.className === undefined) {
-      throw new Error("Invalid progress record: missing required progress fields from Google Sheet.");
-    }
+  console.log("LOGIN RESPONSE", JSON.stringify(data));
+
+  const status = data.status ? String(data.status).trim().toLowerCase() : "";
+  const success = data.success === true;
+
+  if (success && status === "active") {
     return {
-      stars: Number(data.stars),
-      progress: String(data.progress),
-      className: String(data.className)
+      username: data.username || username.trim(),
+      studentName: data.studentName,
+      className: data.className,
+      expireDate: data.expireDate,
+      status: data.status
+    };
+  }
+
+  const message = data.message ? String(data.message).toLowerCase() : "";
+  if (message.includes("inactive") || status === "inactive") {
+    throw new Error("This account is inactive. Please contact your teacher.");
+  }
+  
+  throw new Error("Incorrect username or password.");
+}
+
+export async function getProgress(username: string): Promise<ProgressInfo> {
+  const payload = {
+    action: "getProgress",
+    username: username.trim()
+  };
+
+  console.log("GET PROGRESS REQUEST", JSON.stringify(payload));
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error("HTTP error: " + response.status);
+  }
+
+  const data = await response.json();
+  console.log("GET PROGRESS RESPONSE", JSON.stringify(data));
+
+  if (data && data.success === true) {
+    return {
+      stars: Number(data.stars) || 0,
+      progress: String(data.progress || "0/32"),
+      className: String(data.className || "")
     };
   }
 
@@ -140,19 +94,22 @@ export async function getProgress(username: string): Promise<ProgressInfo> {
 }
 
 export async function updateProgress(username: string, stars: number, progress: string): Promise<boolean> {
+  const payload = {
+    action: "updateProgress",
+    username: username.trim(),
+    stars: stars,
+    progress: progress
+  };
+
+  console.log("UPDATE PROGRESS REQUEST", JSON.stringify(payload));
+
   try {
-    const cleanUsername = username.trim();
     const response = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: "updateProgress",
-        username: cleanUsername,
-        stars,
-        progress
-      }),
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
@@ -160,9 +117,11 @@ export async function updateProgress(username: string, stars: number, progress: 
     }
 
     const data = await response.json();
-    return !!(data && data.success);
+    console.log("UPDATE PROGRESS RESPONSE", JSON.stringify(data));
+
+    return !!(data && data.success === true);
   } catch (error) {
-    console.error("Failed to update progress:", error);
+    console.error(error);
     return false;
   }
 }
